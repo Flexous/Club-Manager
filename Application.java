@@ -17,8 +17,6 @@ public class Application
     static JFrame frame = new JFrame("Club Manager");
     static JPanel panel = new JPanel();
 
-    static Club club = new Club();
-
     static ImageIcon imageIcon;
 
     public static void main(String[]args)
@@ -76,10 +74,10 @@ public class Application
         menu1.add(saveUnder);
         
         JMenu menu2 = new JMenu("Hinzufügen");
-        JMenuItem addPlayer = new JMenuItem("Spieler hinzufügen");
-        JMenuItem addStadium = new JMenuItem("Stadion hinzufügen");
-        menu2.add(addPlayer);
-        menu2.add(addStadium);
+        JMenuItem menuAddPlayer = new JMenuItem("Spieler hinzufügen");
+        JMenuItem menuAddStadium = new JMenuItem("Stadion hinzufügen");
+        menu2.add(menuAddPlayer);
+        menu2.add(menuAddStadium);
 
         JMenu menu3 = new JMenu("Ansicht");
         JMenuItem showOrganisations = new JMenuItem("Organisationen anzeigen");
@@ -116,7 +114,7 @@ public class Application
             }
         });
 
-        addPlayer.addActionListener(new ActionListener()
+        menuAddPlayer.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent ev)
             {

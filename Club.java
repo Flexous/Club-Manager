@@ -6,14 +6,9 @@ import javax.swing.JTextField;
 
 public class Club 
 {
-    String name;
-    String logoSrc="";
-    ArrayList<Player>players = new ArrayList<>();
-
-    public Club()
-    {
-
-    }
+    private String name;
+    private String logoSrc="";
+    private ArrayList<Player>players = new ArrayList<>();
 
     public Club(String name)
     {
