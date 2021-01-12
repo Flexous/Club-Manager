@@ -10,18 +10,14 @@ import java.util.logging.Logger;
 public class Application
 {
     private static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    public static PropertiesHandler propertiesHandler = new PropertiesHandler("Files/ClubManager.properties");
 
     static MainGui mainGui;
 
     public static void main(String[]args)
     {
-        getConfig();
+        propertiesHandler.findProperties();
         initMainGui();
-    }
-
-    private static void getConfig() 
-    {
-        //
     }
 
     private static void initMainGui() 

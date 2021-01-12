@@ -7,5 +7,6 @@ public class AddClubDialog extends ClubManagerDialog
     public AddClubDialog()
     {
         super();
+        add(this.getPanel());
     }
 }
