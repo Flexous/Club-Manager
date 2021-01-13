@@ -1,11 +1,15 @@
 package Gui;
 
+import java.awt.event.ActionListener;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.plaf.DimensionUIResource;
+
+import Backend.Application;
 
 public class ClubManagerDialog extends JDialog
 {
@@ -17,9 +21,24 @@ public class ClubManagerDialog extends JDialog
     {
         setPanelSettings();
         setMinimumSize(new DimensionUIResource(520, 520));
-        setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
         setLocationRelativeTo(null);
+        setUndecorated(true);
         setVisible(false);
+
+        MenuButton closeDialogBtn = new MenuButton("");
+        closeDialogBtn.setButtonImgSrc(Application.propertiesHandler.getValueFromProperty("CloseWindowLogo"));
+        closeDialogBtn.setBackground(Color.RED);
+
+        closeDialogBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
+                setVisible(false);
+            }
+        });
+        
+        this.panel.add(closeDialogBtn);
     }
 
     public void setPanelSettings()

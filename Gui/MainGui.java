@@ -3,9 +3,10 @@ package Gui;
 import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -30,7 +31,10 @@ public class MainGui extends JFrame
         setIconImage(new ImageIcon(Application.propertiesHandler.getValueFromProperty("DefaultLogo")).getImage());
         setResizable(false);
         setUndecorated(true);
-        setExtendedState(MAXIMIZED_BOTH);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int)screenSize.getWidth();
+        int height = (int)screenSize.getHeight()-10;
+        setSize(width, height);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setVisible(true);
@@ -68,11 +72,24 @@ public class MainGui extends JFrame
             }
         });
 
+        MenuButton hideMainGuiBtn = new MenuButton("");
+        hideMainGuiBtn.setButtonImgSrc(Application.propertiesHandler.getValueFromProperty("HideWindowLogo"));
+        hideMainGuiBtn.setBackground(Color.BLACK);
+
+        hideMainGuiBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
+                System.exit(0);
+            }
+        });
+
         this.panel.add(this.openAddClubDialogBtn);
         this.panel.add(this.openAddPlayerToClubDialogBtn);
 
         //Special buttons cause epic
 
+        this.panel.add(hideMainGuiBtn);
         this.panel.add(closeMainGuiBtn);
 
         this.add(panel);

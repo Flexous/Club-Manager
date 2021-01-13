@@ -32,7 +32,12 @@ public class PropertiesHandler
             {
                 if (line.contains("="))
                 {
-                    foundProperties.add(new Property(line.split("=")[0], line.split("=")[1]));
+                    String [] parts = line.split("=");
+
+                    if (parts.length > 1)
+                    {
+                        foundProperties.add(new Property(parts[0], parts[1]));
+                    }
                 }
             }
 
