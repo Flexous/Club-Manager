@@ -3,10 +3,9 @@ package Gui;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 public class MenuButton extends JButton
 {
@@ -19,6 +18,7 @@ public class MenuButton extends JButton
         setText(buttonText);
         setFont(new Font("Arial", Font.PLAIN, 40));        
         setBackground(Color.CYAN);
+        setBorder(new LineBorder(Color.WHITE, 1, true));
     }
 
     public String getButtonImgSrc()

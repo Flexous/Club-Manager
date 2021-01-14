@@ -26,6 +26,7 @@ public class MainGui extends JFrame
 
     public MainGui(String guiTitle)
     {
+        LoginDialog loginDialog = new LoginDialog();
         setTitle(guiTitle);
         createMainGuiMenu();
         setIconImage(new ImageIcon(Application.propertiesHandler.getValueFromProperty("DefaultLogo")).getImage());

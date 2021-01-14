@@ -1,6 +1,7 @@
 package Backend;
 
 import Gui.MainGui;
+import Objects.Club;
 
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -11,13 +12,20 @@ public class Application
 {
     private static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     public static PropertiesHandler propertiesHandler = new PropertiesHandler("Files/ClubManager.properties");
+    private static LoginManager loginManager = new LoginManager();
 
     static MainGui mainGui;
 
     public static void main(String[]args)
     {
         propertiesHandler.findProperties();
-        initMainGui();
+
+        loginManager.checkLastLogin();
+
+        if (loginManager.isLoginCompleted())
+        {
+            initMainGui();
+        }
     }
 
     private static void initMainGui() 
@@ -26,6 +34,11 @@ public class Application
         {
             mainGui = new MainGui("Club Manager");
         }
+    }
+
+    public void createNewClub(String nameOfClub)
+    {
+        Club club = new Club(nameOfClub);
     }
 
     public static Logger getLogger()
