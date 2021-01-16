@@ -38,17 +38,17 @@ public class ClubManagerDialog extends JDialog
             }
         });
         
-        this.panel.add(closeDialogBtn);
+        panel.add(closeDialogBtn);
     }
 
     public void setPanelSettings()
     {
-        this.panel.setBackground(Color.BLACK);
-        this.panel.setBorder(BorderFactory.createLineBorder(Color.CYAN));
+        panel.setBackground(Color.BLACK);
+        panel.setBorder(BorderFactory.createLineBorder(Color.CYAN));
     }
 
     public JPanel getPanel()
     {
-        return this.panel;
+        return panel;
     }
 }

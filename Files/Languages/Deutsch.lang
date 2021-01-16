@@ -1,4 +1,6 @@
 NewInstallationMessage=Willkommen beim Club Manager!\nWähle eine Sprache aus:
+NameOfClubString=Name des Vereins
+BadgeOfClubString=Logo des Vereins
 CreateClubString=Club erstellen
 AddPlayerToClubString=Spieler zu Verein hinzufügen
 ChangeLanguage=Sprache ändern

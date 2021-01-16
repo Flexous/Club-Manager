@@ -1,5 +1,6 @@
 package Backend;
 
+import Gui.LoginDialog;
 import Gui.MainGui;
 import Objects.Club;
 
@@ -11,20 +12,29 @@ import java.util.logging.Logger;
 public class Application
 {
     private static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    public static PropertiesHandler propertiesHandler = new PropertiesHandler("Files/ClubManager.properties");
+    public static PropertiesHandler propertiesHandler;
+    //private static LanguageHandler languageHandler;
     private static LoginManager loginManager = new LoginManager();
 
     static MainGui mainGui;
 
     public static void main(String[]args)
     {
+        propertiesHandler = new PropertiesHandler("Files/ClubManager.properties");
         propertiesHandler.findProperties();
+        
+        //languageHandler = new LanguageHandler(propertiesHandler.getValueFromProperty("CurrentLanguage"));
+        //languageHandler.setLanguage();
 
         loginManager.checkLastLogin();
 
         if (loginManager.isLoginCompleted())
         {
             initMainGui();
+        }
+        else
+        {
+            LoginDialog loginDialog = new LoginDialog();
         }
     }
 
@@ -36,9 +46,10 @@ public class Application
         }
     }
 
-    public void createNewClub(String nameOfClub)
+    public static void createNewClub(String nameOfClub)
     {
         Club club = new Club(nameOfClub);
+        
     }
 
     public static Logger getLogger()

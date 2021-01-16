@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+import Backend.Application;
 
 public class AddClubDialog extends ClubManagerDialog
 {
@@ -19,13 +22,20 @@ public class AddClubDialog extends ClubManagerDialog
         nameOfClubLabel.setForeground(Color.WHITE);
         getPanel().add(nameOfClubLabel);
 
+        JTextField nameOfClubField = new JTextField(30);
+        getPanel().add(nameOfClubField);
+
+        JLabel logoOfClubLabel = new JLabel("Logo des Verein:");
+        logoOfClubLabel.setForeground(Color.WHITE);
+        getPanel().add(logoOfClubLabel);
+
         JButton createClubBtn = new JButton("Verein erstellen");
         createClubBtn.setBackground(Color.CYAN);
         createClubBtn.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e) 
             {
-                //
+                Application.createNewClub(nameOfClubField.getText());
             }
         });
         getPanel().add(createClubBtn);
