@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -14,6 +13,7 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Backend.Application;
+import Objects.Club;
 
 public class AddClubDialog extends ClubManagerDialog
 {
@@ -22,6 +22,8 @@ public class AddClubDialog extends ClubManagerDialog
     public AddClubDialog()
     {
         super();
+
+        Club club = new Club();
 
         JLabel nameOfClubLabel = new JLabel("Name des Vereins:");
         nameOfClubLabel.setForeground(Color.WHITE);
@@ -48,7 +50,7 @@ public class AddClubDialog extends ClubManagerDialog
 
                 if (fileSelected == JFileChooser.APPROVE_OPTION)
                 {
-                    System.out.println(chooser.getSelectedFile().getAbsolutePath());
+                    club.setLogoSrc(chooser.getSelectedFile().getAbsolutePath());
                 }
             }
         });
@@ -59,7 +61,8 @@ public class AddClubDialog extends ClubManagerDialog
         {
             public void actionPerformed(ActionEvent e) 
             {
-                Application.createNewClub(nameOfClubField.getText());
+                club.setName(nameOfClubField.getText());
+                Application.currentClub = club;
             }
         });
         getPanel().add(createClubBtn, "gaptop 50, center, wrap");

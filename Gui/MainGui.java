@@ -91,7 +91,7 @@ public class MainGui extends JFrame
 
         //Special buttons cause epic
 
-        panel.add(hideMainGuiBtn, "gapleft 30");
+        panel.add(hideMainGuiBtn, "gapleft 1100");
         panel.add(closeMainGuiBtn, "gapleft 30");
 
         add(panel);

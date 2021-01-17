@@ -8,19 +8,22 @@ import java.util.ArrayList;
 public class PropertiesHandler 
 {
     private String filePath;
-    private ArrayList<Property> foundProperties = new ArrayList<>();
+    private ArrayList<Property> appProperties = new ArrayList<>();
+    private ArrayList<Property> clubProperties = new ArrayList<>();
 
     public PropertiesHandler(String filePath) 
     {
         this.filePath = filePath;
     }
 
+    //Property-File methods
+
     public ArrayList<Property> getFoundProperties()
     {
-        return this.foundProperties;
+        return appProperties;
     }
 
-    public void findProperties()
+    public void getAppProperties()
     {
         try 
         {
@@ -36,7 +39,7 @@ public class PropertiesHandler
 
                     if (parts.length > 1)
                     {
-                        foundProperties.add(new Property(parts[0], parts[1]));
+                        appProperties.add(new Property(parts[0], parts[1]));
                     }
                 }
             }
@@ -46,13 +49,12 @@ public class PropertiesHandler
         catch (IOException e) 
         {
             Application.getLogger().warning(e.getMessage());
-            e.printStackTrace();
         }
     }
 
     public String getValueFromProperty(String propertyName)
     {
-        for (Property property : foundProperties)
+        for (Property property : appProperties)
         {
             if (property.getName().equals(propertyName))
             {
@@ -60,5 +62,36 @@ public class PropertiesHandler
             }
         }
         return null;
+    }
+
+    //Club-File methods
+
+    public void getClubProperties()
+    {
+        try 
+        {
+            BufferedReader br = new BufferedReader(new FileReader(filePath));
+
+            String line = "";
+
+            while ((line=br.readLine()) != null)
+            {
+                if (line.contains("="))
+                {
+                    String [] parts = line.split("=");
+
+                    if (parts.length > 1)
+                    {
+                        clubProperties.add(new Property(parts[0], parts[1]));
+                    }
+                }
+            }
+
+            br.close();
+        }
+        catch (IOException e) 
+        {
+            Application.getLogger().warning(e.getMessage());
+        }
     }
 }

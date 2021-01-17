@@ -8,6 +8,11 @@ public class Club
     private String logoSrc="";
     private ArrayList<Player>players = new ArrayList<>();
 
+    public Club()
+    {
+        
+    }
+
     public Club(String name)
     {
         this.name = name;
