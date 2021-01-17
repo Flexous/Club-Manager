@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import Backend.Application;
+import net.miginfocom.swing.MigLayout;
 
 public class MainGui extends JFrame 
 {
@@ -42,9 +43,10 @@ public class MainGui extends JFrame
 
     public void createMainGuiMenu()
     {
-        this.panel.setBackground(Color.BLACK);
+        panel.setLayout(new MigLayout());
+        panel.setBackground(Color.BLACK);
 
-        this.openAddClubDialogBtn.addActionListener(new ActionListener()
+        openAddClubDialogBtn.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e) 
             {
@@ -52,7 +54,7 @@ public class MainGui extends JFrame
             } 
         });
 
-        this.openAddPlayerToClubDialogBtn.addActionListener(new ActionListener()
+        openAddPlayerToClubDialogBtn.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e) 
             {
@@ -64,14 +66,6 @@ public class MainGui extends JFrame
         closeMainGuiBtn.setButtonImgSrc(Application.propertiesHandler.getValueFromProperty("CloseWindowLogo"));
         closeMainGuiBtn.setBackground(Color.RED);
 
-        closeMainGuiBtn.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e) 
-            {
-                System.exit(0);
-            }
-        });
-
         MenuButton hideMainGuiBtn = new MenuButton("");
         hideMainGuiBtn.setButtonImgSrc(Application.propertiesHandler.getValueFromProperty("HideWindowLogo"));
         hideMainGuiBtn.setBackground(Color.BLACK);
@@ -80,36 +74,44 @@ public class MainGui extends JFrame
         {
             public void actionPerformed(ActionEvent e) 
             {
+                setState(ICONIFIED);
+            }
+        });
+
+        closeMainGuiBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
                 System.exit(0);
             }
         });
 
-        this.panel.add(this.openAddClubDialogBtn);
-        this.panel.add(this.openAddPlayerToClubDialogBtn);
+        panel.add(openAddClubDialogBtn);
+        panel.add(openAddPlayerToClubDialogBtn, "gapleft 10");
 
         //Special buttons cause epic
 
-        this.panel.add(hideMainGuiBtn);
-        this.panel.add(closeMainGuiBtn);
+        panel.add(hideMainGuiBtn, "gapleft 30");
+        panel.add(closeMainGuiBtn, "gapleft 30");
 
-        this.add(panel);
+        add(panel);
     }
 
     public void showAddClubDialog()
     {
-        if (this.addClubDialog == null)
+        if (addClubDialog == null)
         {
-            this.addClubDialog = new AddClubDialog();
+            addClubDialog = new AddClubDialog();
         }
-        this.addClubDialog.setVisible(true);
+        addClubDialog.setVisible(true);
     }
 
     public void showAddPlayerToClubDialog()
     {
-        if (this.addPlayerToClubDialog == null)
+        if (addPlayerToClubDialog == null)
         {
-            this.addPlayerToClubDialog = new AddPlayerToClubDialog();
+            addPlayerToClubDialog = new AddPlayerToClubDialog();
         }
-        this.addPlayerToClubDialog.setVisible(true);
+        addPlayerToClubDialog.setVisible(true);
     }
 }

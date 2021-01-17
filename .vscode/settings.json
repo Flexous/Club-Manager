@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "C:\\Users\\Felix\\Documents\\Projekte\\Github Projekte\\Club-Manager\\Club-Manager\\External Jars\\miglayout-3.5.5.jar"
+    ]
+}

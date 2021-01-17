@@ -16,9 +16,9 @@ public class MenuButton extends JButton
     public MenuButton(String buttonText)
     {
         setText(buttonText);
-        setFont(new Font("Arial", Font.PLAIN, 40));        
+        setFont(new Font("Arial", Font.BOLD, 40));        
         setBackground(Color.CYAN);
-        setBorder(new LineBorder(Color.WHITE, 1, true));
+        //setBorder(new LineBorder(Color.WHITE, 1, true));
     }
 
     public String getButtonImgSrc()

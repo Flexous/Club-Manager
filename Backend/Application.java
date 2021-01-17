@@ -9,6 +9,8 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.UIManager;
+
 public class Application
 {
     private static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -20,6 +22,16 @@ public class Application
 
     public static void main(String[]args)
     {
+        /*try 
+        {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());    
+        } 
+        catch (Exception e) 
+        {
+            getLogger().warning(e.getMessage());
+        }*/
+
+
         propertiesHandler = new PropertiesHandler("Files/ClubManager.properties");
         propertiesHandler.findProperties();
         
