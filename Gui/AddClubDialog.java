@@ -13,6 +13,7 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Backend.Application;
+import Backend.ClubHandler;
 import Objects.Club;
 
 public class AddClubDialog extends ClubManagerDialog
@@ -63,9 +64,13 @@ public class AddClubDialog extends ClubManagerDialog
             {
                 club.setName(nameOfClubField.getText());
                 Application.currentClub = club;
+
+                ClubHandler.addNewClub(club);
+
+                dispose();
             }
         });
-        getPanel().add(createClubBtn, "gaptop 50, center, wrap");
+        getPanel().add(createClubBtn, "gapleft 50, gaptop 150, wrap");
 
         add(getPanel());
     }

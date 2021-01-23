@@ -28,7 +28,7 @@ public class Application
         //languageHandler = new LanguageHandler(propertiesHandler.getValueFromProperty("CurrentLanguage"));
         //languageHandler.setLanguage();
 
-        //loginManager.checkLastLogin();
+        loginManager.checkLastLogin();
 
         if (loginManager.isLoginCompleted())
         {

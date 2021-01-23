@@ -28,20 +28,20 @@ public class MainGui extends JFrame
     public MainGui(String guiTitle)
     {
         setTitle(guiTitle);
-        createMainGuiMenu();
+        createMainGuiMenuWithoutClub();
         setIconImage(new ImageIcon(Application.propertiesHandler.getValueFromProperty("DefaultLogo")).getImage());
-        setResizable(false);
-        setUndecorated(true);
+        setResizable(true);
+        //setUndecorated(true);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int)screenSize.getWidth();
         int height = (int)screenSize.getHeight()-10;
         setSize(width, height);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
     }
 
-    public void createMainGuiMenu()
+    public void createMainGuiMenuWithoutClub()
     {
         panel.setLayout(new MigLayout());
         panel.setBackground(Color.BLACK);
@@ -91,10 +91,21 @@ public class MainGui extends JFrame
 
         //Special buttons cause epic
 
-        panel.add(hideMainGuiBtn, "gapleft 1100");
-        panel.add(closeMainGuiBtn, "gapleft 30");
+        //panel.add(hideMainGuiBtn, "gapleft 700");
+        //panel.add(closeMainGuiBtn, "gapleft 30");
 
         add(panel);
+    }
+
+    public void createMainGuiMenuWithClub()
+    {
+        openAddPlayerToClubDialogBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
+                showAddPlayerToClubDialog();
+            } 
+        });
     }
 
     public void showAddClubDialog()

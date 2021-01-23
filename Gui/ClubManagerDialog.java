@@ -24,7 +24,7 @@ public class ClubManagerDialog extends JDialog
         setMinimumSize(new DimensionUIResource(700, 700));
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setUndecorated(true);
+        setUndecorated(false);
         //setResizable(true);
         setVisible(false);
 
@@ -39,7 +39,7 @@ public class ClubManagerDialog extends JDialog
                 setVisible(false);
             }
         });
-        panel.add(closeDialogBtn, "gapleft 550, wrap");
+        //panel.add(closeDialogBtn, "gapleft 550, wrap");
     }
 
     public void setPanelSettings()
