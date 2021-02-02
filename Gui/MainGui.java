@@ -29,7 +29,7 @@ public class MainGui extends JFrame
     {
         setTitle(guiTitle);
         createMainGuiMenuWithoutClub();
-        setIconImage(new ImageIcon(Application.propertiesHandler.getValueFromProperty("DefaultLogo")).getImage());
+        setIconImage(new ImageIcon(Application.propertiesHandler.getValueFromProperty("DefaultLogo", "App")).getImage());
         setResizable(true);
         //setUndecorated(true);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -63,11 +63,11 @@ public class MainGui extends JFrame
         });
 
         MenuButton closeMainGuiBtn = new MenuButton("");
-        closeMainGuiBtn.setButtonImgSrc(Application.propertiesHandler.getValueFromProperty("CloseWindowLogo"));
+        closeMainGuiBtn.setButtonImgSrc(Application.propertiesHandler.getValueFromProperty("CloseWindowLogo", "App"));
         closeMainGuiBtn.setBackground(Color.RED);
 
         MenuButton hideMainGuiBtn = new MenuButton("");
-        hideMainGuiBtn.setButtonImgSrc(Application.propertiesHandler.getValueFromProperty("HideWindowLogo"));
+        hideMainGuiBtn.setButtonImgSrc(Application.propertiesHandler.getValueFromProperty("HideWindowLogo", "App"));
         hideMainGuiBtn.setBackground(Color.BLACK);
 
         hideMainGuiBtn.addActionListener(new ActionListener()

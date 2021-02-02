@@ -1,4 +1,4 @@
-package Backend;
+package Objects;
 
 public class Property 
 {

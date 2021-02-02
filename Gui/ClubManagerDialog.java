@@ -29,7 +29,7 @@ public class ClubManagerDialog extends JDialog
         setVisible(false);
 
         MenuButton closeDialogBtn = new MenuButton("");
-        closeDialogBtn.setButtonImgSrc(Application.propertiesHandler.getValueFromProperty("CloseWindowLogo"));
+        closeDialogBtn.setButtonImgSrc(Application.propertiesHandler.getValueFromProperty("CloseWindowLogo", "App"));
         closeDialogBtn.setBackground(Color.RED);
         
         closeDialogBtn.addActionListener(new ActionListener()

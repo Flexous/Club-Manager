@@ -1,7 +1,6 @@
 package Backend;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import Objects.Club;
@@ -19,7 +18,8 @@ public class ClubHandler
                 newClubFile.createNewFile();
             }
 
-			FileWriter fileWriter = new FileWriter(newClubFile);
+            //still needs work
+			//FileWriter fileWriter = new FileWriter(newClubFile);
         } 
         catch (IOException e) 
         {
