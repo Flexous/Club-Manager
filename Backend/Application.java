@@ -1,5 +1,6 @@
 package Backend;
 
+import Gui.LoginDialog;
 import Gui.MainGui;
 import Objects.Club;
 import Objects.User;
@@ -39,26 +40,16 @@ public class Application
         else
         {
             //still needs work
-            //LoginDialog loginDialog = new LoginDialog();
+            LoginDialog loginDialog = new LoginDialog();
         }
     }
 
-    private static void initMainGui() 
+    public static void initMainGui() 
     {
         if (mainGui == null)
         {
             mainGui = new MainGui("Club Manager");
         }
-    }
-
-    public Club getCurrentClub()
-    {
-        return currentClub;
-    }
-
-    public void setCurrentClub(Club club)
-    {
-        currentClub = club;
     }
 
     public static Logger getLogger()
