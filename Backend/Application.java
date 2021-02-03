@@ -10,11 +10,13 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import Backend.Language.LanguageHandler;
+
 public class Application
 {
     private static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     public static PropertiesHandler propertiesHandler;
-    //private static LanguageHandler languageHandler;
+    private static LanguageHandler languageHandler;
     public static LoginManager loginManager = new LoginManager();
     public static RegistrationManager registrationManager = new RegistrationManager();
 
@@ -28,8 +30,8 @@ public class Application
         propertiesHandler = new PropertiesHandler("Files/ClubManager.properties");
         propertiesHandler.getAppProperties();
         
-        //languageHandler = new LanguageHandler(propertiesHandler.getValueFromProperty("CurrentLanguage"));
-        //languageHandler.setLanguage();
+        languageHandler = new LanguageHandler(propertiesHandler.getValueFromProperty("CurrentLanguage", "App"));
+        languageHandler.setLanguage();
 
         loginManager.findLastLoggedInUser();
 

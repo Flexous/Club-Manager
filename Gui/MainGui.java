@@ -1,9 +1,7 @@
 package Gui;
 
-import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -17,9 +15,6 @@ import net.miginfocom.swing.MigLayout;
 public class MainGui extends JFrame 
 {
     private static final long serialVersionUID = 1745017706827567279L;
-
-    private MenuButton openAddClubDialogBtn = new MenuButton("Add Club");
-    private MenuButton openAddPlayerToClubDialogBtn = new MenuButton("Add Player to Club");
 
     private AddClubDialog addClubDialog;
     private AddPlayerToClubDialog addPlayerToClubDialog;
@@ -72,37 +67,7 @@ public class MainGui extends JFrame
 			e.printStackTrace();
         }
 
-        openAddClubDialogBtn.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e) 
-            {
-                showAddClubDialog();
-            } 
-        });
-
-        openAddPlayerToClubDialogBtn.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e) 
-            {
-                showAddPlayerToClubDialog();
-            } 
-        });
-
-        panel.add(openAddClubDialogBtn);
-        panel.add(openAddPlayerToClubDialogBtn, "gapleft 10");
-
         add(panel);
-    }
-
-    public void createMainGuiMenuWithClub()
-    {
-        openAddPlayerToClubDialogBtn.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e) 
-            {
-                showAddPlayerToClubDialog();
-            } 
-        });
     }
 
     public void showAddClubDialog()

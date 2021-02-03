@@ -1,4 +1,12 @@
 NewInstallationMessage=Willkommen beim Club Manager!\nWähle eine Sprache aus:
+
+#LoginDialog
+Username=Benutzername
+Password=Passwort
+RepeatPassword=Passwort wiederholen
+Login=Einloggen
+Register=Registrieren
+
 NameOfClubString=Name des Vereins
 BadgeOfClubString=Logo des Vereins
 CreateClubString=Club erstellen
