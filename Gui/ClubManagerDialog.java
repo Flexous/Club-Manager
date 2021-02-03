@@ -1,8 +1,7 @@
 package Gui;
 
-import java.awt.event.ActionListener;
+import java.lang.reflect.Field;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
@@ -25,28 +24,43 @@ public class ClubManagerDialog extends JDialog
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setLocationRelativeTo(null);
         setUndecorated(false);
-        //setResizable(true);
         setVisible(false);
-
-        MenuButton closeDialogBtn = new MenuButton("");
-        closeDialogBtn.setButtonImgSrc(Application.propertiesHandler.getValueFromProperty("CloseWindowLogo", "App"));
-        closeDialogBtn.setBackground(Color.RED);
-        
-        closeDialogBtn.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e) 
-            {
-                setVisible(false);
-            }
-        });
-        //panel.add(closeDialogBtn, "gapleft 550, wrap");
     }
 
     public void setPanelSettings()
     {
         panel.setLayout(new MigLayout());
-        panel.setBackground(Color.BLACK);
-        panel.setBorder(BorderFactory.createLineBorder(Color.CYAN));
+
+        Field field;
+        try 
+        {
+            String propertyName = "";
+            String propertyType = "";
+
+            if (Application.currentUser == null)
+            {
+                propertyName = "DefaultColor";
+                propertyType = "App";
+            }
+            else
+            {
+                propertyName = "Color";
+                propertyType = "User";
+            }
+
+            field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
+            .getValueFromProperty(propertyName+"1", propertyType));
+            panel.setBackground((Color)field.get(null));
+
+            field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
+            .getValueFromProperty(propertyName+"2", propertyType));
+            panel.setBorder(BorderFactory.createLineBorder((Color)field.get(null)));
+        } 
+        catch (Exception e) 
+        {
+            //Application.getLogger().warning("");
+			e.printStackTrace();
+        }
     }
 
     public JPanel getPanel()

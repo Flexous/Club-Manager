@@ -1,6 +1,7 @@
 package Gui;
 
 import java.awt.event.ActionListener;
+import java.lang.reflect.Field;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
@@ -44,7 +45,32 @@ public class MainGui extends JFrame
     public void createMainGuiMenuWithoutClub()
     {
         panel.setLayout(new MigLayout());
-        panel.setBackground(Color.BLACK);
+        Field field;
+        try 
+        {
+            String propertyName = "";
+            String propertyType = "";
+
+            if (Application.currentUser == null)
+            {
+                propertyName = "DefaultColor1";
+                propertyType = "App";
+            }
+            else
+            {
+                propertyName = "Color1";
+                propertyType = "User";
+            }
+
+            field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
+            .getValueFromProperty(propertyName, propertyType));
+            panel.setBackground((Color)field.get(null));
+        } 
+        catch (Exception e) 
+        {
+            //Application.getLogger().warning("");
+			e.printStackTrace();
+        }
 
         openAddClubDialogBtn.addActionListener(new ActionListener()
         {
@@ -62,37 +88,8 @@ public class MainGui extends JFrame
             } 
         });
 
-        MenuButton closeMainGuiBtn = new MenuButton("");
-        closeMainGuiBtn.setButtonImgSrc(Application.propertiesHandler.getValueFromProperty("CloseWindowLogo", "App"));
-        closeMainGuiBtn.setBackground(Color.RED);
-
-        MenuButton hideMainGuiBtn = new MenuButton("");
-        hideMainGuiBtn.setButtonImgSrc(Application.propertiesHandler.getValueFromProperty("HideWindowLogo", "App"));
-        hideMainGuiBtn.setBackground(Color.BLACK);
-
-        hideMainGuiBtn.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e) 
-            {
-                setState(ICONIFIED);
-            }
-        });
-
-        closeMainGuiBtn.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e) 
-            {
-                System.exit(0);
-            }
-        });
-
         panel.add(openAddClubDialogBtn);
         panel.add(openAddPlayerToClubDialogBtn, "gapleft 10");
-
-        //Special buttons cause epic
-
-        //panel.add(hideMainGuiBtn, "gapleft 700");
-        //panel.add(closeMainGuiBtn, "gapleft 30");
 
         add(panel);
     }
