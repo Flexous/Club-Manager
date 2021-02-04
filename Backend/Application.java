@@ -23,7 +23,7 @@ public class Application
     public static MainGui mainGui;
 
     public static Club currentClub;
-    public static User currentUser;
+    private static User currentUser;
 
     public static void main(String[]args)
     {
@@ -37,7 +37,7 @@ public class Application
 
         if (!propertiesHandler.getUserProperties().isEmpty())
         {
-            currentUser = new User(propertiesHandler.getValueFromProperty("username", "User"));
+            setCurrentUser(new User(propertiesHandler.getValueFromProperty("username", "User")));
             initMainGui();
         }
         else
@@ -67,5 +67,15 @@ public class Application
             logger.addHandler(handler);
         }
         return logger;
+    }
+
+    public static User getCurrentUser()
+    {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User user)
+    {
+        currentUser = user;
     }
 }

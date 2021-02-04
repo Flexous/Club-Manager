@@ -8,6 +8,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import Backend.Application;
+import Backend.Functions;
 import Objects.User;
 
 public class LoginDialog extends ClubManagerDialog 
@@ -31,14 +32,14 @@ public class LoginDialog extends ClubManagerDialog
     public void initLoginDialog()
     {
         JLabel usernameLabel = new JLabel("Username:");
-        usernameLabel.setForeground(Color.WHITE);
+        usernameLabel.setForeground(Functions.getContrastColor(getMainColor()));
         getPanel().add(usernameLabel, "gapleft 50, wrap");
         
         JTextField usernameField = new JTextField(20);
         getPanel().add(usernameField, "gapleft 50, wrap");
 
         JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setForeground(Color.WHITE);
+        passwordLabel.setForeground(Functions.getContrastColor(getMainColor()));
         getPanel().add(passwordLabel, "gapleft 50, wrap");
         
         JPasswordField passwordField = new JPasswordField(20);
@@ -51,7 +52,7 @@ public class LoginDialog extends ClubManagerDialog
             public void actionPerformed(ActionEvent e) 
             {
                 User user = new User(usernameField.getText());
-                Application.currentUser = user;
+                Application.setCurrentUser(user);
                 setVisible(false);
                 Application.initMainGui();
             }
@@ -124,7 +125,7 @@ public class LoginDialog extends ClubManagerDialog
                             {
                                 setVisible(false);
                                 User user = new User(usernameField.getText());
-                                Application.currentUser = user;
+                                Application.setCurrentUser(user);
                                 Application.initMainGui();
                             }
                         }

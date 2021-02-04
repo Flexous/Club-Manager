@@ -22,7 +22,7 @@ public class LanguageHandler
     {
         try 
         {
-            BufferedReader br = new BufferedReader(new FileReader(filePath));
+            BufferedReader br = new BufferedReader(new FileReader("Files/Languages/"+filePath));
 
             String line = "";
 

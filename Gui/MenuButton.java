@@ -39,7 +39,7 @@ public class MenuButton extends JButton
             String propertyName = "";
             String propertyType = "";
 
-            if (Application.currentUser == null)
+            if (Application.getCurrentUser() == null)
             {
                 propertyName = "DefaultColor2";
                 propertyType = "App";

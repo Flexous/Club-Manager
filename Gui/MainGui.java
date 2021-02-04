@@ -46,7 +46,7 @@ public class MainGui extends JFrame
             String propertyName = "";
             String propertyType = "";
 
-            if (Application.currentUser == null)
+            if (Application.getCurrentUser() == null)
             {
                 propertyName = "DefaultColor1";
                 propertyType = "App";

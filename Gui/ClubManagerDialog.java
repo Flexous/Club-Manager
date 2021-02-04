@@ -14,6 +14,9 @@ import net.miginfocom.swing.MigLayout;
 public class ClubManagerDialog extends JDialog
 {
     private static final long serialVersionUID = 3325463766607869978L;
+
+    private Color mainColor;
+    private Color accentColor;
  
     private JPanel panel = new JPanel();
 
@@ -37,7 +40,7 @@ public class ClubManagerDialog extends JDialog
             String propertyName = "";
             String propertyType = "";
 
-            if (Application.currentUser == null)
+            if (Application.getCurrentUser() == null)
             {
                 propertyName = "DefaultColor";
                 propertyType = "App";
@@ -50,17 +53,39 @@ public class ClubManagerDialog extends JDialog
 
             field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
             .getValueFromProperty(propertyName+"1", propertyType));
-            panel.setBackground((Color)field.get(null));
+            setMainColor((Color)field.get(null));
+            panel.setBackground(getMainColor());
 
             field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
             .getValueFromProperty(propertyName+"2", propertyType));
-            panel.setBorder(BorderFactory.createLineBorder((Color)field.get(null)));
+            setAccentColor((Color)field.get(null));
+            panel.setBorder(BorderFactory.createLineBorder(getAccentColor()));
         } 
         catch (Exception e) 
         {
             //Application.getLogger().warning("");
 			e.printStackTrace();
         }
+    }
+
+    public Color getMainColor()
+    {
+        return mainColor;
+    }
+
+    public void setMainColor(Color color)
+    {
+        mainColor = color;
+    }
+
+    public Color getAccentColor()
+    {
+        return accentColor;
+    }
+
+    public void setAccentColor(Color color)
+    {
+        accentColor = color;
     }
 
     public JPanel getPanel()

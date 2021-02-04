@@ -2,6 +2,8 @@ package Backend;
 
 import java.io.File;
 
+import Objects.User;
+
 public class LoginManager 
 {
     private boolean loginCompleted;
@@ -31,6 +33,22 @@ public class LoginManager
             
         }
     } 
+
+    public boolean userExists(User user)
+    {
+        File directory = new File("Files/Users");
+        File[] files = directory.listFiles(File::isFile);
+
+        for (File file : files)
+        {
+            if (file.getName().startsWith(user.getUsername()))
+            {
+                Application.propertiesHandler.setUserProperties(file.getPath());
+            }
+        }
+
+        return true;
+    }
 
     public boolean isLoginCompleted()
     {
