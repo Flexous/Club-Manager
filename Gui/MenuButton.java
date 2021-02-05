@@ -44,7 +44,7 @@ public class MenuButton extends JButton
             //Application.getLogger().warning("");
 			e.printStackTrace();
         }
-        setForeground(Functions.getContrastColor(getBackground()));
+        setForeground(ClubManagerFunctions.getContrastColor(getBackground()));
     }
 
     public String getButtonImgSrc()

@@ -8,7 +8,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import Backend.Application;
-import Backend.Functions;
+import Backend.ClubManagerFunctions;
 import Gui.MenuButton;
 import Objects.User;
 
@@ -33,14 +33,14 @@ public class LoginDialog extends ClubManagerDialog
     public void initLoginDialog()
     {
         JLabel usernameLabel = new JLabel("Username:");
-        usernameLabel.setForeground(Functions.getContrastColor(getPanel().getBackground()));
+        usernameLabel.setForeground(ClubManagerFunctions.getContrastColor(getPanel().getBackground()));
         getPanel().add(usernameLabel, "gapleft 50, wrap");
         
         JTextField usernameField = new JTextField(20);
         getPanel().add(usernameField, "gapleft 50, wrap");
 
         JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setForeground(Functions.getContrastColor(getPanel().getBackground()));
+        passwordLabel.setForeground(ClubManagerFunctions.getContrastColor(getPanel().getBackground()));
         getPanel().add(passwordLabel, "gapleft 50, wrap");
         
         JPasswordField passwordField = new JPasswordField(20);
@@ -92,14 +92,14 @@ public class LoginDialog extends ClubManagerDialog
                 getPanel().removeAll();
 
                 JLabel usernameLabel = new JLabel("Username:");
-                usernameLabel.setForeground(Functions.getContrastColor(getPanel().getBackground()));
+                usernameLabel.setForeground(ClubManagerFunctions.getContrastColor(getPanel().getBackground()));
                 getPanel().add(usernameLabel, "gapleft 50, wrap");
                 
                 JTextField usernameField = new JTextField(20);
                 getPanel().add(usernameField, "gapleft 50, wrap");
         
                 JLabel passwordLabel = new JLabel("Password:");
-                passwordLabel.setForeground(Functions.getContrastColor(getPanel().getBackground()));
+                passwordLabel.setForeground(ClubManagerFunctions.getContrastColor(getPanel().getBackground()));
                 getPanel().add(passwordLabel, "gapleft 50, gaptop 20, wrap");
 
                 JPasswordField passwordField = new JPasswordField(20);
@@ -107,7 +107,7 @@ public class LoginDialog extends ClubManagerDialog
                 getPanel().add(passwordField, "gapleft 50, wrap");
 
                 JLabel repeatPasswordLabel = new JLabel("Repeat Password:");
-                repeatPasswordLabel.setForeground(Functions.getContrastColor(getPanel().getBackground()));
+                repeatPasswordLabel.setForeground(ClubManagerFunctions.getContrastColor(getPanel().getBackground()));
                 getPanel().add(repeatPasswordLabel, "gapleft 50, gaptop 20, wrap");
                 
                 JPasswordField repeatPasswordField = new JPasswordField(20);

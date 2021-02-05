@@ -1,7 +1,6 @@
 package Gui.Dialogs;
 
 import java.awt.event.ActionListener;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
@@ -11,8 +10,7 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Backend.Application;
-import Backend.ClubHandler;
-import Backend.Functions;
+import Backend.ClubManagerFunctions;
 import Gui.MenuButton;
 import Objects.Club;
 
@@ -27,14 +25,14 @@ public class CreateClubDialog extends ClubManagerDialog
         Club club = new Club();
 
         JLabel nameOfClubLabel = new JLabel("Name des Vereins:");
-        nameOfClubLabel.setForeground(Functions.getContrastColor(getBackground()));
+        nameOfClubLabel.setForeground(ClubManagerFunctions.getContrastColor(getBackground()));
         getPanel().add(nameOfClubLabel, "gapleft 50, wrap");
         
         JTextField nameOfClubField = new JTextField(20);
         getPanel().add(nameOfClubField, "gapleft 50, wrap");
 
         JLabel logoOfClubLabel = new JLabel("Logo des Vereins:");
-        logoOfClubLabel.setForeground(Functions.getContrastColor(getBackground()));
+        logoOfClubLabel.setForeground(ClubManagerFunctions.getContrastColor(getBackground()));
         getPanel().add(logoOfClubLabel, "gapleft 50, gaptop 20, wrap");
 
         MenuButton chooseLogoBtn = new MenuButton("Bild auswählen");
@@ -63,10 +61,7 @@ public class CreateClubDialog extends ClubManagerDialog
             public void actionPerformed(ActionEvent e) 
             {
                 club.setName(nameOfClubField.getText());
-                Application.currentClub = club;
-
-                ClubHandler.addNewClub(club);
-
+                Application.getCurrentUser().setClub(club);
                 dispose();
             }
         });

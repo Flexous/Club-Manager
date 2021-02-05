@@ -5,24 +5,25 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import Objects.Property;
+import Backend.*;
+import Objects.*;
 
 public class LanguageHandler 
 {
-    private String filePath;
+    private String fileName;
 
     private ArrayList<Property> languageStrings = new ArrayList<>();
 
-    public LanguageHandler(String filePath) 
+    public LanguageHandler(String fileName) 
     {
-        this.filePath = filePath;
+        this.fileName = fileName;
     }
 
     public void setLanguage() 
     {
         try 
         {
-            BufferedReader br = new BufferedReader(new FileReader("Files/Languages/"+filePath));
+            BufferedReader br = new BufferedReader(new FileReader(ClubManagerConstraints.LANGUAGEFILEPATH+fileName));
 
             String line = "";
 

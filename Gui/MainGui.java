@@ -1,6 +1,6 @@
 package Gui;
 
-import Backend.Functions;
+import Backend.ClubManagerFunctions;
 import Gui.Dialogs.*;
 
 import java.lang.reflect.Field;
@@ -74,7 +74,7 @@ public class MainGui extends JFrame
         if (Application.propertiesHandler.getValueFromProperty("Club", "User") == null);
         {
             JLabel createClubLabel = new JLabel("You haven't created a club yet.");
-            createClubLabel.setForeground(Functions.getContrastColor(panel.getBackground()));
+            createClubLabel.setForeground(ClubManagerFunctions.getContrastColor(panel.getBackground()));
             createClubLabel.setFont(new Font("Arial", Font.BOLD, 40));
             panel.add(createClubLabel, "wrap");
     

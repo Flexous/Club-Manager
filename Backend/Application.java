@@ -2,7 +2,6 @@ package Backend;
 
 import Gui.Dialogs.*;
 import Gui.MainGui;
-import Objects.Club;
 import Objects.User;
 
 import java.util.logging.ConsoleHandler;
@@ -22,12 +21,11 @@ public class Application
 
     public static MainGui mainGui;
 
-    public static Club currentClub;
     private static User currentUser;
 
     public static void main(String[]args)
     {
-        propertiesHandler = new PropertiesHandler("Files/ClubManager.properties");
+        propertiesHandler = new PropertiesHandler(ClubManagerConstraints.PROPERTYFILEPATH);
         propertiesHandler.getAppProperties();
         
         languageHandler = new LanguageHandler(propertiesHandler.getValueFromProperty("CurrentLanguage", "App"));

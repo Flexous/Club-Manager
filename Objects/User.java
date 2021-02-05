@@ -8,6 +8,8 @@ public class User
     
     private ArrayList<Property> properties = new ArrayList<>();
 
+    private Club club;
+
     public User(String username)
     {
         this.username = username;
@@ -31,5 +33,15 @@ public class User
     public void setUserProperties(ArrayList<Property> properties)
     {
         this.properties = properties;
+    }
+
+    public Club getClub()
+    {
+        return club;
+    }
+
+    public void setClub(Club club)
+    {
+        this.club = club;
     }
 }
