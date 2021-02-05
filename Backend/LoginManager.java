@@ -2,12 +2,8 @@ package Backend;
 
 import java.io.File;
 
-import Objects.User;
-
 public class LoginManager 
 {
-    private boolean loginCompleted;
-
     public void findLastLoggedInUser()
     {
         File directory = new File("Files/Users");
@@ -34,24 +30,24 @@ public class LoginManager
         }
     } 
 
-    public boolean userExists(User user)
+    public boolean userExists(String username)
     {
         File directory = new File("Files/Users");
         File[] files = directory.listFiles(File::isFile);
 
         for (File file : files)
         {
-            if (file.getName().startsWith(user.getUsername()))
+            if (file.getName().startsWith(username))
             {
                 Application.propertiesHandler.setUserProperties(file.getPath());
+                return true;
             }
         }
-
-        return true;
+        return false;
     }
 
-    public boolean isLoginCompleted()
+    public boolean passwordCorrect(String password)
     {
-        return loginCompleted;
+        return true;
     }
 }

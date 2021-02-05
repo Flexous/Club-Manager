@@ -1,4 +1,4 @@
-package Gui;
+package Gui.Dialogs;
 
 import java.awt.event.ActionListener;
 import java.awt.Color;
@@ -12,27 +12,29 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Backend.Application;
 import Backend.ClubHandler;
+import Backend.Functions;
+import Gui.MenuButton;
 import Objects.Club;
 
-public class AddClubDialog extends ClubManagerDialog
+public class CreateClubDialog extends ClubManagerDialog
 {
     private static final long serialVersionUID = -7010188678308927116L;
     
-    public AddClubDialog()
+    public CreateClubDialog()
     {
         super();
 
         Club club = new Club();
 
         JLabel nameOfClubLabel = new JLabel("Name des Vereins:");
-        nameOfClubLabel.setForeground(Color.WHITE);
+        nameOfClubLabel.setForeground(Functions.getContrastColor(getBackground()));
         getPanel().add(nameOfClubLabel, "gapleft 50, wrap");
         
         JTextField nameOfClubField = new JTextField(20);
         getPanel().add(nameOfClubField, "gapleft 50, wrap");
 
         JLabel logoOfClubLabel = new JLabel("Logo des Vereins:");
-        logoOfClubLabel.setForeground(Color.WHITE);
+        logoOfClubLabel.setForeground(Functions.getContrastColor(getBackground()));
         getPanel().add(logoOfClubLabel, "gapleft 50, gaptop 20, wrap");
 
         MenuButton chooseLogoBtn = new MenuButton("Bild auswählen");

@@ -1,6 +1,6 @@
 package Backend;
 
-import Gui.LoginDialog;
+import Gui.Dialogs.*;
 import Gui.MainGui;
 import Objects.Club;
 import Objects.User;
@@ -33,7 +33,7 @@ public class Application
         languageHandler = new LanguageHandler(propertiesHandler.getValueFromProperty("CurrentLanguage", "App"));
         languageHandler.setLanguage();
 
-        loginManager.findLastLoggedInUser();
+        //loginManager.findLastLoggedInUser();
 
         if (!propertiesHandler.getUserProperties().isEmpty())
         {
@@ -53,6 +53,7 @@ public class Application
         if (mainGui == null)
         {
             mainGui = new MainGui("Club Manager");
+            mainGui.create();
         }
     }
 
@@ -77,5 +78,7 @@ public class Application
     public static void setCurrentUser(User user)
     {
         currentUser = user;
+        propertiesHandler.setUserProperties("Files/Users/"+user.getUsername()+".user");
+        currentUser.setUserProperties(propertiesHandler.getUserProperties());
     }
 }

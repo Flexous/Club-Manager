@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 public class RegistrationManager 
 {
     private int minPasswordLength = 8;
@@ -17,6 +19,11 @@ public class RegistrationManager
             {
                 createNewUser(username, password);
                 return true;
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Password too short!", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
             }
         }
 

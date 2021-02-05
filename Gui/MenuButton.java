@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import Backend.Application;
+import Backend.*;
 
 public class MenuButton extends JButton
 {
@@ -18,22 +18,7 @@ public class MenuButton extends JButton
     public MenuButton(String buttonText)
     {
         setText(buttonText);
-        setFont(new Font("Arial", Font.BOLD, 40)); 
-
-        Field field;
-
-        try 
-        {
-            field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
-            .getValueFromProperty("DefaultTextColor", "App"));
-            setForeground((Color)field.get(null));
-        } 
-        catch (Exception e) 
-        {
-            //Application.getLogger().warning("");
-			e.printStackTrace();
-        }
-        
+        setFont(new Font("Arial", Font.BOLD, 40));         
         try 
         {
             String propertyName = "";
@@ -50,7 +35,7 @@ public class MenuButton extends JButton
                 propertyType = "User";
             }
 
-            field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
+            Field field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
             .getValueFromProperty(propertyName, propertyType));
             setBackground((Color)field.get(null));
         } 
@@ -59,7 +44,7 @@ public class MenuButton extends JButton
             //Application.getLogger().warning("");
 			e.printStackTrace();
         }
-        //setBorder(new LineBorder(Color.WHITE, 1, true));
+        setForeground(Functions.getContrastColor(getBackground()));
     }
 
     public String getButtonImgSrc()

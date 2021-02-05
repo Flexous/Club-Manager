@@ -1,4 +1,4 @@
-package Gui;
+package Gui.Dialogs;
 
 public class AddPlayerToClubDialog extends ClubManagerDialog
 {
