@@ -2,6 +2,7 @@ package Backend;
 
 import Gui.Dialogs.*;
 import Gui.MainGui;
+import Objects.Property;
 import Objects.User;
 
 import java.util.logging.ConsoleHandler;
@@ -20,8 +21,9 @@ public class Application
     public static RegistrationManager registrationManager = new RegistrationManager();
 
     public static MainGui mainGui;
-
     private static User currentUser;
+
+    public static boolean offlineMode;
 
     public static void main(String[]args)
     {
@@ -33,16 +35,28 @@ public class Application
 
         //loginManager.findLastLoggedInUser();
 
-        if (!propertiesHandler.getUserProperties().isEmpty())
+        String value = propertiesHandler.getValueFromProperty("OfflineMode", "App");
+
+        if (value.equals("true"))
         {
-            setCurrentUser(new User(propertiesHandler.getValueFromProperty("username", "User")));
+            offlineMode = true;
             initMainGui();
         }
         else
         {
-            //still needs work
-            LoginDialog loginDialog = new LoginDialog();
-            loginDialog.initLoginDialog();
+            offlineMode = false;
+
+            if (!propertiesHandler.getUserProperties().isEmpty())
+            {
+                setCurrentUser(new User(propertiesHandler.getValueFromProperty("username", "User")));
+                initMainGui();
+            }
+            else
+            {
+                //still needs work
+                LoginDialog loginDialog = new LoginDialog();
+                loginDialog.initLoginDialog();
+            }
         }
     }
 

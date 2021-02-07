@@ -1,13 +1,17 @@
 package Backend;
 
 import java.awt.Color;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import Objects.Club;
 
 public class ClubManagerFunctions 
 {
+    //App Functions
+
     //Gui Functions
     public static Color getContrastColor(Color color) 
     {
@@ -25,6 +29,13 @@ public class ClubManagerFunctions
             try 
             {
 				newClubFile.createNewFile();
+
+                BufferedWriter bw = new BufferedWriter(new FileWriter(newClubFile));
+            
+                bw.write("Name="+club.getName()+"\n");
+                bw.write("Color2="+club.getLogoSrc()+"\n");
+
+                bw.close();
 			} 
             catch (IOException e) 
             {
