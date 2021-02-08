@@ -33,7 +33,7 @@ public class ClubManagerFunctions
                 BufferedWriter bw = new BufferedWriter(new FileWriter(newClubFile));
             
                 bw.write("Name="+club.getName()+"\n");
-                bw.write("Color2="+club.getLogoSrc()+"\n");
+                bw.write("Logo="+club.getLogoSrc()+"\n");
 
                 bw.close();
 			} 

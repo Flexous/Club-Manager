@@ -1,10 +1,13 @@
 package Objects;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Club 
 {
     private String name;
+    private Color color1;
+    private Color color2;
     private String logoSrc="";
     private ArrayList<Player>players = new ArrayList<>();
 
@@ -20,7 +23,7 @@ public class Club
 
     public String getName()
     {
-        return this.name;
+        return name;
     }
 
     public void setName(String name)
@@ -28,9 +31,29 @@ public class Club
         this.name = name;
     }
 
+    public Color getColor1()
+    {
+        return color1;
+    }
+
+    public void setColor1(Color color)
+    {
+        color1 = color;
+    }
+
+    public Color getColor2()
+    {
+        return color2;
+    }
+
+    public void setColor2(Color color)
+    {
+        color2 = color;
+    }  
+
     public String getLogoSrc()
     {
-        return this.logoSrc;
+        return logoSrc;
     }
 
     public void setLogoSrc(String logoSrc)
@@ -40,12 +63,12 @@ public class Club
 
     public void addPlayer(Player player)
     {
-        this.players.add(player);
+        players.add(player);
     }
 
     public void removePlayer(String playerName)
     {
-        for (Player player : this.players)
+        for (Player player : players)
         {
             if (player.getName().equals(playerName))
             {
@@ -57,12 +80,12 @@ public class Club
 
     public void removeAllPlayers()
     {
-        this.players.clear();
+        players.clear();
     }
 
     public void removePlayer(int playerIndex)
     {
-        for (int i = 0; i < this.players.size(); i++)
+        for (int i = 0; i < players.size(); i++)
         {
             if (i == playerIndex)
             {
