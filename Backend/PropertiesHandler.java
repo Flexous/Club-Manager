@@ -118,6 +118,7 @@ public class PropertiesHandler
         }
     }
 
+    //User Properties
     public ArrayList<Property> getUserProperties()
     {
         return userProperties;

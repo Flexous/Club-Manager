@@ -1,8 +1,11 @@
 package Backend;
 
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -34,6 +37,8 @@ public class ClubManagerFunctions
             
                 bw.write("Name="+club.getName()+"\n");
                 bw.write("Logo="+club.getLogoSrc()+"\n");
+                bw.write("Color1="+club.getColor1().getRed()+club.getColor1().getGreen()+club.getColor1().getBlue()+"\n");
+                bw.write("Color2="+club.getColor2().getRGB()+"\n");
 
                 bw.close();
 			} 
@@ -42,6 +47,19 @@ public class ClubManagerFunctions
 				e.printStackTrace();
 			}
         }
+        else
+        {
+
+        }
+    }
+
+    public static Club getClubFromProperties()
+    {
+        Club club = new Club();
+        club.setName(Application.propertiesHandler.getValueFromProperty("Name", "Club"));
+        club.setLogoSrc(Application.propertiesHandler.getValueFromProperty("Logo", "Club"));
+
+        return club;
     }
 
     public static boolean clubFileExists(String filePath)

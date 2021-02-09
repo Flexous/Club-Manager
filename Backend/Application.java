@@ -2,6 +2,7 @@ package Backend;
 
 import Gui.Dialogs.*;
 import Gui.MainGui;
+import Objects.Club;
 import Objects.Property;
 import Objects.User;
 
@@ -40,6 +41,10 @@ public class Application
         if (value.equals("true"))
         {
             offlineMode = true;
+            //propertiesHandler.getClubProperties();            
+
+            //currentUser = new User("");
+            //currentUser.setClub(ClubManagerFunctions.getClubFromProperties());
             initMainGui();
         }
         else
