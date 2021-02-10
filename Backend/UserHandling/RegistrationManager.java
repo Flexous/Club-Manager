@@ -1,4 +1,6 @@
-package Backend;
+package Backend.UserHandling;
+
+import Backend.*;
 
 import java.io.BufferedWriter;
 import java.io.File;

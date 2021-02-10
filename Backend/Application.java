@@ -1,5 +1,6 @@
 package Backend;
 
+import Backend.UserHandling.*;
 import Gui.Dialogs.*;
 import Gui.MainGui;
 import Objects.Club;

@@ -1,6 +1,8 @@
-package Backend;
+package Backend.UserHandling;
 
 import java.io.File;
+
+import Backend.*;
 
 public class LoginManager 
 {
