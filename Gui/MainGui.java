@@ -6,14 +6,13 @@ import Gui.Dialogs.*;
 import java.lang.reflect.Field;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.*;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import Backend.Application;
 import net.miginfocom.swing.MigLayout;
@@ -31,14 +30,24 @@ public class MainGui extends JFrame
     {
         setTitle(guiTitle);
         setIconImage(new ImageIcon(Application.propertiesHandler.getValueFromProperty("DefaultLogo", "App")).getImage());
-        setResizable(true);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int)screenSize.getWidth();
-        int height = (int)screenSize.getHeight()-10;
-        setSize(width, height);
+        setResizable(false);
+        setExtendedState(MAXIMIZED_BOTH); 
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+
+        addWindowListener(new WindowAdapter() 
+        {
+            @Override
+            public void windowClosing(WindowEvent we) 
+            {
+                int selection = JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING", JOptionPane.YES_NO_OPTION);
+
+                if (selection == JOptionPane.YES_OPTION)
+                {
+                    System.exit(0);
+                }
+            }
+        } );
     }
 
     public void create()
@@ -50,7 +59,8 @@ public class MainGui extends JFrame
             String propertyName = "";
             String propertyType = "";
 
-            if (Application.getCurrentUser() == null)
+            if ((Application.getCurrentUser() == null && !Application.offlineMode) 
+            || (Application.getCurrentClub() == null && Application.offlineMode))
             {
                 propertyName = "DefaultColor1";
                 propertyType = "App";
@@ -58,12 +68,47 @@ public class MainGui extends JFrame
             else
             {
                 propertyName = "Color1";
-                propertyType = "User";
+
+                if (Application.offlineMode)
+                {
+                    propertyType = "Club";
+                }
+                else
+                {
+                    propertyType = "User";
+                }
             }
 
-            field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
-            .getValueFromProperty(propertyName, propertyType));
-            panel.setBackground((Color)field.get(null));
+            if (Application.offlineMode)
+            {
+                if (Application.getCurrentClub() != null)
+                {
+                    if (Application.getCurrentClub().getColor1() != null)
+                    {
+                        setIconImage(new ImageIcon(Application.propertiesHandler.getValueFromProperty("Logo", "Club")).getImage());
+                        panel.setBackground(Application.getCurrentClub().getColor1());
+                    }
+                    else
+                    {
+                        field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
+                        .getValueFromProperty("DefaultColor1", "App"));
+                        panel.setBackground((Color)field.get(null));
+                    }
+                }
+                else
+                {
+                    field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
+                    .getValueFromProperty("DefaultColor1", "App"));
+                    panel.setBackground((Color)field.get(null));
+                }
+
+            }
+            else
+            {
+                field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
+                .getValueFromProperty(propertyName, propertyType));
+                panel.setBackground((Color)field.get(null));
+            }
         } 
         catch (Exception e) 
         {
@@ -71,13 +116,23 @@ public class MainGui extends JFrame
 			e.printStackTrace();
         }
 
-        if (Application.propertiesHandler.getValueFromProperty("Club", "User") == null);
+        if (Application.offlineMode && Application.getCurrentClub() != null)
+        {
+            if (Application.getCurrentClub().getName() != "Unnamed club")
+            {
+                JLabel currentClubLabel = new JLabel("Your club: " + Application.getCurrentClub().getName());
+                currentClubLabel.setForeground(ClubManagerFunctions.getContrastColor(panel.getBackground()));
+                currentClubLabel.setFont(new Font("Arial", Font.BOLD, 40));
+                panel.add(currentClubLabel, "wrap");
+            }
+        }
+        else
         {
             JLabel createClubLabel = new JLabel("You haven't created a club yet.");
             createClubLabel.setForeground(ClubManagerFunctions.getContrastColor(panel.getBackground()));
             createClubLabel.setFont(new Font("Arial", Font.BOLD, 40));
             panel.add(createClubLabel, "wrap");
-    
+        
             MenuButton createClubButton = new MenuButton("Create Club");
             createClubButton.addActionListener(new ActionListener()
             {
@@ -86,12 +141,15 @@ public class MainGui extends JFrame
                     showCreateClubDialog();
                 }
             });
-
+    
             panel.add(createClubButton);
         }
 
 
+
         add(panel);
+        repaint();
+        revalidate();
     }
 
     public void showCreateClubDialog()

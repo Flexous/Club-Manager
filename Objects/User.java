@@ -30,7 +30,7 @@ public class User
         return properties;
     }
 
-    public void setUserProperties(ArrayList<Property> properties)
+    public void setProperties(ArrayList<Property> properties)
     {
         this.properties = properties;
     }

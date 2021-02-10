@@ -9,24 +9,9 @@ import Objects.Property;
 
 public class PropertiesHandler 
 {
-    private String filePath;
-    private ArrayList<Property> appProperties = new ArrayList<>();
-    private ArrayList<Property> clubProperties = new ArrayList<>();
-    private ArrayList<Property> userProperties = new ArrayList<>();
-
-    public PropertiesHandler(String filePath) 
-    {
-        this.filePath = filePath;
-    }
-
     //Property-File methods
 
-    public ArrayList<Property> getFoundProperties()
-    {
-        return appProperties;
-    }
-
-    public void getAppProperties()
+    public void setAppProperties(String filePath)
     {
         try 
         {
@@ -42,7 +27,7 @@ public class PropertiesHandler
 
                     if (parts.length > 1)
                     {
-                        appProperties.add(new Property(parts[0], parts[1]));
+                        Application.properties.add(new Property(parts[0], parts[1]));
                     }
                 }
             }
@@ -61,15 +46,22 @@ public class PropertiesHandler
 
         if (propertyType.equals("App"))
         {
-            tmpProperties = appProperties;
+            tmpProperties = Application.properties;
         }
         else if (propertyType.equals("Club"))
         {
-            tmpProperties = clubProperties;
+            if (Application.offlineMode)
+            {
+                tmpProperties = Application.getCurrentClub().getProperties();
+            }
+            else
+            {
+                tmpProperties = Application.getCurrentUser().getClub().getProperties();
+            }
         }
         else if (propertyType.equals("User"))
         {
-            tmpProperties = userProperties;
+            tmpProperties = Application.getCurrentUser().getProperties();
         }
         else
         {
@@ -89,8 +81,13 @@ public class PropertiesHandler
 
     //Club-File methods
 
-    public void getClubProperties()
+    public void findClubProperties(String filePath)
     {
+        if (filePath == null)
+        {
+            return;
+        }
+
         try 
         {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
@@ -105,7 +102,14 @@ public class PropertiesHandler
 
                     if (parts.length > 1)
                     {
-                        clubProperties.add(new Property(parts[0], parts[1]));
+                        if (Application.offlineMode)
+                        {
+                            Application.getCurrentClub().getProperties().add(new Property(parts[0], parts[1]));
+                        }
+                        else
+                        {
+                            Application.getCurrentUser().getClub().getProperties().add(new Property(parts[0], parts[1]));
+                        }
                     }
                 }
             }
@@ -119,10 +123,6 @@ public class PropertiesHandler
     }
 
     //User Properties
-    public ArrayList<Property> getUserProperties()
-    {
-        return userProperties;
-    }
 
     public void setUserProperties(String filePath)
     {
@@ -140,7 +140,7 @@ public class PropertiesHandler
 
                     if (parts.length > 1)
                     {
-                        userProperties.add(new Property(parts[0], parts[1]));
+                        Application.getCurrentUser().getProperties().add(new Property(parts[0], parts[1]));
                     }
                 }
             }

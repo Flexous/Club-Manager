@@ -92,7 +92,7 @@ public class CreateClubDialog extends ClubManagerDialog
 
                 if (fileSelected == JFileChooser.APPROVE_OPTION)
                 {
-                    club.setLogoSrc(chooser.getSelectedFile().getAbsolutePath());
+                    club.setLogo(chooser.getSelectedFile().getAbsolutePath());
                 }
             }
         });
@@ -109,10 +109,16 @@ public class CreateClubDialog extends ClubManagerDialog
                 {
                     Application.getCurrentUser().setClub(club);
                 }
+                else
+                {
+                    Application.setCurrentClub(club);
+                }
 
                 ClubManagerFunctions.createNewClubFile(club);
 
                 dispose();
+                Application.closeMainGui();
+                Application.initMainGui();
             }
         });
         getPanel().add(createClubBtn, "gapleft 50, gaptop 150, wrap");

@@ -1,11 +1,15 @@
 package Objects;
 
+import java.util.ArrayList;
+
 public class Player 
 {
     private String name;
     private String imgSrc="";
     private String nationality;
     private int age;
+
+    private ArrayList<Property> properties = new ArrayList<>();
 
     public Player(String name)
     {
@@ -50,5 +54,15 @@ public class Player
     public void setAge(int age)
     {
         this.age = age;
+    }
+
+    public ArrayList<Property> getProperties()
+    {
+        return properties;
+    }
+
+    public void setProperties(ArrayList<Property> properties)
+    {
+        this.properties = properties;
     }
 }

@@ -8,7 +8,11 @@ public class Club
     private String name;
     private Color color1;
     private Color color2;
-    private String logoSrc="";
+    private String logo="";
+    
+    private ArrayList<Property> properties = new ArrayList<>();
+
+    //Stuff for later
     private ArrayList<Player>players = new ArrayList<>();
 
     public Club()
@@ -51,14 +55,24 @@ public class Club
         color2 = color;
     }  
 
-    public String getLogoSrc()
+    public String getLogo()
     {
-        return logoSrc;
+        return logo;
     }
 
-    public void setLogoSrc(String logoSrc)
+    public void setLogo(String logo)
     {
-        this.logoSrc = logoSrc;
+        this.logo = logo;
+    }
+
+    public ArrayList<Property> getProperties()
+    {
+        return properties;
+    }
+
+    public void setProperties(ArrayList<Property> properties)
+    {
+        this.properties = properties;
     }
 
     public void addPlayer(Player player)

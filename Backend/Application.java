@@ -6,6 +6,7 @@ import Objects.Club;
 import Objects.Property;
 import Objects.User;
 
+import java.util.ArrayList;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -21,15 +22,18 @@ public class Application
     public static LoginManager loginManager = new LoginManager();
     public static RegistrationManager registrationManager = new RegistrationManager();
 
+    public static ArrayList<Property> properties = new ArrayList<>();
+
     public static MainGui mainGui;
     private static User currentUser;
+    private static Club currentClub;
 
     public static boolean offlineMode;
 
     public static void main(String[]args)
     {
-        propertiesHandler = new PropertiesHandler(ClubManagerConstraints.PROPERTYFILEPATH);
-        propertiesHandler.getAppProperties();
+        propertiesHandler = new PropertiesHandler();
+        propertiesHandler.setAppProperties(ClubManagerConstraints.PROPERTYFILEPATH);
         
         languageHandler = new LanguageHandler(propertiesHandler.getValueFromProperty("CurrentLanguage", "App"));
         languageHandler.setLanguage();
@@ -41,17 +45,23 @@ public class Application
         if (value.equals("true"))
         {
             offlineMode = true;
-            //propertiesHandler.getClubProperties();            
 
-            //currentUser = new User("");
-            //currentUser.setClub(ClubManagerFunctions.getClubFromProperties());
+            String lastClubFile = ClubManagerFunctions.getLastClubFile();
+
+            if (lastClubFile != null)
+            {
+                currentClub = new Club();
+                propertiesHandler.findClubProperties(lastClubFile);
+                currentClub = ClubManagerFunctions.getClubWithProperties();
+            }
+
             initMainGui();
         }
         else
         {
             offlineMode = false;
 
-            if (!propertiesHandler.getUserProperties().isEmpty())
+            if (!currentUser.getProperties().isEmpty())
             {
                 setCurrentUser(new User(propertiesHandler.getValueFromProperty("username", "User")));
                 initMainGui();
@@ -72,6 +82,12 @@ public class Application
             mainGui = new MainGui("Club Manager");
             mainGui.create();
         }
+    }
+
+    public static void closeMainGui()
+    {
+        mainGui.dispose();
+        mainGui = null;
     }
 
     public static Logger getLogger()
@@ -96,6 +112,17 @@ public class Application
     {
         currentUser = user;
         propertiesHandler.setUserProperties("Files/Users/"+user.getUsername()+".user");
-        currentUser.setUserProperties(propertiesHandler.getUserProperties());
+    }
+
+    //Offline mode stuff
+
+    public static Club getCurrentClub()
+    {
+        return currentClub;
+    }
+
+    public static void setCurrentClub(Club club)
+    {
+        currentClub = club;
     }
 }
