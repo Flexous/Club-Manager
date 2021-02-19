@@ -39,11 +39,11 @@ public class MainGui extends JFrame
             @Override
             public void windowClosing(WindowEvent we) 
             {
-                int selection = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit?", "", JOptionPane.YES_NO_OPTION);
+                int selection = JOptionPane.showConfirmDialog(null, "Do you want to save?", "", JOptionPane.YES_NO_OPTION);
 
                 if (selection == JOptionPane.YES_OPTION)
                 {
-                    System.exit(0);
+                    ClubManagerFunctions.saveClubToPropertyFile();
                 }
             }
         } );
@@ -61,7 +61,6 @@ public class MainGui extends JFrame
 
                 if (color1 != null)
                 {
-                    setIconImage(new ImageIcon(Application.propertiesHandler.getValueFromProperty("Logo", "Club")).getImage());
                     panel.setBackground(Application.getCurrentClub().getColor1());
                 }
                 else
@@ -73,7 +72,7 @@ public class MainGui extends JFrame
 
                 String logoPath = Application.getCurrentClub().getLogo();
 
-                if (logoPath != null)
+                if (!logoPath.isEmpty())
                 {
                     setIconImage(new ImageIcon(logoPath).getImage());
                 }

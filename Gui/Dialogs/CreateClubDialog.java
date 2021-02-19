@@ -1,6 +1,7 @@
 package Gui.Dialogs;
 
 import java.awt.event.ActionListener;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
@@ -79,7 +80,12 @@ public class CreateClubDialog extends ClubManagerDialog
         getPanel().add(logoOfClubLabel, "gapleft 50, gaptop 20, wrap");
 
         MenuButton chooseLogoBtn = new MenuButton("Bild");
-        chooseLogoBtn.setFont(new Font("Arial", Font.BOLD, 20));        
+        chooseLogoBtn.setFont(new Font("Arial", Font.BOLD, 20));    
+        
+        JLabel logoLabel = new JLabel();
+        logoLabel.setForeground(ClubManagerFunctions.getContrastColor(getBackground()));
+        logoLabel.setVisible(false);
+
         chooseLogoBtn.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e) 
@@ -93,21 +99,30 @@ public class CreateClubDialog extends ClubManagerDialog
                 if (fileSelected == JFileChooser.APPROVE_OPTION)
                 {
                     club.setLogo(chooser.getSelectedFile().getAbsolutePath());
+                    logoLabel.setText(club.getLogo());
+                    logoLabel.setVisible(true);
                 }
             }
         });
-        getPanel().add(chooseLogoBtn, "gapleft 50, wrap");
+        getPanel().add(chooseLogoBtn, "gapleft 50");
+        getPanel().add(logoLabel, "gapleft 5, wrap");
 
         MenuButton createClubBtn = new MenuButton("Verein erstellen");
         createClubBtn.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e) 
             {
+                if (nameOfClubField.getText().isEmpty())
+                {
+                    nameOfClubField.setBackground(Color.RED);
+                    return;
+                }
+
                 club.setName(nameOfClubField.getText());
 
                 Application.setCurrentClub(club);
-
                 ClubManagerFunctions.createNewClubFile(club);
+                ClubManagerFunctions.saveClubToPropertyFile();
 
                 dispose();
                 Application.closeMainGui();

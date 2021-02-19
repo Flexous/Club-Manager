@@ -1,10 +1,17 @@
 package Backend;
 
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.swing.plaf.ColorUIResource;
 
@@ -13,6 +20,34 @@ import Objects.Club;
 public class ClubManagerFunctions 
 {
     //App Functions
+    public static void saveClubToPropertyFile()
+    {
+        try 
+        {
+            BufferedReader br = new BufferedReader(new FileReader(ClubManagerConstraints.PROPERTYFILEPATH));
+
+            String line = "";
+
+            while ((line=br.readLine()) != null)
+            {
+                if (line.contains("=") && line.startsWith("CurrentClub"))
+                {
+                    Path path = Paths.get(ClubManagerConstraints.PROPERTYFILEPATH);
+                    Charset charset = StandardCharsets.UTF_8;
+                    String content = new String(Files.readAllBytes(path), charset);
+                    content = content.replace(line, "CurrentClub="+Application.getCurrentClub().getName());
+                    Files.write(path, content.getBytes(charset));
+                    break;
+                }
+            }
+
+            br.close();
+        }
+        catch (IOException e) 
+        {
+            Application.getLogger().warning(e.getMessage());
+        }
+    }
 
     //Gui Functions
     public static Color getContrastColor(Color color) 
@@ -70,6 +105,16 @@ public class ClubManagerFunctions
 
     public static String getLastClubFile()
     {
+        String clubFileName = Application.propertiesHandler.getValueFromProperty("CurrentClub", "App");
+
+        if (clubFileName != null)
+        {
+            if (new File("Files/Clubs/"+clubFileName+".club").exists())
+            {
+                return "Files/Clubs/"+clubFileName+".club";
+            }
+        }
+
         File directory = new File("Files/Clubs");
         File[] files = directory.listFiles(File::isFile);
         long lastModifiedTime = Long.MIN_VALUE;
