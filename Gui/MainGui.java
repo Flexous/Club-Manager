@@ -1,6 +1,6 @@
 package Gui;
 
-import Backend.ClubManagerFunctions;
+import Backend.*;
 import Gui.Dialogs.*;
 
 import java.lang.reflect.Field;
@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import Backend.Application;
 import net.miginfocom.swing.MigLayout;
 
 public class MainGui extends JFrame 
@@ -40,7 +39,7 @@ public class MainGui extends JFrame
             @Override
             public void windowClosing(WindowEvent we) 
             {
-                int selection = JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING", JOptionPane.YES_NO_OPTION);
+                int selection = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit?", "", JOptionPane.YES_NO_OPTION);
 
                 if (selection == JOptionPane.YES_OPTION)
                 {
@@ -56,44 +55,14 @@ public class MainGui extends JFrame
         Field field;
         try 
         {
-            String propertyName = "";
-            String propertyType = "";
-
-            if ((Application.getCurrentUser() == null && !Application.offlineMode) 
-            || (Application.getCurrentClub() == null && Application.offlineMode))
+            if (Application.getCurrentClub() != null)
             {
-                propertyName = "DefaultColor1";
-                propertyType = "App";
-            }
-            else
-            {
-                propertyName = "Color1";
+                Color color1 = Application.getCurrentClub().getColor1();
 
-                if (Application.offlineMode)
+                if (color1 != null)
                 {
-                    propertyType = "Club";
-                }
-                else
-                {
-                    propertyType = "User";
-                }
-            }
-
-            if (Application.offlineMode)
-            {
-                if (Application.getCurrentClub() != null)
-                {
-                    if (Application.getCurrentClub().getColor1() != null)
-                    {
-                        setIconImage(new ImageIcon(Application.propertiesHandler.getValueFromProperty("Logo", "Club")).getImage());
-                        panel.setBackground(Application.getCurrentClub().getColor1());
-                    }
-                    else
-                    {
-                        field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
-                        .getValueFromProperty("DefaultColor1", "App"));
-                        panel.setBackground((Color)field.get(null));
-                    }
+                    setIconImage(new ImageIcon(Application.propertiesHandler.getValueFromProperty("Logo", "Club")).getImage());
+                    panel.setBackground(Application.getCurrentClub().getColor1());
                 }
                 else
                 {
@@ -102,11 +71,17 @@ public class MainGui extends JFrame
                     panel.setBackground((Color)field.get(null));
                 }
 
+                String logoPath = Application.getCurrentClub().getLogo();
+
+                if (logoPath != null)
+                {
+                    setIconImage(new ImageIcon(logoPath).getImage());
+                }
             }
             else
             {
                 field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
-                .getValueFromProperty(propertyName, propertyType));
+                .getValueFromProperty("DefaultColor1", "App"));
                 panel.setBackground((Color)field.get(null));
             }
         } 
@@ -116,7 +91,7 @@ public class MainGui extends JFrame
 			e.printStackTrace();
         }
 
-        if (Application.offlineMode && Application.getCurrentClub() != null)
+        if (Application.getCurrentClub() != null)
         {
             if (Application.getCurrentClub().getName() != "Unnamed club")
             {

@@ -105,14 +105,7 @@ public class CreateClubDialog extends ClubManagerDialog
             {
                 club.setName(nameOfClubField.getText());
 
-                if (!Application.offlineMode)
-                {
-                    Application.getCurrentUser().setClub(club);
-                }
-                else
-                {
-                    Application.setCurrentClub(club);
-                }
+                Application.setCurrentClub(club);
 
                 ClubManagerFunctions.createNewClubFile(club);
 

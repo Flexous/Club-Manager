@@ -24,16 +24,8 @@ public class MenuButton extends JButton
             String propertyName = "";
             String propertyType = "";
 
-            if (Application.getCurrentUser() == null)
-            {
-                propertyName = "DefaultColor2";
-                propertyType = "App";
-            }
-            else
-            {
-                propertyName = "Color2";
-                propertyType = "User";
-            }
+            propertyName = "DefaultColor2";
+            propertyType = "App";
 
             Field field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
             .getValueFromProperty(propertyName, propertyType));

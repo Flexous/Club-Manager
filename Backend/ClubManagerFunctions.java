@@ -36,8 +36,24 @@ public class ClubManagerFunctions
             
                 bw.write("Name="+club.getName()+"\n");
                 bw.write("Logo="+club.getLogo()+"\n");
-                bw.write("Color1="+club.getColor1().getRed()+ " " +club.getColor1().getGreen()+ " " +club.getColor1().getBlue()+"\n");
-                bw.write("Color2="+club.getColor2().getRed()+ " " +club.getColor2().getGreen()+ " " +club.getColor2().getBlue()+"\n");
+
+                if (club.getColor1() != null)
+                {
+                    bw.write("Color1="+club.getColor1().getRed()+ " " +club.getColor1().getGreen()+ " " +club.getColor1().getBlue()+"\n");
+                }
+                else
+                {
+                    bw.write("Color1=\n");
+                }
+
+                if (club.getColor2() != null)
+                {
+                    bw.write("Color2="+club.getColor2().getRed()+ " " +club.getColor2().getGreen()+ " " +club.getColor2().getBlue()+"\n");
+                }
+                else
+                {
+                    bw.write("Color2=\n");
+                }
 
                 bw.close();
 			} 

@@ -50,18 +50,7 @@ public class PropertiesHandler
         }
         else if (propertyType.equals("Club"))
         {
-            if (Application.offlineMode)
-            {
-                tmpProperties = Application.getCurrentClub().getProperties();
-            }
-            else
-            {
-                tmpProperties = Application.getCurrentUser().getClub().getProperties();
-            }
-        }
-        else if (propertyType.equals("User"))
-        {
-            tmpProperties = Application.getCurrentUser().getProperties();
+            tmpProperties = Application.getCurrentClub().getProperties();
         }
         else
         {
@@ -102,45 +91,7 @@ public class PropertiesHandler
 
                     if (parts.length > 1)
                     {
-                        if (Application.offlineMode)
-                        {
-                            Application.getCurrentClub().getProperties().add(new Property(parts[0], parts[1]));
-                        }
-                        else
-                        {
-                            Application.getCurrentUser().getClub().getProperties().add(new Property(parts[0], parts[1]));
-                        }
-                    }
-                }
-            }
-
-            br.close();
-        }
-        catch (IOException e) 
-        {
-            Application.getLogger().warning(e.getMessage());
-        }
-    }
-
-    //User Properties
-
-    public void setUserProperties(String filePath)
-    {
-        try 
-        {
-            BufferedReader br = new BufferedReader(new FileReader(filePath));
-
-            String line = "";
-
-            while ((line=br.readLine()) != null)
-            {
-                if (line.contains("=") && !line.startsWith("#"))
-                {
-                    String [] parts = line.split("=");
-
-                    if (parts.length > 1)
-                    {
-                        Application.getCurrentUser().getProperties().add(new Property(parts[0], parts[1]));
+                        Application.getCurrentClub().getProperties().add(new Property(parts[0], parts[1]));
                     }
                 }
             }

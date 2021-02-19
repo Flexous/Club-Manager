@@ -39,16 +39,8 @@ public class ClubManagerDialog extends JDialog
             String propertyName = "";
             String propertyType = "";
 
-            if (Application.getCurrentUser() == null)
-            {
-                propertyName = "DefaultColor";
-                propertyType = "App";
-            }
-            else
-            {
-                propertyName = "Color";
-                propertyType = "User";
-            }
+            propertyName = "DefaultColor";
+            propertyType = "App";
 
             field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
             .getValueFromProperty(propertyName+"1", propertyType));
