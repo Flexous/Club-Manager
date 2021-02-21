@@ -27,7 +27,7 @@ public class PropertiesHandler
 
                     if (parts.length > 1)
                     {
-                        Application.properties.add(new Property(parts[0], parts[1]));
+                        Application.getProperties().add(new Property(parts[0], parts[1]));
                     }
                 }
             }
@@ -46,7 +46,7 @@ public class PropertiesHandler
 
         if (propertyType.equals("App"))
         {
-            tmpProperties = Application.properties;
+            tmpProperties = Application.getProperties();
         }
         else if (propertyType.equals("Club"))
         {

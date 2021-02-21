@@ -21,7 +21,7 @@ public class MainGui extends JFrame
     private static final long serialVersionUID = 1745017706827567279L;
 
     private CreateClubDialog addClubDialog;
-    private AddPlayerToClubDialog addPlayerToClubDialog;
+    private AddPlayerDialog addPlayerToClubDialog;
 
     private JPanel panel = new JPanel();
 
@@ -92,13 +92,10 @@ public class MainGui extends JFrame
 
         if (Application.getCurrentClub() != null)
         {
-            if (Application.getCurrentClub().getName() != "Unnamed club")
-            {
-                JLabel currentClubLabel = new JLabel("Your club: " + Application.getCurrentClub().getName());
-                currentClubLabel.setForeground(ClubManagerFunctions.getContrastColor(panel.getBackground()));
-                currentClubLabel.setFont(new Font("Arial", Font.BOLD, 40));
-                panel.add(currentClubLabel, "wrap");
-            }
+            JLabel currentClubLabel = new JLabel("Your club: " + Application.getCurrentClub().getName());
+            currentClubLabel.setForeground(ClubManagerFunctions.getContrastColor(panel.getBackground()));
+            currentClubLabel.setFont(new Font("Arial", Font.BOLD, 40));
+            panel.add(currentClubLabel, "wrap");
         }
         else
         {
@@ -135,11 +132,11 @@ public class MainGui extends JFrame
         addClubDialog.setVisible(true);
     }
 
-    public void showAddPlayerToClubDialog()
+    public void showAddPlayerDialog()
     {
         if (addPlayerToClubDialog == null)
         {
-            addPlayerToClubDialog = new AddPlayerToClubDialog();
+            addPlayerToClubDialog = new AddPlayerDialog();
         }
         addPlayerToClubDialog.setVisible(true);
     }

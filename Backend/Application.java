@@ -10,15 +10,12 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import Backend.Language.LanguageHandler;
-
 public class Application
 {
     private static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     public static PropertiesHandler propertiesHandler;
-    private static LanguageHandler languageHandler;
 
-    public static ArrayList<Property> properties = new ArrayList<>();
+    private static ArrayList<Property> properties = new ArrayList<>();
 
     public static MainGui mainGui;
     private static Club currentClub;
@@ -27,9 +24,6 @@ public class Application
     {
         propertiesHandler = new PropertiesHandler();
         propertiesHandler.setAppProperties(ClubManagerConstraints.PROPERTYFILEPATH);
-        
-        languageHandler = new LanguageHandler(propertiesHandler.getValueFromProperty("CurrentLanguage", "App"));
-        languageHandler.setLanguage();
 
         String lastClubFile = ClubManagerFunctions.getLastClubFile();
 
@@ -41,6 +35,11 @@ public class Application
         }
 
         initMainGui();
+    }
+
+    public static ArrayList<Property> getProperties()
+    {
+        return properties;
     }
 
     public static void initMainGui() 
