@@ -105,7 +105,7 @@ public class ClubManagerFunctions
 
     public static String getLastClubFile()
     {
-        String clubFileName = Application.propertiesHandler.getValueFromProperty("CurrentClub", "App");
+        String clubFileName = Application.propertiesHandler.getPropertyValue("CurrentClub", "App");
 
         if (clubFileName != null)
         {
@@ -143,7 +143,7 @@ public class ClubManagerFunctions
     {
         Club club = new Club();
 
-        String name = Application.propertiesHandler.getValueFromProperty("Name", "Club");
+        String name = Application.propertiesHandler.getPropertyValue("Name", "Club");
 
         if (name != null)
         {
@@ -154,7 +154,7 @@ public class ClubManagerFunctions
             club.setName("Unnamed club");
         }
 
-        String logo = Application.propertiesHandler.getValueFromProperty("Logo", "Club");
+        String logo = Application.propertiesHandler.getPropertyValue("Logo", "Club");
 
         if (logo != null)
         {
@@ -162,10 +162,10 @@ public class ClubManagerFunctions
         }
         else
         {
-            club.setLogo(Application.propertiesHandler.getValueFromProperty("DefaultLogo", "App"));
+            club.setLogo(ClubManagerConstraints.DEFAULTLOGOPATH);
         }
         
-        String color1 = Application.propertiesHandler.getValueFromProperty("Color1", "Club");
+        String color1 = Application.propertiesHandler.getPropertyValue("Color1", "Club");
 
         if (color1 != null)
         {
@@ -176,7 +176,7 @@ public class ClubManagerFunctions
                 club.setColor1(new ColorUIResource(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2])));
             }
 
-            String color2 = Application.propertiesHandler.getValueFromProperty("Color2", "Club");
+            String color2 = Application.propertiesHandler.getPropertyValue("Color2", "Club");
 
             if (color2 != null)
             {

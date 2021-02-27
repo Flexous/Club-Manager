@@ -2,7 +2,6 @@ package Gui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.lang.reflect.Field;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,23 +18,7 @@ public class MenuButton extends JButton
     {
         setText(buttonText);
         setFont(new Font("Arial", Font.BOLD, 40));         
-        try 
-        {
-            String propertyName = "";
-            String propertyType = "";
-
-            propertyName = "DefaultColor2";
-            propertyType = "App";
-
-            Field field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
-            .getValueFromProperty(propertyName, propertyType));
-            setBackground((Color)field.get(null));
-        } 
-        catch (Exception e) 
-        {
-            //Application.getLogger().warning("");
-			e.printStackTrace();
-        }
+        setBackground(Color.RED);
         setForeground(ClubManagerFunctions.getContrastColor(getBackground()));
     }
 

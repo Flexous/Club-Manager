@@ -3,6 +3,7 @@ package Backend;
 import Gui.MainGui;
 import Objects.Club;
 import Objects.Property;
+import Backend.Language.Language;
 
 import java.util.ArrayList;
 import java.util.logging.ConsoleHandler;
@@ -24,6 +25,8 @@ public class Application
     {
         propertiesHandler = new PropertiesHandler();
         propertiesHandler.setAppProperties(ClubManagerConstraints.PROPERTYFILEPATH);
+
+        Language.applyLanguage(propertiesHandler.getPropertyValue("CurrentLanguage", "App"));
 
         String lastClubFile = ClubManagerFunctions.getLastClubFile();
 

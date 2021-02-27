@@ -40,7 +40,7 @@ public class PropertiesHandler
         }
     }
 
-    public String getValueFromProperty(String propertyName, String propertyType)
+    public String getPropertyValue(String propertyName, String propertyType)
     {
         ArrayList<Property> tmpProperties = new ArrayList<>();
 

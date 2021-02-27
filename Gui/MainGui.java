@@ -1,9 +1,9 @@
 package Gui;
 
 import Backend.*;
+import Backend.Language.Language;
 import Gui.Dialogs.*;
 
-import java.lang.reflect.Field;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.*;
@@ -28,7 +28,7 @@ public class MainGui extends JFrame
     public MainGui(String guiTitle)
     {
         setTitle(guiTitle);
-        setIconImage(new ImageIcon(Application.propertiesHandler.getValueFromProperty("DefaultLogo", "App")).getImage());
+        setIconImage(new ImageIcon(ClubManagerConstraints.DEFAULTLOGOPATH).getImage());
         setResizable(false);
         setExtendedState(MAXIMIZED_BOTH); 
         setLocationRelativeTo(null);
@@ -39,7 +39,10 @@ public class MainGui extends JFrame
             @Override
             public void windowClosing(WindowEvent we) 
             {
-                int selection = JOptionPane.showConfirmDialog(null, "Do you want to save?", "", JOptionPane.YES_NO_OPTION);
+                Object[] options = {Language.Yes, Language.No};
+
+                int selection = JOptionPane.showOptionDialog(null, Language.DoYouWantToSave, "", 
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (selection == JOptionPane.YES_OPTION)
                 {
@@ -52,7 +55,7 @@ public class MainGui extends JFrame
     public void create()
     {
         panel.setLayout(new MigLayout("align 50% 50%"));
-        Field field;
+
         try 
         {
             if (Application.getCurrentClub() != null)
@@ -65,9 +68,7 @@ public class MainGui extends JFrame
                 }
                 else
                 {
-                    field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
-                    .getValueFromProperty("DefaultColor1", "App"));
-                    panel.setBackground((Color)field.get(null));
+                    panel.setBackground(Color.WHITE);
                 }
 
                 String logoPath = Application.getCurrentClub().getLogo();
@@ -79,9 +80,7 @@ public class MainGui extends JFrame
             }
             else
             {
-                field = Class.forName("java.awt.Color").getField(Application.propertiesHandler
-                .getValueFromProperty("DefaultColor1", "App"));
-                panel.setBackground((Color)field.get(null));
+                panel.setBackground(Color.WHITE);
             }
         } 
         catch (Exception e) 
@@ -92,19 +91,19 @@ public class MainGui extends JFrame
 
         if (Application.getCurrentClub() != null)
         {
-            JLabel currentClubLabel = new JLabel("Your club: " + Application.getCurrentClub().getName());
+            JLabel currentClubLabel = new JLabel(Language.YourClub + Application.getCurrentClub().getName());
             currentClubLabel.setForeground(ClubManagerFunctions.getContrastColor(panel.getBackground()));
-            currentClubLabel.setFont(new Font("Arial", Font.BOLD, 40));
+            currentClubLabel.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 40));
             panel.add(currentClubLabel, "wrap");
         }
         else
         {
-            JLabel createClubLabel = new JLabel("You haven't created a club yet.");
+            JLabel createClubLabel = new JLabel(Language.NoClubCreated);
             createClubLabel.setForeground(ClubManagerFunctions.getContrastColor(panel.getBackground()));
-            createClubLabel.setFont(new Font("Arial", Font.BOLD, 40));
+            createClubLabel.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 40));
             panel.add(createClubLabel, "wrap");
         
-            MenuButton createClubButton = new MenuButton("Create Club");
+            MenuButton createClubButton = new MenuButton(Language.CreateClub);
             createClubButton.addActionListener(new ActionListener()
             {
                 public void actionPerformed(ActionEvent e)
@@ -115,8 +114,6 @@ public class MainGui extends JFrame
     
             panel.add(createClubButton);
         }
-
-
 
         add(panel);
         repaint();
