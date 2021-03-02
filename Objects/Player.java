@@ -11,6 +11,11 @@ public class Player
 
     private ArrayList<Property> properties = new ArrayList<>();
 
+    public Player()
+    {
+        
+    }
+
     public Player(String name)
     {
         this.name = name;

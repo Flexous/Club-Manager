@@ -12,6 +12,7 @@ public class Language
     public static String CreateClub;
     public static String YourClub;
     public static String AddPlayer;
+    public static String NameOfPlayer;
     public static String ChangeLanguage;
     public static String AppInfo; 
     public static String DoYouWantToSave;
@@ -34,6 +35,7 @@ public class Language
                 CreateClub = "Club erstellen";
                 YourClub = "Dein Verein: ";
                 AddPlayer = "Spieler hinzufügen";
+                NameOfPlayer = "Name des Spielers";
                 ChangeLanguage = "Sprache ändern";
                 AppInfo = "Info";
                 DoYouWantToSave = "Möchtest du speichern?";
@@ -52,6 +54,7 @@ public class Language
                 CreateClub = "Create club";
                 YourClub = "Your club: ";
                 AddPlayer = "Add player";
+                NameOfPlayer = "Name of player";
                 ChangeLanguage = "Switch language";
                 AppInfo = "Info";
                 DoYouWantToSave = "Do you want to save?";

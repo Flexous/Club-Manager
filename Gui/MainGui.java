@@ -95,6 +95,17 @@ public class MainGui extends JFrame
             currentClubLabel.setForeground(ClubManagerFunctions.getContrastColor(panel.getBackground()));
             currentClubLabel.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 40));
             panel.add(currentClubLabel, "wrap");
+
+            MenuButton addPlayerBtn = new MenuButton(Language.AddPlayer);
+            addPlayerBtn.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    showAddPlayerDialog();
+                }
+            });
+
+            panel.add(addPlayerBtn, "wrap");
         }
         else
         {
