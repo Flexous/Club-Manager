@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 public class Club 
 {
+    private String appDataPath;
+
     private String name;
     private Color color1;
     private Color color2;
@@ -23,6 +25,16 @@ public class Club
     public Club(String name)
     {
         this.name = name;
+    }
+
+    public String getAppDataPath()
+    {
+        return appDataPath;
+    }
+
+    public void setAppDataPath(String path)
+    {
+        appDataPath = path;
     }
 
     public String getName()

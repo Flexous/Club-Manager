@@ -6,6 +6,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -16,6 +17,7 @@ import java.nio.file.Paths;
 import javax.swing.plaf.ColorUIResource;
 
 import Objects.Club;
+import Objects.Player;
 
 public class ClubManagerFunctions 
 {
@@ -85,6 +87,8 @@ public class ClubManagerFunctions
         
         if (!clubFileExists(newClubFolder.getAbsolutePath()))
         {
+            club.setAppDataPath(newClubFolder.getAbsolutePath());
+
             File newClubFile = new File(newClubFolder.getAbsolutePath()+"/"+club.getName()+".club");
 
             try 
@@ -148,14 +152,25 @@ public class ClubManagerFunctions
         }
 
         File directory = new File(ClubManagerConstraints.CLUBFILEPATH);
-        File[] files = directory.listFiles(File::isFile);
+
+        String[] directories = directory.list(new FilenameFilter() 
+        {
+            @Override
+            public boolean accept(File current, String name) 
+            {
+              return new File(current, name).isDirectory();
+            }
+        });
+
         long lastModifiedTime = Long.MIN_VALUE;
         File chosenFile = null;
     
-        if (files != null)
+        if (directories != null)
         {
-            for (File file : files)
+            for (String folderName : directories)
             {
+                File file = new File(ClubManagerConstraints.CLUBFILEPATH+folderName);
+
                 if (file.lastModified() > lastModifiedTime)
                 {
                     chosenFile = file;
@@ -166,7 +181,7 @@ public class ClubManagerFunctions
 
         if (chosenFile != null)
         {
-            return chosenFile.getAbsolutePath();
+            return chosenFile.getAbsolutePath()+"/"+chosenFile.getName()+".club";
         }
         return null;
     }
@@ -229,5 +244,44 @@ public class ClubManagerFunctions
     public static boolean clubFileExists(String filePath)
     {
         return new File(filePath).exists();
+    }
+
+    public static void createNewPlayer(Player player)
+    {
+        File newPlayerFolder = new File(Application.getCurrentClub().getAppDataPath()+"Players/"+player.getName());
+
+        if (!newPlayerFolder.exists())
+        {
+            newPlayerFolder.mkdir();
+        }
+
+        File newPlayerFile = new File(newPlayerFolder+"/"+player.getName()+".player");
+
+        if (!newPlayerFile.exists())
+        {
+            try 
+            {
+                newPlayerFile.createNewFile();
+            } 
+            catch (IOException e) 
+            {
+                e.printStackTrace();
+            }
+        }
+
+        try 
+        {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(newPlayerFile));
+
+            bw.write("Name="+player.getName()+"\n");
+
+            bw.close();
+        } 
+        catch (IOException e) 
+        {
+            e.printStackTrace();
+        }
+
+        Application.getCurrentClub().addPlayer(player);
     }
 }

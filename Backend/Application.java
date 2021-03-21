@@ -37,6 +37,7 @@ public class Application
             currentClub = new Club();
             propertiesHandler.findClubProperties(lastClubFile);
             currentClub = ClubManagerFunctions.getClubWithProperties();
+            currentClub.setAppDataPath(ClubManagerConstraints.CLUBFILEPATH+currentClub.getName()+"/");
         }
 
         initMainGui();

@@ -48,7 +48,9 @@ public class AddPlayerDialog extends ClubManagerDialog
 
                 player.setName(nameOfPlayerField.getText());
 
-                Application.getCurrentClub().addPlayer(player);
+                ClubManagerFunctions.createNewPlayer(player);
+
+                dispose();
             }
         });
         getPanel().add(addPlayerBtn, "gapleft 50, gaptop 150, wrap");
