@@ -20,6 +20,23 @@ import Objects.Club;
 public class ClubManagerFunctions 
 {
     //App Functions
+    public static void createAppFolder()
+    {
+        File appFolder = new File(getAppDataPath()+"/Club Manager");
+
+        if (!appFolder.exists())
+        {
+            appFolder.mkdir();
+        }
+
+        File clubFolder = new File(ClubManagerConstraints.CLUBFILEPATH);
+
+        if (!clubFolder.exists())
+        {
+            clubFolder.mkdir();
+        }
+    }
+
     public static void saveClubToPropertyFile()
     {
         try 
@@ -49,6 +66,11 @@ public class ClubManagerFunctions
         }
     }
 
+    public static String getAppDataPath()
+    {
+        return System.getenv("APPDATA").replace("\\", "/");
+    }
+
     //Gui Functions
     public static Color getContrastColor(Color color) 
     {
@@ -57,15 +79,25 @@ public class ClubManagerFunctions
     }
     
     //Club Functions
-    public static void createNewClubFile(Club club)
+    public static void createNewClub(Club club)
     {
-        File newClubFile = new File(ClubManagerConstraints.CLUBFILEPATH+club.getName()+".club");
-
-        if (!clubFileExists(newClubFile.getAbsolutePath()))
+        File newClubFolder = new File(ClubManagerConstraints.CLUBFILEPATH+club.getName());
+        
+        if (!clubFileExists(newClubFolder.getAbsolutePath()))
         {
+            File newClubFile = new File(newClubFolder.getAbsolutePath()+"/"+club.getName()+".club");
+
             try 
             {
+                newClubFolder.mkdir();
 				newClubFile.createNewFile();
+
+                File playerFolder = new File(newClubFolder.getAbsolutePath()+"/Players");
+
+                if (!playerFolder.exists())
+                {
+                    playerFolder.mkdir();
+                }
 
                 BufferedWriter bw = new BufferedWriter(new FileWriter(newClubFile));
             
@@ -109,13 +141,13 @@ public class ClubManagerFunctions
 
         if (clubFileName != null)
         {
-            if (new File("Files/Clubs/"+clubFileName+".club").exists())
+            if (new File(ClubManagerConstraints.CLUBFILEPATH+clubFileName+"/"+clubFileName+".club").exists())
             {
-                return "Files/Clubs/"+clubFileName+".club";
+                return ClubManagerConstraints.CLUBFILEPATH+clubFileName+"/"+clubFileName+".club";
             }
         }
 
-        File directory = new File("Files/Clubs");
+        File directory = new File(ClubManagerConstraints.CLUBFILEPATH);
         File[] files = directory.listFiles(File::isFile);
         long lastModifiedTime = Long.MIN_VALUE;
         File chosenFile = null;
@@ -196,11 +228,6 @@ public class ClubManagerFunctions
 
     public static boolean clubFileExists(String filePath)
     {
-        if (new File(filePath).exists())
-        {
-            return true;
-        }
-
-        return false;
+        return new File(filePath).exists();
     }
 }

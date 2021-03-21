@@ -19,11 +19,19 @@ public class MenuButton extends JButton
         setText(buttonText);
         setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 40));
         
-        int red = Application.getCurrentClub().getColor2().getRed();
-        int green = Application.getCurrentClub().getColor2().getGreen();
-        int blue = Application.getCurrentClub().getColor2().getBlue();
-        Color color = new Color(red, green, blue);
-        setBackground(color);
+        if (Application.getCurrentClub() != null)
+        {
+            int red = Application.getCurrentClub().getColor2().getRed();
+            int green = Application.getCurrentClub().getColor2().getGreen();
+            int blue = Application.getCurrentClub().getColor2().getBlue();
+            Color color = new Color(red, green, blue);
+            setBackground(color);
+        }
+        else
+        {
+            setBackground(Color.RED);
+        }
+
         
         setForeground(ClubManagerFunctions.getContrastColor(getBackground()));
     }

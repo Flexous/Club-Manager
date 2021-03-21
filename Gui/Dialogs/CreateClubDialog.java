@@ -119,7 +119,7 @@ public class CreateClubDialog extends ClubManagerDialog
                 club.setName(nameOfClubField.getText());
 
                 Application.setCurrentClub(club);
-                ClubManagerFunctions.createNewClubFile(club);
+                ClubManagerFunctions.createNewClub(club);
                 ClubManagerFunctions.saveClubToPropertyFile();
 
                 dispose();
