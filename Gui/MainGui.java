@@ -39,9 +39,9 @@ public class MainGui extends JFrame
             @Override
             public void windowClosing(WindowEvent we) 
             {
-                Object[] options = {Language.Yes, Language.No};
+                Object[] options = {Language.getString("Yes"), Language.getString("No")};
 
-                int selection = JOptionPane.showOptionDialog(null, Language.DoYouWantToSave, "", 
+                int selection = JOptionPane.showOptionDialog(null, Language.getString("DoYouWantToSave"), "", 
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (selection == JOptionPane.YES_OPTION)
@@ -91,12 +91,12 @@ public class MainGui extends JFrame
 
         if (Application.getCurrentClub() != null)
         {
-            JLabel currentClubLabel = new JLabel(Language.YourClub + Application.getCurrentClub().getName());
+            JLabel currentClubLabel = new JLabel(Language.getString("YourClub") + Application.getCurrentClub().getName());
             currentClubLabel.setForeground(ClubManagerFunctions.getContrastColor(panel.getBackground()));
             currentClubLabel.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 40));
             panel.add(currentClubLabel, "wrap");
 
-            MenuButton addPlayerBtn = new MenuButton(Language.AddPlayer);
+            MenuButton addPlayerBtn = new MenuButton(Language.getString("AddPlayer"));
             addPlayerBtn.addActionListener(new ActionListener()
             {
                 public void actionPerformed(ActionEvent e)
@@ -109,12 +109,12 @@ public class MainGui extends JFrame
         }
         else
         {
-            JLabel createClubLabel = new JLabel(Language.NoClubCreated);
+            JLabel createClubLabel = new JLabel(Language.getString("NoClubCreated"));
             createClubLabel.setForeground(ClubManagerFunctions.getContrastColor(panel.getBackground()));
             createClubLabel.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 40));
             panel.add(createClubLabel, "wrap");
         
-            MenuButton createClubButton = new MenuButton(Language.CreateClub);
+            MenuButton createClubButton = new MenuButton(Language.getString("CreateClub"));
             createClubButton.addActionListener(new ActionListener()
             {
                 public void actionPerformed(ActionEvent e)

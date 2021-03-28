@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Player 
 {
     private String name;
+    private int number;
     private String imgSrc="";
     private String nationality;
     private int age;
@@ -23,7 +24,7 @@ public class Player
     
     public String getName()
     {
-        return this.name;
+        return name;
     }
 
     public void setName(String name)
@@ -31,9 +32,19 @@ public class Player
         this.name = name;
     }
 
+    public int getNumber()
+    {
+        return number;
+    }
+
+    public void setNumber(int number)
+    {
+        this.number = number;
+    }
+
     public String getImgSrc()
     {
-        return this.imgSrc;
+        return imgSrc;
     }
 
     public void setImgSrc(String imgSrc)
@@ -43,7 +54,7 @@ public class Player
 
     public String getNationality()
     {
-        return this.nationality;
+        return nationality;
     }
 
     public void setNationality(String nationality)
@@ -53,7 +64,7 @@ public class Player
 
     public int getAge()
     {
-        return this.age;
+        return age;
     }
 
     public void setAge(int age)

@@ -28,7 +28,7 @@ public class Application
         propertiesHandler = new PropertiesHandler();
         propertiesHandler.setAppProperties(ClubManagerConstraints.PROPERTYFILEPATH);
 
-        Language.applyLanguage(propertiesHandler.getPropertyValue("CurrentLanguage", "App"));
+        Language.getLanguageProperties(propertiesHandler.getPropertyValue("CurrentLanguage", "App"));
 
         String lastClubFile = ClubManagerFunctions.getLastClubFile();
 

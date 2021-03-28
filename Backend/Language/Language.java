@@ -1,66 +1,79 @@
 package Backend.Language;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import Objects.Property;
+
 public class Language 
 {
-    public static String NoClubCreated;
-    public static String NameOfClub;
-    public static String Color1;
-    public static String Color2;
-    public static String ColorSelection;
-    public static String BadgeOfClub; 
-    public static String Images;
-    public static String CreateClub;
-    public static String YourClub;
-    public static String AddPlayer;
-    public static String NameOfPlayer;
-    public static String ChangeLanguage;
-    public static String AppInfo; 
-    public static String DoYouWantToSave;
-    public static String Yes;
-    public static String No;
+    private static ArrayList<Property> properties = new ArrayList<>();
 
-    public static void applyLanguage(String currentLangauge)
+    public static void getLanguageProperties(String currentLangauge)
     {
         if (currentLangauge != null)
         {
+            BufferedReader fileReader = null;
+
             if (currentLangauge.equals("GER"))
             {
-                NoClubCreated = "Du hast noch keinen Club erstellt.";
-                NameOfClub = "Name des Clubs";
-                Color1 = "Farbe 1";
-                Color2 = "Farbe 2";
-                ColorSelection = "Farbauswahl";
-                BadgeOfClub = "Logo des Clubs";
-                Images = "Bilder";
-                CreateClub = "Club erstellen";
-                YourClub = "Dein Verein: ";
-                AddPlayer = "Spieler hinzufügen";
-                NameOfPlayer = "Name des Spielers";
-                ChangeLanguage = "Sprache ändern";
-                AppInfo = "Info";
-                DoYouWantToSave = "Möchtest du speichern?";
-                Yes = "Ja";
-                No = "Nein";
+                try 
+                {
+                    fileReader = new BufferedReader(new FileReader("Backend/Language/Deutsch.txt"));
+                } 
+                catch (FileNotFoundException e) 
+                {
+                    e.printStackTrace();
+                }
             }
             else if (currentLangauge.equals("ENG"))
             {
-                NoClubCreated = "You haven't created a club yet.";
-                NameOfClub = "Name of club";
-                Color1 = "Color 1";
-                Color2 = "Color 2";
-                ColorSelection = "Color selection";
-                BadgeOfClub = "Badge of club";
-                Images = "Images";
-                CreateClub = "Create club";
-                YourClub = "Your club: ";
-                AddPlayer = "Add player";
-                NameOfPlayer = "Name of player";
-                ChangeLanguage = "Switch language";
-                AppInfo = "Info";
-                DoYouWantToSave = "Do you want to save?";
-                Yes = "Yes";
-                No = "No";
+                try 
+                {
+                    fileReader = new BufferedReader(new FileReader("Language/English.txt"));
+                } 
+                catch (FileNotFoundException e) 
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            String line = "";
+
+            try 
+            {
+                while ((line=fileReader.readLine()) != null)
+                {
+                    String [] parts = line.split("=");
+                    
+                    if (parts.length == 2)
+                    {
+                        properties.add(new Property(parts[0], parts[1]));
+                    }
+                }
+            } 
+            catch (IOException e) 
+            {
+                e.printStackTrace();
             }
         }
+    }
+
+    public static String getString(String propertyName)
+    {
+        if (!properties.isEmpty())
+        {
+            for (Property property : properties)
+            {
+                if (property.getName().equals(propertyName))
+                {
+                    return property.getValue();
+                }
+            }
+        }
+        return propertyName;
     }
 }

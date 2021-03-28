@@ -28,14 +28,21 @@ public class AddPlayerDialog extends ClubManagerDialog
         
         Player player = new Player();
 
-        JLabel nameOfPlayerLabel = new JLabel(Language.NameOfPlayer);
+        JLabel nameOfPlayerLabel = new JLabel(Language.getString("NameOfPlayer"));
         nameOfPlayerLabel.setForeground(ClubManagerFunctions.getContrastColor(getBackground()));
         getPanel().add(nameOfPlayerLabel, "gapleft 50, wrap");
 
         JTextField nameOfPlayerField = new JTextField(20);
         getPanel().add(nameOfPlayerField, "gapleft 50, wrap");
 
-        MenuButton addPlayerBtn = new MenuButton(Language.AddPlayer);
+        JLabel nrOfPlayerLabel = new JLabel(Language.getString("NrOfPlayer"));
+        nrOfPlayerLabel.setForeground(ClubManagerFunctions.getContrastColor(getBackground()));
+        getPanel().add(nrOfPlayerLabel, "gapleft 50, wrap");
+
+        JTextField nrOfPlayerField = new JTextField(5);
+        getPanel().add(nrOfPlayerField, "gapleft 50, wrap");
+
+        MenuButton addPlayerBtn = new MenuButton(Language.getString("AddPlayer"));
         addPlayerBtn.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e) 
@@ -46,7 +53,23 @@ public class AddPlayerDialog extends ClubManagerDialog
                     return;
                 }
 
+                if (nrOfPlayerField.getText().isEmpty())
+                {
+                    nrOfPlayerField.setBackground(Color.RED);
+                    return;
+                }
+
                 player.setName(nameOfPlayerField.getText());
+
+                try
+                {
+                    player.setNumber(Integer.parseInt(nrOfPlayerField.getText()));
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+
 
                 ClubManagerFunctions.createNewPlayer(player);
 

@@ -248,7 +248,8 @@ public class ClubManagerFunctions
 
     public static void createNewPlayer(Player player)
     {
-        File newPlayerFolder = new File(Application.getCurrentClub().getAppDataPath()+"Players/"+player.getName());
+        File newPlayerFolder = new File(Application.getCurrentClub().getAppDataPath()+"Players/#"+
+        player.getNumber() + " - " + player.getName());
 
         if (!newPlayerFolder.exists())
         {
@@ -274,6 +275,7 @@ public class ClubManagerFunctions
             BufferedWriter bw = new BufferedWriter(new FileWriter(newPlayerFile));
 
             bw.write("Name="+player.getName()+"\n");
+            bw.write("Number="+player.getNumber()+"\n");
 
             bw.close();
         } 

@@ -1,0 +1,17 @@
+NoClubCreated=Du hast noch keinen Club erstellt.
+NameOfClub=Name des Clubs
+Color1=Farbe 1
+Color2=Farbe 2
+ColorSelection=Farbauswahl
+BadgeOfClub=Logo des Clubs
+Images=Bilder
+CreateClub=Club erstellen
+YourClub=Dein Verein:
+AddPlayer=Spieler hinzufügen
+NameOfPlayer=Name des Spielers
+NrOfPlayer=Nummer des Spielers
+ChangeLanguage=Sprache ändern
+AppInfo=Info
+DoYouWantToSave=Möchtest du speichern?
+Yes=Ja
+No=Nein
