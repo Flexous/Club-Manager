@@ -1,4 +1,4 @@
-package Gui.Dialogs;
+package gui.dialogs;
 
 import java.awt.Color;
 
@@ -8,7 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.plaf.DimensionUIResource;
 
-import Backend.ClubManagerConstraints;
+import backend.ClubManagerConstraints;
 import net.miginfocom.swing.MigLayout;
 
 public class ClubManagerDialog extends JDialog

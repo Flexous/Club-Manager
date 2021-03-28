@@ -1,4 +1,4 @@
-package Backend;
+package backend;
 
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -16,8 +16,8 @@ import java.nio.file.Paths;
 
 import javax.swing.plaf.ColorUIResource;
 
-import Objects.Club;
-import Objects.Player;
+import objects.Club;
+import objects.Player;
 
 public class ClubManagerFunctions 
 {
@@ -30,13 +30,36 @@ public class ClubManagerFunctions
         {
             appFolder.mkdir();
         }
-
+        
+        File propertyFile = new File(appFolder+"/ClubManager.properties");
+        
+        if (!propertyFile.exists())
+        {
+        	try 
+        	{
+				propertyFile.createNewFile();
+				
+				BufferedWriter fileWriter = new BufferedWriter(new FileWriter(propertyFile));
+				
+				fileWriter.write("DefaultLanguage=ENG\n");
+				fileWriter.write("CurrentLanguage=GER\n");
+				fileWriter.write("CurrentClub=\n");
+				
+				fileWriter.close();
+			} 
+        	catch (IOException e) 
+        	{
+				e.printStackTrace();
+			}
+        }
+        
         File clubFolder = new File(ClubManagerConstraints.CLUBFILEPATH);
 
         if (!clubFolder.exists())
         {
             clubFolder.mkdir();
         }
+        
     }
 
     public static void saveClubToPropertyFile()

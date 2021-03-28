@@ -1,9 +1,9 @@
-package Backend;
+package backend;
 
-import Gui.MainGui;
-import Objects.Club;
-import Objects.Property;
-import Backend.Language.Language;
+import gui.MainGui;
+import backend.language.Language;
+import objects.Club;
+import objects.Property;
 
 import java.util.ArrayList;
 import java.util.logging.ConsoleHandler;

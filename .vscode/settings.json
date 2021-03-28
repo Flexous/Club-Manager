@@ -1,7 +1,0 @@
-{
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "External Jars\\miglayout-3.5.5.jar",
-        "External Jars\\commons-io-2.8.0.jar"
-    ]
-}

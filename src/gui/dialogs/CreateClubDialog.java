@@ -1,4 +1,4 @@
-package Gui.Dialogs;
+package gui.dialogs;
 
 import java.awt.event.ActionListener;
 import java.awt.Color;
@@ -11,12 +11,10 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import Backend.Application;
-import Backend.ClubManagerConstraints;
-import Backend.ClubManagerFunctions;
-import Backend.Language.Language;
-import Gui.MenuButton;
-import Objects.Club;
+import backend.*;
+import backend.language.Language;
+import gui.MenuButton;
+import objects.Club;
 
 public class CreateClubDialog extends ClubManagerDialog
 {

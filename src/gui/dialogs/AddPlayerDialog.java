@@ -1,4 +1,4 @@
-package Gui.Dialogs;
+package gui.dialogs;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -9,11 +9,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import Backend.Application;
-import Backend.ClubManagerFunctions;
-import Backend.Language.Language;
-import Gui.MenuButton;
-import Objects.Player;
+import backend.*;
+import backend.language.*;
+import gui.MenuButton;
+import objects.Player;
 
 public class AddPlayerDialog extends ClubManagerDialog
 {

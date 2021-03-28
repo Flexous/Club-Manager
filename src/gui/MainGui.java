@@ -1,8 +1,8 @@
-package Gui;
+package gui;
 
-import Backend.*;
-import Backend.Language.Language;
-import Gui.Dialogs.*;
+import backend.*;
+import gui.dialogs.*;
+import backend.language.Language;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -48,6 +48,8 @@ public class MainGui extends JFrame
                 {
                     ClubManagerFunctions.saveClubToPropertyFile();
                 }
+                
+                System.exit(0);
             }
         } );
     }

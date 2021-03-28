@@ -1,4 +1,4 @@
-package Backend.Language;
+package backend.language;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import Objects.Property;
+import objects.Property;
 
 public class Language 
 {
@@ -22,7 +22,7 @@ public class Language
             {
                 try 
                 {
-                    fileReader = new BufferedReader(new FileReader("Backend/Language/Deutsch.txt"));
+                    fileReader = new BufferedReader(new FileReader("src\\backend\\language\\Deutsch.txt"));
                 } 
                 catch (FileNotFoundException e) 
                 {

@@ -1,4 +1,4 @@
-package Gui;
+package gui;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -6,7 +6,7 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import Backend.*;
+import backend.*;
 
 public class MenuButton extends JButton
 {
