@@ -38,7 +38,7 @@ public class MenuButton extends JButton
 
     public String getButtonImgSrc()
     {
-        return this.buttonImgSrc;
+        return buttonImgSrc;
     }
 
     public void setButtonImgSrc(String buttonImgSrc)

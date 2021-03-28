@@ -2,8 +2,7 @@ package backend;
 
 import gui.MainGui;
 import backend.language.Language;
-import objects.Club;
-import objects.Property;
+import objects.*;
 
 import java.util.ArrayList;
 import java.util.logging.ConsoleHandler;

@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import backend.*;
@@ -68,7 +69,6 @@ public class AddPlayerDialog extends ClubManagerDialog
                 {
                     ex.printStackTrace();
                 }
-
 
                 ClubManagerFunctions.createNewPlayer(player);
 

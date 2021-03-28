@@ -10,6 +10,7 @@ YourClub=Dein Verein:
 AddPlayer=Spieler hinzufügen
 NameOfPlayer=Name des Spielers
 NrOfPlayer=Nummer des Spielers
+PlayerAlreadyExists=Spieler bereits vorhanden!
 ChangeLanguage=Sprache ändern
 AppInfo=Info
 DoYouWantToSave=Möchtest du speichern?

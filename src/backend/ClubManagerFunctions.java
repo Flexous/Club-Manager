@@ -14,8 +14,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.swing.JOptionPane;
 import javax.swing.plaf.ColorUIResource;
 
+import backend.language.Language;
 import objects.Club;
 import objects.Player;
 
@@ -49,7 +51,7 @@ public class ClubManagerFunctions
 			} 
         	catch (IOException e) 
         	{
-				e.printStackTrace();
+                Application.getLogger().warning(e.getMessage());
 			}
         }
         
@@ -153,7 +155,7 @@ public class ClubManagerFunctions
 			} 
             catch (IOException e) 
             {
-				e.printStackTrace();
+				Application.getLogger().warning(e.getMessage());
 			}
         }
         else
@@ -271,12 +273,17 @@ public class ClubManagerFunctions
 
     public static void createNewPlayer(Player player)
     {
-        File newPlayerFolder = new File(Application.getCurrentClub().getAppDataPath()+"Players/#"+
+        File newPlayerFolder = new File(Application.getCurrentClub().getAppDataPath()+"/Players/#"+
         player.getNumber() + " - " + player.getName());
 
         if (!newPlayerFolder.exists())
         {
             newPlayerFolder.mkdir();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, Language.getString("PlayerAlreadyExists"));
+            return;
         }
 
         File newPlayerFile = new File(newPlayerFolder+"/"+player.getName()+".player");
@@ -289,7 +296,7 @@ public class ClubManagerFunctions
             } 
             catch (IOException e) 
             {
-                e.printStackTrace();
+                Application.getLogger().warning(e.getMessage());
             }
         }
 
@@ -304,7 +311,8 @@ public class ClubManagerFunctions
         } 
         catch (IOException e) 
         {
-            e.printStackTrace();
+            Application.getLogger().warning(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
         Application.getCurrentClub().addPlayer(player);

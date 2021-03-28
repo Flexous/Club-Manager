@@ -87,8 +87,7 @@ public class MainGui extends JFrame
         } 
         catch (Exception e) 
         {
-            //Application.getLogger().warning("");
-			e.printStackTrace();
+            Application.getLogger().warning(e.getMessage());
         }
 
         if (Application.getCurrentClub() != null)
