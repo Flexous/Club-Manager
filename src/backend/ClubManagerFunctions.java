@@ -18,8 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.plaf.ColorUIResource;
 
 import backend.language.Language;
-import objects.Club;
-import objects.Player;
+import objects.*;
 
 public class ClubManagerFunctions 
 {
@@ -271,6 +270,7 @@ public class ClubManagerFunctions
         return new File(filePath).exists();
     }
 
+    //Player Functions
     public static void createNewPlayer(Player player)
     {
         File newPlayerFolder = new File(Application.getCurrentClub().getAppDataPath()+"/Players/#"+
@@ -282,8 +282,19 @@ public class ClubManagerFunctions
         }
         else
         {
-            JOptionPane.showMessageDialog(null, Language.getString("PlayerAlreadyExists"));
-            return;
+            Object[] options = {Language.getString("Yes"), Language.getString("No")};
+
+            int selection = JOptionPane.showOptionDialog(null, Language.getString("PlayerAlreadyExists"), "", 
+            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+            if (selection == JOptionPane.YES_OPTION)
+            {
+                ClubManagerFunctions.saveClubToPropertyFile();
+            }
+            else
+            {
+                return;
+            }
         }
 
         File newPlayerFile = new File(newPlayerFolder+"/"+player.getName()+".player");
@@ -316,5 +327,10 @@ public class ClubManagerFunctions
         }
 
         Application.getCurrentClub().addPlayer(player);
+    }
+
+    public static void savePlayer(Player player)
+    {
+        Application.getCurrentClub().updatePlayer(player);
     }
 }

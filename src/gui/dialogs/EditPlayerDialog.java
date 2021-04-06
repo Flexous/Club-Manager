@@ -1,32 +1,27 @@
 package gui.dialogs;
 
+import javax.swing.*;
+
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
-import backend.*;
+import backend.Application;
+import backend.ClubManagerFunctions;
 import backend.language.*;
 import gui.MenuButton;
-import objects.Player;
+import objects.*;
 
-public class AddPlayerDialog extends ClubManagerDialog
+public class EditPlayerDialog extends ClubManagerDialog
 {
-    private static final long serialVersionUID = 5004061434132674942L;
- 
-    public AddPlayerDialog()
+    private static final long serialVersionUID = -8819397283537491753L;
+
+    public EditPlayerDialog(Player player)
     {
         super();
         getPanel().setBackground(Application.getCurrentClub().getColor1());
         getPanel().setBorder(BorderFactory.createLineBorder(Application.getCurrentClub().getColor2()));
         setIconImage(new ImageIcon(Application.getCurrentClub().getLogo()).getImage());
-        
-        Player player = new Player();
 
         JLabel nameOfPlayerLabel = new JLabel(Language.getString("NameOfPlayer"));
         nameOfPlayerLabel.setForeground(ClubManagerFunctions.getContrastColor(getBackground()));
@@ -34,6 +29,7 @@ public class AddPlayerDialog extends ClubManagerDialog
 
         JTextField nameOfPlayerField = new JTextField(20);
         getPanel().add(nameOfPlayerField, "gapleft 50, wrap");
+        nameOfPlayerField.setText(player.getName());
 
         JLabel nrOfPlayerLabel = new JLabel(Language.getString("NrOfPlayer"));
         nrOfPlayerLabel.setForeground(ClubManagerFunctions.getContrastColor(getBackground()));
@@ -41,9 +37,10 @@ public class AddPlayerDialog extends ClubManagerDialog
 
         JTextField nrOfPlayerField = new JTextField(5);
         getPanel().add(nrOfPlayerField, "gapleft 50, wrap");
+        nrOfPlayerField.setText(player.getNumber()+"");
 
-        MenuButton addPlayerBtn = new MenuButton(Language.getString("AddPlayer"));
-        addPlayerBtn.addActionListener(new ActionListener()
+        MenuButton savePlayerBtn = new MenuButton(Language.getString("AddPlayer"));
+        savePlayerBtn.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e) 
             {
@@ -70,33 +67,10 @@ public class AddPlayerDialog extends ClubManagerDialog
                     ex.printStackTrace();
                 }
 
-                for (Player existingPlayer : Application.getCurrentClub().getPlayers())
-                {
-                    if (existingPlayer.getName().equals(player.getName()))
-                    {
-                        Object[] options = {Language.getString("Yes"), Language.getString("No")};
-        
-                        int selection = JOptionPane.showOptionDialog(null, Language.getString("PlayerAlreadyExists"), "", 
-                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            
-                        if (selection == JOptionPane.YES_OPTION)
-                        {
-                            Application.getCurrentClub().updatePlayer(player);
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    }
-                }
-
                 ClubManagerFunctions.createNewPlayer(player);
 
                 dispose();
             }
         });
-        getPanel().add(addPlayerBtn, "gapleft 50, gaptop 150, wrap");
-
-        add(getPanel());
-    }
+    }    
 }

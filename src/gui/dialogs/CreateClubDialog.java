@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import backend.*;
-import backend.language.Language;
+import backend.language.*;
 import gui.MenuButton;
 import objects.Club;
 

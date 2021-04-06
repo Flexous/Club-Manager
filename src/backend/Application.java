@@ -37,6 +37,8 @@ public class Application
             propertiesHandler.findClubProperties(lastClubFile);
             currentClub = ClubManagerFunctions.getClubWithProperties();
             currentClub.setAppDataPath(ClubManagerConstraints.CLUBFILEPATH+currentClub.getName()+"/");
+            
+            currentClub.findAllPlayers();
         }
 
         initMainGui();

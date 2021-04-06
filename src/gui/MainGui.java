@@ -7,12 +7,7 @@ import backend.language.Language;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.*;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -21,6 +16,7 @@ public class MainGui extends JFrame
     private static final long serialVersionUID = 1745017706827567279L;
 
     private CreateClubDialog addClubDialog;
+    private ShowPlayersDialog showPlayersDialog;
     private AddPlayerDialog addPlayerToClubDialog;
 
     private JPanel panel = new JPanel();
@@ -107,6 +103,17 @@ public class MainGui extends JFrame
             });
 
             panel.add(addPlayerBtn, "wrap");
+
+            MenuButton showPlayersBtn = new MenuButton(Language.getString("ShowPlayers"));
+            showPlayersBtn.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    showShowPlayersDialog();
+                }
+            });
+
+            panel.add(showPlayersBtn, "wrap");
         }
         else
         {
@@ -139,6 +146,15 @@ public class MainGui extends JFrame
             addClubDialog = new CreateClubDialog();
         }
         addClubDialog.setVisible(true);
+    }
+
+    public void showShowPlayersDialog()
+    {
+        if (showPlayersDialog == null)
+        {
+            showPlayersDialog = new ShowPlayersDialog();
+        }
+        showPlayersDialog.setVisible(true);
     }
 
     public void showAddPlayerDialog()
