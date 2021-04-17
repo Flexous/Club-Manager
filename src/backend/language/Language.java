@@ -10,9 +10,9 @@ import objects.Property;
 
 public class Language 
 {
-    private static ArrayList<Property> properties = new ArrayList<>();
+    private ArrayList<Property> properties = new ArrayList<>();
 
-    public static void getLanguageProperties(String currentLangauge)
+    public void getLanguageProperties(String currentLangauge)
     {
         if (currentLangauge != null)
         {
@@ -62,7 +62,7 @@ public class Language
         }
     }
 
-    public static String getString(String propertyName)
+    public String getString(String propertyName)
     {
         if (!properties.isEmpty())
         {

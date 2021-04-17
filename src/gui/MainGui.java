@@ -1,11 +1,9 @@
 package gui;
 
 import backend.*;
-import gui.dialogs.*;
-import backend.language.Language;
+import gui.panels.*;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -15,18 +13,14 @@ public class MainGui extends JFrame
 {
     private static final long serialVersionUID = 1745017706827567279L;
 
-    private CreateClubDialog addClubDialog;
-    private ShowPlayersDialog showPlayersDialog;
-    private AddPlayerDialog addPlayerToClubDialog;
+    private JPanel menuPanel = new JPanel();
+    private JPanel mainPanel = new JPanel();
 
-    private JPanel panel = new JPanel();
-
-    public MainGui(String guiTitle)
+    public MainGui()
     {
-        setTitle(guiTitle);
+        setTitle("Club Manager");
         setIconImage(new ImageIcon(ClubManagerConstraints.DEFAULTLOGOPATH).getImage());
-        setResizable(false);
-        setExtendedState(MAXIMIZED_BOTH); 
+        setSize(Toolkit.getDefaultToolkit().getScreenSize());
         setLocationRelativeTo(null);
         setVisible(true);
 
@@ -35,134 +29,169 @@ public class MainGui extends JFrame
             @Override
             public void windowClosing(WindowEvent we) 
             {
-                Object[] options = {Language.getString("Yes"), Language.getString("No")};
+                Object[] options = {ClubManagerConstraints.LANGUAGE.getString("Yes"), ClubManagerConstraints.LANGUAGE.getString("No")};
 
-                int selection = JOptionPane.showOptionDialog(null, Language.getString("DoYouWantToSave"), "", 
+                int selection = JOptionPane.showOptionDialog(null, ClubManagerConstraints.LANGUAGE.getString("DoYouWantToSave"), "", 
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                 if (selection == JOptionPane.YES_OPTION)
                 {
-                    ClubManagerFunctions.saveClubToPropertyFile();
+                    ClubManagerConstraints.APP.saveClubToPropertyFile();
+                }
+                else if (selection == JOptionPane.CLOSED_OPTION)
+                {
+                    return;
                 }
                 
+                ClubManagerConstraints.APP.getLogger().info("Club Manager is closing.");
                 System.exit(0);
             }
         } );
     }
 
-    public void create()
+    public JPanel getMenuPanel()
     {
-        panel.setLayout(new MigLayout("align 50% 50%"));
+        return menuPanel;
+    }
+
+    public JPanel getMainPanel()
+    {
+        return mainPanel;
+    }
+
+    public void init()
+    {
+        menuPanel.setLayout(new MigLayout("fill, align 20% 20%"));
+        mainPanel.setLayout(new MigLayout("fill"));
 
         try 
         {
-            if (Application.getCurrentClub() != null)
+            if (ClubManagerConstraints.APP.getClub() != null)
             {
-                Color color1 = Application.getCurrentClub().getColor1();
+                setLayout(new MigLayout("", "[20%][80%]", "[100%]"));
 
-                if (color1 != null)
+                if (ClubManagerConstraints.APP.getClub().getColor1() != null)
                 {
-                    panel.setBackground(Application.getCurrentClub().getColor1());
+                    menuPanel.setBackground(ClubManagerConstraints.APP.getClub().getColor1());
+                    mainPanel.setBackground(ClubManagerConstraints.APP.getClub().getColor1());
                 }
                 else
                 {
-                    panel.setBackground(Color.WHITE);
+                    menuPanel.setBackground(Color.WHITE);
+                    mainPanel.setBackground(Color.WHITE);
                 }
 
-                String logoPath = Application.getCurrentClub().getLogo();
+                if (ClubManagerConstraints.APP.getClub().getColor2() != null)
+                {
+                    menuPanel.setBorder(BorderFactory.createLineBorder(ClubManagerConstraints.APP.getClub().getColor2()));
+                    mainPanel.setBorder(BorderFactory.createLineBorder(ClubManagerConstraints.APP.getClub().getColor2()));
+                    getContentPane().setBackground(ClubManagerConstraints.APP.getClub().getColor2());
+                }
+                else
+                {
+                    menuPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+                    mainPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+                    getContentPane().setBackground(Color.WHITE);
+                }
+
+                String logoPath = ClubManagerConstraints.APP.getClub().getLogo();
 
                 if (!logoPath.isEmpty())
                 {
                     setIconImage(new ImageIcon(logoPath).getImage());
                 }
+
+                JLabel currentClubLabel = new JLabel(ClubManagerConstraints.APP.getClub().getName());
+                currentClubLabel.setForeground(ClubManagerConstraints.APP.getContrastColor(mainPanel.getBackground()));
+                currentClubLabel.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 20));
+                menuPanel.add(currentClubLabel, "top, wrap");
+        
+                MenuButton editClubBtn = new MenuButton(ClubManagerConstraints.LANGUAGE.getString("ShowClub"));
+                editClubBtn.addActionListener(new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        
+                    }
+                });
+
+                menuPanel.add(editClubBtn, "top, wrap");
+
+                MenuButton showPlayersBtn = new MenuButton(ClubManagerConstraints.LANGUAGE.getString("ShowPlayers"));
+                showPlayersBtn.addActionListener(new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        mainPanel.removeAll();
+                        new PlayersPanel().init();
+                        revalidate();
+                        repaint();
+                    }
+                });
+    
+                menuPanel.add(showPlayersBtn, "top, wrap");
+
+                MenuButton exitAppBtn = new MenuButton(ClubManagerConstraints.LANGUAGE.getString("Exit"));
+                exitAppBtn.addActionListener(new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        Object[] options = {ClubManagerConstraints.LANGUAGE.getString("Yes"), ClubManagerConstraints.LANGUAGE.getString("No")};
+
+                        int selection = JOptionPane.showOptionDialog(null, ClubManagerConstraints.LANGUAGE.getString("DoYouWantToSave"), "", 
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        
+                        if (selection == JOptionPane.YES_OPTION)
+                        {
+                            ClubManagerConstraints.APP.saveClubToPropertyFile();
+                        }
+                        else if (selection == JOptionPane.CLOSED_OPTION)
+                        {
+                            return;
+                        }
+                        
+                        System.exit(0);
+                    }
+                });
+
+                menuPanel.add(exitAppBtn, "top, wrap");
+
+                add(menuPanel, "grow");
             }
             else
             {
-                panel.setBackground(Color.WHITE);
+                setLayout(new MigLayout("align 50% 50%"));
+
+                getContentPane().setBackground(Color.WHITE);
+                mainPanel.setBackground(Color.WHITE);
+
+                JLabel createClubLabel = new JLabel(ClubManagerConstraints.LANGUAGE.getString("NoClubCreated"));
+                createClubLabel.setForeground(ClubManagerConstraints.APP.getContrastColor(mainPanel.getBackground()));
+                createClubLabel.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 40));
+                mainPanel.add(createClubLabel, "wrap");
+                
+                MenuButton createClubButton = new MenuButton(ClubManagerConstraints.LANGUAGE.getString("CreateClub"));
+                createClubButton.addActionListener(new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        mainPanel.removeAll();
+                        new CreateClubPanel().init();
+                        revalidate();
+                        repaint();
+                    }
+                });
+        
+                mainPanel.add(createClubButton);
             }
         } 
         catch (Exception e) 
         {
-            Application.getLogger().warning(e.getMessage());
+            ClubManagerConstraints.APP.getLogger().warning(e.getMessage());
         }
 
-        if (Application.getCurrentClub() != null)
-        {
-            JLabel currentClubLabel = new JLabel(Language.getString("YourClub") + Application.getCurrentClub().getName());
-            currentClubLabel.setForeground(ClubManagerFunctions.getContrastColor(panel.getBackground()));
-            currentClubLabel.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 40));
-            panel.add(currentClubLabel, "wrap");
-
-            MenuButton addPlayerBtn = new MenuButton(Language.getString("AddPlayer"));
-            addPlayerBtn.addActionListener(new ActionListener()
-            {
-                public void actionPerformed(ActionEvent e)
-                {
-                    showAddPlayerDialog();
-                }
-            });
-
-            panel.add(addPlayerBtn, "wrap");
-
-            MenuButton showPlayersBtn = new MenuButton(Language.getString("ShowPlayers"));
-            showPlayersBtn.addActionListener(new ActionListener()
-            {
-                public void actionPerformed(ActionEvent e)
-                {
-                    showShowPlayersDialog();
-                }
-            });
-
-            panel.add(showPlayersBtn, "wrap");
-        }
-        else
-        {
-            JLabel createClubLabel = new JLabel(Language.getString("NoClubCreated"));
-            createClubLabel.setForeground(ClubManagerFunctions.getContrastColor(panel.getBackground()));
-            createClubLabel.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 40));
-            panel.add(createClubLabel, "wrap");
-        
-            MenuButton createClubButton = new MenuButton(Language.getString("CreateClub"));
-            createClubButton.addActionListener(new ActionListener()
-            {
-                public void actionPerformed(ActionEvent e)
-                {
-                    showCreateClubDialog();
-                }
-            });
-    
-            panel.add(createClubButton);
-        }
-
-        add(panel);
+        add(mainPanel, "grow");
         repaint();
         revalidate();
-    }
-
-    public void showCreateClubDialog()
-    {
-        if (addClubDialog == null)
-        {
-            addClubDialog = new CreateClubDialog();
-        }
-        addClubDialog.setVisible(true);
-    }
-
-    public void showShowPlayersDialog()
-    {
-        if (showPlayersDialog == null)
-        {
-            showPlayersDialog = new ShowPlayersDialog();
-        }
-        showPlayersDialog.setVisible(true);
-    }
-
-    public void showAddPlayerDialog()
-    {
-        if (addPlayerToClubDialog == null)
-        {
-            addPlayerToClubDialog = new AddPlayerDialog();
-        }
-        addPlayerToClubDialog.setVisible(true);
     }
 }
