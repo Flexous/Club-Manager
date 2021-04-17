@@ -14,7 +14,7 @@ public class Club
     private String name;
     private Color color1;
     private Color color2;
-    private String logo="";
+    private String logo;
     
     private ArrayList<Property> properties = new ArrayList<>();
 
@@ -36,9 +36,9 @@ public class Club
         return appDataPath;
     }
 
-    public void setAppDataPath(String path)
+    public void setAppDataPath(String appDataPath)
     {
-        appDataPath = path;
+        this.appDataPath = appDataPath;
     }
 
     public String getName()
@@ -56,9 +56,9 @@ public class Club
         return color1;
     }
 
-    public void setColor1(Color color)
+    public void setColor1(Color color1)
     {
-        color1 = color;
+        this.color1 = color1;
     }
 
     public Color getColor2()
@@ -66,9 +66,9 @@ public class Club
         return color2;
     }
 
-    public void setColor2(Color color)
+    public void setColor2(Color color2)
     {
-        color2 = color;
+        this.color2 = color2;
     }  
 
     public String getLogo()

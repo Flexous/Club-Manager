@@ -13,7 +13,7 @@ public class Property
 
     public String getName()
     {
-        return this.name;
+        return name;
     }
 
     public void setName(String name)
@@ -23,7 +23,7 @@ public class Property
 
     public String getValue()
     {
-        return this.value;
+        return value;
     }
 
     public void setValue(String value)

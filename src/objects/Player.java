@@ -6,7 +6,7 @@ public class Player
 {
     private String name;
     private int number;
-    private String imgSrc="";
+    private String imgSrc;
     private String nationality;
     private int age;
 

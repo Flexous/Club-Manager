@@ -1,8 +1,6 @@
 package backend;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 import objects.Property;
@@ -27,7 +25,7 @@ public class PropertiesHandler
 
                     if (parts.length > 1)
                     {
-                        Application.getProperties().add(new Property(parts[0], parts[1]));
+                        ClubManagerConstraints.APP.getProperties().add(new Property(parts[0], parts[1]));
                     }
                 }
             }
@@ -36,7 +34,7 @@ public class PropertiesHandler
         }
         catch (IOException e) 
         {
-            Application.getLogger().warning(e.getMessage());
+            ClubManagerConstraints.APP.getLogger().warning(e.getMessage());
         }
     }
 
@@ -46,15 +44,14 @@ public class PropertiesHandler
 
         if (propertyType.equals("App"))
         {
-            tmpProperties = Application.getProperties();
+            tmpProperties = ClubManagerConstraints.APP.getProperties();
         }
         else if (propertyType.equals("Club"))
         {
-            tmpProperties = Application.getCurrentClub().getProperties();
+            tmpProperties = ClubManagerConstraints.APP.getClub().getProperties();
         }
         else
         {
-            //Application.getLogger().warning("");
             return null;
         }
 
@@ -91,7 +88,7 @@ public class PropertiesHandler
 
                     if (parts.length > 1)
                     {
-                        Application.getCurrentClub().getProperties().add(new Property(parts[0], parts[1]));
+                        ClubManagerConstraints.APP.getClub().getProperties().add(new Property(parts[0], parts[1]));
                     }
                 }
             }
@@ -100,7 +97,7 @@ public class PropertiesHandler
         }
         catch (IOException e) 
         {
-            Application.getLogger().warning(e.getMessage());
+            ClubManagerConstraints.APP.getLogger().warning(e.getMessage());
         }
     }
 }
