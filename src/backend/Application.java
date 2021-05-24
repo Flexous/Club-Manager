@@ -8,6 +8,7 @@ import java.io.*;
 import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.*;
 
 import javax.swing.JOptionPane;
@@ -369,6 +370,28 @@ public class Application
 
     public void createNewPlayer(Player player)
     {
+        Random rand = new Random();  
+        int id = rand.nextInt(1000000);      
+
+        boolean isDuplicated = true;
+
+        while (isDuplicated)
+        {
+            isDuplicated = false;
+
+            for (Player p : getClub().getPlayers())
+            {
+                if (p.getId() == id)
+                {
+                    id = rand.nextInt(1000000);
+                    isDuplicated = true;
+                    break;
+                }
+            }
+        }
+
+        player.setId(id);
+
         File newPlayerFolder = new File(ClubManagerConstraints.APP.getClub().getAppDataPath()+"/Players/#"+
         player.getNumber() + " - " + player.getName());
 
@@ -410,6 +433,7 @@ public class Application
         try 
         {
             BufferedWriter bw = new BufferedWriter(new FileWriter(newPlayerFile));
+            bw.write("Id="+player.getId()+"\n");
             bw.write("Name="+player.getName()+"\n");
             bw.write("Number="+player.getNumber()+"\n");
             bw.close();

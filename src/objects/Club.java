@@ -117,7 +117,11 @@ public class Club
 
                     if (parts.length == 2)
                     {
-                        if (parts[0].equals("Name"))
+                        if (parts[0].equals("Id"))
+                        {
+                            player.setId(Integer.parseInt(parts[1]));
+                        }
+                        else if (parts[0].equals("Name"))
                         {
                             player.setName(parts[1]);
                         }
@@ -151,7 +155,7 @@ public class Club
     {
         for (int i = 0; i < players.size(); i++)
         {
-            if (players.get(i).getName().equals(updatedPlayer.getName()))
+            if (players.get(i).getId() == updatedPlayer.getId())
             {
                 players.set(i, updatedPlayer);
             }

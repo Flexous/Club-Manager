@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class Player 
 {
+    private int id;
+
     private String name;
     private int number;
     private String imgSrc;
@@ -15,6 +17,16 @@ public class Player
     public Player()
     {
         
+    }
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
     }
 
     public Player(String name)
