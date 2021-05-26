@@ -29,20 +29,7 @@ public class MainGui extends JFrame
             @Override
             public void windowClosing(WindowEvent we) 
             {
-                Object[] options = {ClubManagerConstraints.LANGUAGE.getString("Yes"), ClubManagerConstraints.LANGUAGE.getString("No")};
-
-                int selection = JOptionPane.showOptionDialog(null, ClubManagerConstraints.LANGUAGE.getString("DoYouWantToSave"), "", 
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-
-                if (selection == JOptionPane.YES_OPTION)
-                {
-                    ClubManagerConstraints.APP.saveClubToPropertyFile();
-                }
-                else if (selection == JOptionPane.CLOSED_OPTION)
-                {
-                    return;
-                }
-                
+                ClubManagerConstraints.APP.saveClubToPropertyFile();
                 ClubManagerConstraints.APP.getLogger().info("Club Manager is closing.");
                 System.exit(0);
             }
@@ -61,7 +48,7 @@ public class MainGui extends JFrame
 
     public void init()
     {
-        menuPanel.setLayout(new MigLayout("fill, align 20% 20%"));
+        menuPanel.setLayout(new MigLayout());
         mainPanel.setLayout(new MigLayout("fill"));
 
         try 
@@ -115,7 +102,7 @@ public class MainGui extends JFrame
                     }
                 });
 
-                menuPanel.add(editClubBtn, "top, wrap");
+                menuPanel.add(editClubBtn, "top, wrap, gaptop 50");
 
                 MenuButton showPlayersBtn = new MenuButton(ClubManagerConstraints.LANGUAGE.getString("ShowPlayers"));
                 showPlayersBtn.addActionListener(new ActionListener()
@@ -129,32 +116,20 @@ public class MainGui extends JFrame
                     }
                 });
     
-                menuPanel.add(showPlayersBtn, "top, wrap");
+                menuPanel.add(showPlayersBtn, "wrap, gaptop 50");
 
-                MenuButton exitAppBtn = new MenuButton(ClubManagerConstraints.LANGUAGE.getString("Exit"));
-                exitAppBtn.addActionListener(new ActionListener()
+                MenuButton showEmployeesBtn = new MenuButton("Trainer/Betreuer");
+                showEmployeesBtn.addActionListener(new ActionListener()
                 {
                     public void actionPerformed(ActionEvent e)
                     {
-                        Object[] options = {ClubManagerConstraints.LANGUAGE.getString("Yes"), ClubManagerConstraints.LANGUAGE.getString("No")};
-
-                        int selection = JOptionPane.showOptionDialog(null, ClubManagerConstraints.LANGUAGE.getString("DoYouWantToSave"), "", 
-                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-        
-                        if (selection == JOptionPane.YES_OPTION)
-                        {
-                            ClubManagerConstraints.APP.saveClubToPropertyFile();
-                        }
-                        else if (selection == JOptionPane.CLOSED_OPTION)
-                        {
-                            return;
-                        }
-                        
-                        System.exit(0);
+                        mainPanel.removeAll();
+                        revalidate();
+                        repaint();
                     }
                 });
 
-                menuPanel.add(exitAppBtn, "top, wrap");
+                menuPanel.add(showEmployeesBtn, "wrap, gaptop 50");
 
                 add(menuPanel, "grow");
             }

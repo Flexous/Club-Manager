@@ -11,5 +11,10 @@ public class ClubManagerConstraints
     public static final String PROPERTYFILEPATH = APP.getAppDataPath()+"/Club Manager/ClubManager.properties";
     
     public static final String DEFAULTLOGOPATH = "files/img/Default.png";
+    public static final String EDITLOGOPATH = "files/img/Edit.png";
+    public static final String CONFIRMLOGOPATH = "files/img/Check.png";
+    public static final String CANCELLOGOPATH = "files/img/Cancel.png";
     public static final String APPFONT = "Arial";
+
+    public static final int MINBUTTONTEXTLENGTH = 36;
 }
