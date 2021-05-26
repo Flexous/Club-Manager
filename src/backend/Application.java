@@ -393,7 +393,7 @@ public class Application
         player.setId(id);
 
         File newPlayerFolder = new File(ClubManagerConstraints.APP.getClub().getAppDataPath()+"/Players/#"+
-        player.getNumber() + " - " + player.getName());
+        player.getNumber() + " - " + player.getFirstname() + " " + player.getLastname());
 
         if (!newPlayerFolder.exists())
         {
@@ -416,7 +416,7 @@ public class Application
             }
         }
 
-        File newPlayerFile = new File(newPlayerFolder+"/"+player.getName()+".player");
+        File newPlayerFile = new File(newPlayerFolder+"/"+player.getFirstname() + " " + player.getLastname() +".player");
 
         if (!newPlayerFile.exists())
         {
@@ -434,7 +434,8 @@ public class Application
         {
             BufferedWriter bw = new BufferedWriter(new FileWriter(newPlayerFile));
             bw.write("Id="+player.getId()+"\n");
-            bw.write("Name="+player.getName()+"\n");
+            bw.write("Firstname="+player.getFirstname()+"\n");
+            bw.write("Lastname="+player.getLastname()+"\n");
             bw.write("Number="+player.getNumber()+"\n");
             bw.close();
         } 
@@ -445,7 +446,31 @@ public class Application
         }
 
         ClubManagerConstraints.APP.getClub().addPlayer(player);
-        ClubManagerConstraints.APP.getLogger().info("Player with name " + player.getName() + " and number " + player.getNumber());
+        ClubManagerConstraints.APP.getLogger().info("Player with name " + player.getFirstname() + " " + player.getLastname() + " and number " + player.getNumber() + " was created.");
+    }
+
+    public void deletePlayer(Player player)
+    {
+        File deletePlayerFolder = new File(ClubManagerConstraints.APP.getClub().getAppDataPath()+"/Players/#"+
+        player.getNumber() + " - " + player.getFirstname() + " " + player.getLastname());
+
+        if (deletePlayerFolder.exists())
+        {
+            for (File file : deletePlayerFolder.listFiles())
+            {
+                file.delete();
+            }
+            deletePlayerFolder.delete();
+
+            for (int i = 0; i < getClub().getPlayers().size(); i++)
+            {
+                if (getClub().getPlayers().get(i).getId() == player.getId())
+                {
+                    getClub().getPlayers().remove(i);
+                    break;
+                }
+            }
+        }
     }
 
     public void savePlayer(Player player)

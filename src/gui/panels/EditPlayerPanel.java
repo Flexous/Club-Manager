@@ -20,7 +20,7 @@ public class EditPlayerPanel
 
         JTextField nameOfPlayerField = new JTextField(20);
         ClubManagerConstraints.APP.getMainGui().getMainPanel().add(nameOfPlayerField, "gapleft 50, wrap");
-        nameOfPlayerField.setText(player.getName());
+        nameOfPlayerField.setText(player.getFirstname());
 
         JLabel nrOfPlayerLabel = new JLabel(ClubManagerConstraints.LANGUAGE.getString("NrOfPlayer"));
         nrOfPlayerLabel.setForeground(ClubManagerConstraints.APP.getContrastColor(ClubManagerConstraints.APP.getMainGui().getMainPanel().getBackground()));
@@ -47,7 +47,7 @@ public class EditPlayerPanel
                     return;
                 }
 
-                player.setName(nameOfPlayerField.getText());
+                player.setFirstname(nameOfPlayerField.getText());
 
                 try
                 {

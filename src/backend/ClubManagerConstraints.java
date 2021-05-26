@@ -12,8 +12,11 @@ public class ClubManagerConstraints
     
     public static final String DEFAULTLOGOPATH = "files/img/Default.png";
     public static final String EDITLOGOPATH = "files/img/Edit.png";
+    public static final String DELETELOGOPATH = "files/img/Delete.png";
     public static final String CONFIRMLOGOPATH = "files/img/Check.png";
     public static final String CANCELLOGOPATH = "files/img/Cancel.png";
+    public static final String ADDLOGOPATH = "files/img/Add.png";
+
     public static final String APPFONT = "Arial";
 
     public static final int MINBUTTONTEXTLENGTH = 36;

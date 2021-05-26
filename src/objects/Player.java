@@ -6,7 +6,8 @@ public class Player
 {
     private int id;
 
-    private String name;
+    private String firstname;
+    private String lastname;
     private int number;
     private String imgSrc;
     private String nationality;
@@ -29,19 +30,29 @@ public class Player
         this.id = id;
     }
 
-    public Player(String name)
+    public Player(String firstname)
     {
-        this.name = name;
+        this.firstname = firstname;
     }
     
-    public String getName()
+    public String getFirstname()
     {
-        return name;
+        return firstname;
     }
 
-    public void setName(String name)
+    public void setFirstname(String name)
     {
-        this.name = name;
+        this.firstname = name;
+    }
+
+    public String getLastname()
+    {
+        return lastname;
+    }
+
+    public void setLastname(String name)
+    {
+        this.lastname = name;
     }
 
     public int getNumber()

@@ -5,7 +5,6 @@ import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.border.MatteBorder;
 
 import backend.*;
 import gui.*;
@@ -26,9 +25,13 @@ public class PlayersPanel
         numberLbl.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 20));
         panel.add(numberLbl, "gapright 50");
 
-        JLabel nameLbl = new JLabel("Name");
-        nameLbl.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 20));
-        panel.add(nameLbl, "wrap");
+        JLabel firstnameLbl = new JLabel("Firstname");
+        firstnameLbl.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 20));
+        panel.add(firstnameLbl);
+
+        JLabel lastnameLbl = new JLabel("Lastname");
+        lastnameLbl.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 20));
+        panel.add(lastnameLbl, "wrap");
 
         for (Player player : ClubManagerConstraints.APP.getClub().getPlayers())
         {
@@ -39,16 +42,27 @@ public class PlayersPanel
             numberTxtField.setEditable(false);
             panel.add(numberTxtField);
 
-            JTextField nameTxtField = new JTextField(" "+player.getName()+" ");
-            nameTxtField.setBackground(ClubManagerConstraints.APP.getClub().getColor1());
-            nameTxtField.setBorder(new LineBorder(ClubManagerConstraints.APP.getClub().getColor2()));
-            nameTxtField.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 20));
-            nameTxtField.setEditable(false);
-            panel.add(nameTxtField);
+            JTextField firstnameTxtField = new JTextField(" "+player.getFirstname()+" ");
+            firstnameTxtField.setBackground(ClubManagerConstraints.APP.getClub().getColor1());
+            firstnameTxtField.setBorder(new LineBorder(ClubManagerConstraints.APP.getClub().getColor2()));
+            firstnameTxtField.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 20));
+            firstnameTxtField.setEditable(false);
+            panel.add(firstnameTxtField);
+
+            JTextField lastnameTxtField = new JTextField(" "+player.getLastname()+" ");
+            lastnameTxtField.setBackground(ClubManagerConstraints.APP.getClub().getColor1());
+            lastnameTxtField.setBorder(new LineBorder(ClubManagerConstraints.APP.getClub().getColor2()));
+            lastnameTxtField.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 20));
+            lastnameTxtField.setEditable(false);
+            panel.add(lastnameTxtField);
 
             MenuButton editBtn = new MenuButton("");
             Image icon = new ImageIcon(ClubManagerConstraints.EDITLOGOPATH).getImage();
             editBtn.setIcon(new ImageIcon(icon));
+            
+            MenuButton deleteBtn = new MenuButton("");
+            icon = new ImageIcon(ClubManagerConstraints.DELETELOGOPATH).getImage();
+            deleteBtn.setIcon(new ImageIcon(icon));
 
             MenuButton confirmBtn = new MenuButton("");
             icon = new ImageIcon(ClubManagerConstraints.CONFIRMLOGOPATH).getImage();
@@ -65,10 +79,26 @@ public class PlayersPanel
                 public void actionPerformed(ActionEvent e)
                 {
                     numberTxtField.setEditable(true);
-                    nameTxtField.setEditable(true);
+                    firstnameTxtField.setEditable(true);
+                    lastnameTxtField.setEditable(true);
                     confirmBtn.setVisible(true);
                     cancelBtn.setVisible(true);
                     editBtn.setEnabled(false);
+                }
+            });
+
+            deleteBtn.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    ClubManagerConstraints.APP.deletePlayer(player);
+
+                    ClubManagerConstraints.APP.getMainGui().getMainPanel().removeAll();
+
+                    new PlayersPanel().init();
+    
+                    ClubManagerConstraints.APP.getMainGui().revalidate();
+                    ClubManagerConstraints.APP.getMainGui().repaint();
                 }
             });
 
@@ -77,13 +107,14 @@ public class PlayersPanel
                 public void actionPerformed(ActionEvent e)
                 {
                     numberTxtField.setEditable(false);
-                    nameTxtField.setEditable(false);
+                    firstnameTxtField.setEditable(false);
+                    lastnameTxtField.setEditable(false);
                     editBtn.setEnabled(true);
                     confirmBtn.setVisible(false);
                     cancelBtn.setVisible(false);
 
                     player.setNumber(Integer.parseInt(numberTxtField.getText()));
-                    player.setName(nameTxtField.getText());
+                    player.setFirstname(firstnameTxtField.getText());
                     ClubManagerConstraints.APP.getClub().updatePlayer(player);
                 }
             });
@@ -93,7 +124,8 @@ public class PlayersPanel
                 public void actionPerformed(ActionEvent e)
                 {
                     numberTxtField.setEditable(false);
-                    nameTxtField.setEditable(false);
+                    firstnameTxtField.setEditable(false);
+                    lastnameTxtField.setEditable(false);
                     editBtn.setEnabled(true);
                     confirmBtn.setVisible(false);
                     cancelBtn.setVisible(false);
@@ -101,28 +133,14 @@ public class PlayersPanel
             });
 
             panel.add(editBtn, "gapleft 50");
+            panel.add(deleteBtn);
             panel.add(confirmBtn);
             panel.add(cancelBtn, "wrap");
         }
-
-        scrollPane.setViewportView(panel);
         
-        String [] header = {"Nummer", "Name"};
-
-        JTable playerTable = new JTable(getData(), header);
-        playerTable.setPreferredScrollableViewportSize(ClubManagerConstraints.APP.getMainGui().getMainPanel().getSize());
-        playerTable.setBackground(ClubManagerConstraints.APP.getClub().getColor1());
-        playerTable.setForeground(ClubManagerConstraints.APP.getContrastColor(playerTable.getBackground()));
-        playerTable.setFillsViewportHeight(true);
-        playerTable.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 30));
-        playerTable.setRowHeight(30);
-
-        MatteBorder border = new MatteBorder(1, 1, 0, 0, Color.BLACK);
-        playerTable.setBorder(border);
-
-        ClubManagerConstraints.APP.getMainGui().getMainPanel().add(scrollPane, "grow, wrap");
-
-        MenuButton addPlayerBtn = new MenuButton(ClubManagerConstraints.LANGUAGE.getString("AddPlayer"));
+        MenuButton addPlayerBtn = new MenuButton("");
+        Image icon = new ImageIcon(ClubManagerConstraints.ADDLOGOPATH).getImage();
+        addPlayerBtn.setIcon(new ImageIcon(icon));
         addPlayerBtn.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -137,24 +155,10 @@ public class PlayersPanel
             }
         });
 
-        ClubManagerConstraints.APP.getMainGui().getMainPanel().add(addPlayerBtn, "wrap");
-    }
+        panel.add(addPlayerBtn, "gaptop 50, wrap");
 
-
-    private String[][] getData()
-    {
-        String[][] data = new String[ClubManagerConstraints.APP.getClub().getPlayers().size()][2];
-
-        int index = 0;
-
-        for (Player player : ClubManagerConstraints.APP.getClub().getPlayers())
-        {
-            data[index][0] = player.getNumber()+"";
-            data[index][1] = player.getName();
-
-            index++;
-        }
-
-        return data;
+        scrollPane.setViewportView(panel);
+        
+        ClubManagerConstraints.APP.getMainGui().getMainPanel().add(scrollPane, "grow, wrap");
     }
 }
