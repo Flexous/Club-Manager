@@ -29,7 +29,11 @@ public class MainGui extends JFrame
             @Override
             public void windowClosing(WindowEvent we) 
             {
-                ClubManagerConstraints.APP.saveClubToPropertyFile();
+                if (ClubManagerConstraints.APP.getClub() != null)
+                {
+                    ClubManagerConstraints.APP.saveClubToPropertyFile();
+                }
+
                 ClubManagerConstraints.APP.getLogger().info("Club Manager is closing.");
                 System.exit(0);
             }

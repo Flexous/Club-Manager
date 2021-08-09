@@ -186,6 +186,7 @@ public class Application
                 if (line.contains("=") && line.startsWith("CurrentClub"))
                 {
                     Path path = Paths.get(ClubManagerConstraints.PROPERTYFILEPATH);
+
                     Charset charset = StandardCharsets.UTF_8;
                     String content = new String(Files.readAllBytes(path), charset);
                     content = content.replace(line, "CurrentClub="+ClubManagerConstraints.APP.getClub().getName());
@@ -193,7 +194,6 @@ public class Application
                     break;
                 }
             }
-
             br.close();
         }
         catch (IOException e) 
