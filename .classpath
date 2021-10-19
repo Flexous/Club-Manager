@@ -6,7 +6,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Megaport/git/Club-Manager/External Jars/commons-io-2.8.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Megaport/git/Club-Manager/External Jars/miglayout-3.5.5.jar"/>
+	<classpathentry kind="lib" path="src/externals/miglayout-3.7.1-swing.jar"/>
+	<classpathentry kind="lib" path="src/externals/sqlite-jdbc-3.36.0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
