@@ -1,7 +1,5 @@
 package objects;
 
-import java.util.ArrayList;
-
 public class Player 
 {
     private int id;
@@ -9,11 +7,11 @@ public class Player
     private String firstname;
     private String lastname;
     private int number;
+    private String dateOfBirth;
     private String imgSrc;
     private String nationality;
-    private int age;
 
-    private ArrayList<Property> properties = new ArrayList<>();
+    private Club club;
 
     public Player()
     {
@@ -65,6 +63,16 @@ public class Player
         this.number = number;
     }
 
+    public String getDateOfBirth()
+    {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth)
+    {
+        this.dateOfBirth = dateOfBirth;
+    }
+
     public String getImgSrc()
     {
         return imgSrc;
@@ -85,23 +93,13 @@ public class Player
         this.nationality = nationality;
     }
 
-    public int getAge()
+    public Club getClub()
     {
-        return age;
+        return club;
     }
 
-    public void setAge(int age)
+    public void setClub(Club club)
     {
-        this.age = age;
-    }
-
-    public ArrayList<Property> getProperties()
-    {
-        return properties;
-    }
-
-    public void setProperties(ArrayList<Property> properties)
-    {
-        this.properties = properties;
+        this.club = club;
     }
 }

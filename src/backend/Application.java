@@ -5,20 +5,21 @@ import objects.*;
 
 import java.awt.*;
 import java.io.*;
-import java.nio.charset.*;
-import java.nio.file.*;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Date;
 import java.util.logging.*;
 
-import javax.swing.JOptionPane;
-import javax.swing.plaf.ColorUIResource;
+import backend.language.LanguageHandler;
 
 public class Application
 {
     private Logger logger;
     private PropertiesHandler propertiesHandler;
+    private LanguageHandler language;
 
+    private DbConnection dbConnection;
     private ArrayList<Property> properties = new ArrayList<>();
 
     private MainGui mainGui;
@@ -26,67 +27,76 @@ public class Application
 
     public static void main(String[]args)
     {
-        ClubManagerConstraints.APP.getLogger().info("Club Manager was started.");
         new Application().init();
     }
 
     public void init()
     {
         createAppFolder();
+        getLogger().info("Club Manager is starting...");
 
-        ClubManagerConstraints.APP.propertiesHandler = new PropertiesHandler();
-        ClubManagerConstraints.APP.propertiesHandler.setAppProperties(ClubManagerConstraints.PROPERTYFILEPATH);
+        propertiesHandler = new PropertiesHandler(this);
+        propertiesHandler.loadPropertiesFromDb();
 
-        ClubManagerConstraints.LANGUAGE.getLanguageProperties(ClubManagerConstraints.APP.propertiesHandler.getPropertyValue("CurrentLanguage", "App"));
+        getLanguage().loadLanguageFromDb(propertiesHandler.getPropertyValue("Language"));
 
-        String lastClubFile = getLastClubFile();
-
-        if (lastClubFile != null)
-        {
-            ClubManagerConstraints.APP.club = new Club();
-            ClubManagerConstraints.APP.propertiesHandler.findClubProperties(lastClubFile);
-            ClubManagerConstraints.APP.club = getClubWithProperties();
-            ClubManagerConstraints.APP.club.setAppDataPath(ClubManagerConstraints.CLUBFILEPATH+ClubManagerConstraints.APP.club.getName()+"/");
-            
-            ClubManagerConstraints.APP.club.findAllPlayers();
-        }
+        loadClubFromDb();
+        loadPlayersFromDb();
 
         initMainGui();
     }
 
+    public LanguageHandler getLanguage()
+    {
+        if (language == null)
+        {
+            language = new LanguageHandler(this);
+        }
+        return language;
+    }
+
+    public DbConnection getDbConnection()
+    {
+        if (dbConnection == null)
+        {
+            dbConnection = new DbConnection(this);
+        }
+        return dbConnection;
+    }
+
     public ArrayList<Property> getProperties()
     {
-        return ClubManagerConstraints.APP.properties;
+        return properties;
     }
 
     public MainGui getMainGui()
     {
-        return ClubManagerConstraints.APP.mainGui;
+        return mainGui;
     }
 
     public void initMainGui() 
     {
-        if (ClubManagerConstraints.APP.mainGui == null)
+        if (mainGui == null)
         {
-            ClubManagerConstraints.APP.mainGui = new MainGui();
-            ClubManagerConstraints.APP.mainGui.init();
+            mainGui = new MainGui(this);
+            mainGui.init();
         }
     }
 
     public void closeMainGui()
     {
-        ClubManagerConstraints.APP.mainGui.dispose();
-        ClubManagerConstraints.APP. mainGui = null;
+        mainGui.dispose();
+        mainGui = null;
     }
 
     public Logger getLogger()
     {
-        if (ClubManagerConstraints.APP.logger == null)
+        if (logger == null)
         {
             try 
             {
-                ClubManagerConstraints.APP.logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-                ClubManagerConstraints.APP.logger.setLevel(Level.ALL);
+                logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+                logger.setLevel(Level.ALL);
 
                 File logFolder = new File(getAppDataPath()+"/Club Manager/log");
 
@@ -98,34 +108,34 @@ public class Application
                 FileHandler fh = new FileHandler(logFolder+"/CM_" + System.currentTimeMillis() +".log");
                 SimpleFormatter formatter = new SimpleFormatter();  
                 fh.setFormatter(formatter);   
-                ClubManagerConstraints.APP.logger.addHandler(fh);
+                logger.addHandler(fh);
             } 
             catch (SecurityException e) 
             {
-                ClubManagerConstraints.APP.getLogger().warning(e.getMessage());
+                getLogger().warning(e.getMessage());
             } 
             catch (IOException e) 
             {
-                ClubManagerConstraints.APP.getLogger().warning(e.getMessage());
+                getLogger().warning(e.getMessage());
             }  
 
         }
-        return ClubManagerConstraints.APP.logger;
+        return logger;
     }
 
     public PropertiesHandler getPropertiesHandler()
     {
-        return ClubManagerConstraints.APP.propertiesHandler;
+        return propertiesHandler;
     }
 
     public Club getClub()
     {
-        return ClubManagerConstraints.APP.club;
+        return club;
     }
 
     public void setClub(Club club)
     {
-        ClubManagerConstraints.APP.club = club;
+        this.club = club;
     }
 
     public void createAppFolder()
@@ -136,36 +146,6 @@ public class Application
         {
             appFolder.mkdir();
         }
-        
-        File propertyFile = new File(appFolder+"/ClubManager.properties");
-        
-        if (!propertyFile.exists())
-        {
-        	try 
-        	{
-				propertyFile.createNewFile();
-				
-				BufferedWriter fileWriter = new BufferedWriter(new FileWriter(propertyFile));
-				
-				fileWriter.write("DefaultLanguage=ENG\n");
-				fileWriter.write("CurrentLanguage=GER\n");
-				fileWriter.write("CurrentClub=\n");
-				
-				fileWriter.close();
-			} 
-        	catch (IOException e) 
-        	{
-                ClubManagerConstraints.APP.getLogger().warning(e.getMessage());
-			}
-        }
-        
-        File clubFolder = new File(ClubManagerConstraints.CLUBFILEPATH);
-
-        if (!clubFolder.exists())
-        {
-            clubFolder.mkdir();
-        }
-        
     }
 
     public String getAppDataPath()
@@ -173,33 +153,74 @@ public class Application
         return System.getenv("APPDATA").replace("\\", "/");
     }
 
-    public void saveClubToPropertyFile()
+    public void loadClubFromDb()
     {
+        getDbConnection().establish();
+
         try 
-        {
-            BufferedReader br = new BufferedReader(new FileReader(ClubManagerConstraints.PROPERTYFILEPATH));
+        {         
+            String sql = "select * from Clubs order by lastupdatetime desc";  
 
-            String line = "";
+            Statement stmt = getDbConnection().get().createStatement();  
+            ResultSet rs = stmt.executeQuery(sql);  
+               
+            Club club = new Club();
 
-            while ((line=br.readLine()) != null)
-            {
-                if (line.contains("=") && line.startsWith("CurrentClub"))
-                {
-                    Path path = Paths.get(ClubManagerConstraints.PROPERTYFILEPATH);
+            while (rs.next())  
+            {  
+                club.setName(rs.getString("name"));
 
-                    Charset charset = StandardCharsets.UTF_8;
-                    String content = new String(Files.readAllBytes(path), charset);
-                    content = content.replace(line, "CurrentClub="+ClubManagerConstraints.APP.getClub().getName());
-                    Files.write(path, content.getBytes(charset));
-                    break;
-                }
+                String [] color1Values = rs.getString("color1").split(" ");
+                club.setColor1(new Color(Integer.parseInt(color1Values[0]), Integer.parseInt(color1Values[1]), Integer.parseInt(color1Values[2])));
+
+                String [] color2Values = rs.getString("color2").split(" ");
+                club.setColor2(new Color(Integer.parseInt(color2Values[0]), Integer.parseInt(color2Values[1]), Integer.parseInt(color2Values[2])));
+
+                String [] color3Values = rs.getString("color3").split(" ");
+                club.setColor3(new Color(Integer.parseInt(color3Values[0]), Integer.parseInt(color3Values[1]), Integer.parseInt(color3Values[2])));
+
+                club.setLastUpdateTime(rs.getString("lastupdatetime"));
             }
-            br.close();
+
+            if (!club.getName().isEmpty())
+            {
+                setClub(club);
+            }
+            
+            getDbConnection().close();
+        } 
+        catch (SQLException e) 
+        {  
+            getLogger().warning(e.getMessage());
         }
-        catch (IOException e) 
-        {
-            ClubManagerConstraints.APP.getLogger().warning(e.getMessage());
-        }
+    }
+
+    public void addClubToDb()
+    {
+        getDbConnection().establish();
+
+        String sql = "insert into Clubs VALUES(?, ?, ?, ?, ?)";  
+   
+        try
+        {  
+            PreparedStatement pstmt = getDbConnection().get().prepareStatement(sql);  
+            pstmt.setString(1, getClub().getName());
+
+            pstmt.setString(2, getClub().getColor1().getRed() + " " + getClub().getColor1().getGreen() + " " + getClub().getColor1().getBlue());
+            pstmt.setString(3, getClub().getColor2().getRed() + " " + getClub().getColor2().getGreen() + " " + getClub().getColor2().getBlue());
+            pstmt.setString(4, getClub().getColor3().getRed() + " " + getClub().getColor3().getGreen() + " " + getClub().getColor3().getBlue());
+
+            String timeStamp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss:ms").format(new Date());
+            pstmt.setString(5, timeStamp);
+
+            pstmt.executeUpdate();
+        } 
+        catch (SQLException e) 
+        {  
+            getLogger().warning(e.getMessage());
+        }  
+
+        getDbConnection().close();
     }
 
     public Color getContrastColor(Color color) 
@@ -208,273 +229,79 @@ public class Application
         return y >= 128 ? Color.black : Color.white;
     }
 
-    public void createNewClub(Club club)
-    {
-        File newClubFolder = new File(ClubManagerConstraints.CLUBFILEPATH+club.getName());
-        
-        if (!newClubFolder.exists())
-        {
-            club.setAppDataPath(newClubFolder.getAbsolutePath());
-
-            File newClubFile = new File(newClubFolder.getAbsolutePath()+"/"+club.getName()+".club");
-
-            try 
-            {
-                newClubFolder.mkdir();
-				newClubFile.createNewFile();
-
-                File playerFolder = new File(newClubFolder.getAbsolutePath()+"/Players");
-
-                if (!playerFolder.exists())
-                {
-                    playerFolder.mkdir();
-                }
-
-                BufferedWriter bw = new BufferedWriter(new FileWriter(newClubFile));
-            
-                bw.write("Name="+club.getName()+"\n");
-                bw.write("Logo="+club.getLogo()+"\n");
-
-                if (club.getColor1() != null)
-                {
-                    bw.write("Color1="+club.getColor1().getRed()+ " " +club.getColor1().getGreen()+ " " +club.getColor1().getBlue()+"\n");
-                }
-                else
-                {
-                    bw.write("Color1=\n");
-                }
-
-                if (club.getColor2() != null)
-                {
-                    bw.write("Color2="+club.getColor2().getRed()+ " " +club.getColor2().getGreen()+ " " +club.getColor2().getBlue()+"\n");
-                }
-                else
-                {
-                    bw.write("Color2=\n");
-                }
-
-                bw.close();
-			} 
-            catch (IOException e) 
-            {
-				ClubManagerConstraints.APP.getLogger().warning(e.getMessage());
-			}
-        }
-        else
-        {
-
-        }
-    }
-
-    public String getLastClubFile()
-    {
-        String clubFileName = ClubManagerConstraints.APP.getPropertiesHandler().getPropertyValue("CurrentClub", "App");
-
-        if (clubFileName != null)
-        {
-            if (new File(ClubManagerConstraints.CLUBFILEPATH+clubFileName+"/"+clubFileName+".club").exists())
-            {
-                return ClubManagerConstraints.CLUBFILEPATH+clubFileName+"/"+clubFileName+".club";
-            }
-        }
-
-        File directory = new File(ClubManagerConstraints.CLUBFILEPATH);
-
-        String[] directories = directory.list(new FilenameFilter() 
-        {
-            @Override
-            public boolean accept(File current, String name) 
-            {
-              return new File(current, name).isDirectory();
-            }
-        });
-
-        long lastModifiedTime = Long.MIN_VALUE;
-        File chosenFile = null;
-    
-        if (directories != null)
-        {
-            for (String folderName : directories)
-            {
-                File file = new File(ClubManagerConstraints.CLUBFILEPATH+folderName);
-
-                if (file.lastModified() > lastModifiedTime)
-                {
-                    chosenFile = file;
-                    lastModifiedTime = file.lastModified();
-                }
-            }
-        }
-
-        if (chosenFile != null)
-        {
-            return chosenFile.getAbsolutePath()+"/"+chosenFile.getName()+".club";
-        }
-        return null;
-    }
-
     public Club getClubWithProperties()
     {
-        Club club = new Club();
-
-        String name = ClubManagerConstraints.APP.getPropertiesHandler().getPropertyValue("Name", "Club");
-
-        if (name != null)
-        {
-            club.setName(name);
-        }
-        else
-        {
-            club.setName("Unnamed club");
-        }
-
-        String logo = ClubManagerConstraints.APP.getPropertiesHandler().getPropertyValue("Logo", "Club");
-
-        if (logo != null)
-        {
-            club.setLogo(logo);
-        }
-        else
-        {
-            club.setLogo(ClubManagerConstraints.DEFAULTLOGOPATH);
-        }
-        
-        String color1 = ClubManagerConstraints.APP.getPropertiesHandler().getPropertyValue("Color1", "Club");
-
-        if (color1 != null)
-        {
-            String [] parts = color1.split(" ");
-            
-            if (parts != null)
-            {
-                club.setColor1(new ColorUIResource(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2])));
-            }
-
-            String color2 = ClubManagerConstraints.APP.getPropertiesHandler().getPropertyValue("Color2", "Club");
-
-            if (color2 != null)
-            {
-                parts = color2.split(" ");
-
-                if (parts != null)
-                {
-                    club.setColor2(new ColorUIResource(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2])));
-                }
-            }
-        }
-
-        club.setProperties(ClubManagerConstraints.APP.getClub().getProperties());
+        club.setProperties(getClub().getProperties());
 
         return club;
     }
 
-    public void createNewPlayer(Player player)
+    public void loadPlayersFromDb()
     {
-        Random rand = new Random();  
-        int id = rand.nextInt(1000000);      
-
-        boolean isDuplicated = true;
-
-        while (isDuplicated)
-        {
-            isDuplicated = false;
-
-            for (Player p : getClub().getPlayers())
-            {
-                if (p.getId() == id)
-                {
-                    id = rand.nextInt(1000000);
-                    isDuplicated = true;
-                    break;
-                }
-            }
-        }
-
-        player.setId(id);
-
-        File newPlayerFolder = new File(ClubManagerConstraints.APP.getClub().getAppDataPath()+"/Players/#"+
-        player.getNumber() + " - " + player.getFirstname() + " " + player.getLastname());
-
-        if (!newPlayerFolder.exists())
-        {
-            newPlayerFolder.mkdir();
-        }
-        else
-        {
-            Object[] options = {ClubManagerConstraints.LANGUAGE.getString("Yes"), ClubManagerConstraints.LANGUAGE.getString("No")};
-
-            int selection = JOptionPane.showOptionDialog(null, ClubManagerConstraints.LANGUAGE.getString("PlayerAlreadyExists"), "", 
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-
-            if (selection == JOptionPane.YES_OPTION)
-            {
-                saveClubToPropertyFile();
-            }
-            else
-            {
-                return;
-            }
-        }
-
-        File newPlayerFile = new File(newPlayerFolder+"/"+player.getFirstname() + " " + player.getLastname() +".player");
-
-        if (!newPlayerFile.exists())
-        {
-            try 
-            {
-                newPlayerFile.createNewFile();
-            } 
-            catch (IOException e) 
-            {
-                ClubManagerConstraints.APP.getLogger().warning(e.getMessage());
-            }
-        }
+        getDbConnection().establish();
 
         try 
-        {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(newPlayerFile));
-            bw.write("Id="+player.getId()+"\n");
-            bw.write("Firstname="+player.getFirstname()+"\n");
-            bw.write("Lastname="+player.getLastname()+"\n");
-            bw.write("Number="+player.getNumber()+"\n");
-            bw.close();
-        } 
-        catch (IOException e) 
-        {
-            ClubManagerConstraints.APP.getLogger().warning(e.getMessage());
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
+        {         
+            String sql = "select * from Players";  
 
-        ClubManagerConstraints.APP.getClub().addPlayer(player);
-        ClubManagerConstraints.APP.getLogger().info("Player with name " + player.getFirstname() + " " + player.getLastname() + " and number " + player.getNumber() + " was created.");
+            Statement stmt = getDbConnection().get().createStatement();  
+            ResultSet rs = stmt.executeQuery(sql);  
+               
+            while (rs.next())  
+            {  
+                Player player = new Player();
+                
+                player.setFirstname(rs.getString("firstname"));
+                player.setLastname(rs.getString("lastname"));
+                player.setClub(getClub());
+                player.setNumber(rs.getInt("number"));
+                player.setDateOfBirth(rs.getString("dateofbirth"));
+
+                getClub().addPlayer(player);
+            }
+            
+            getDbConnection().close();
+        } 
+        catch (SQLException e) 
+        {  
+            getLogger().warning(e.getMessage());
+        }
+    }
+
+    public void addNewPlayerToDb(Player player)
+    {
+        getDbConnection().establish();
+
+        String sql = "insert into Players VALUES(?, ?, ?, ?, ?)";  
+   
+        try
+        {  
+            PreparedStatement pstmt = getDbConnection().get().prepareStatement(sql);  
+            pstmt.setString(1, player.getFirstname());
+            pstmt.setString(2, player.getLastname());
+            pstmt.setString(3, player.getClub().getName());
+            pstmt.setInt(4, player.getNumber());
+            pstmt.setString(5, player.getDateOfBirth());
+
+            pstmt.executeUpdate();
+        } 
+        catch (SQLException e) 
+        {  
+            getLogger().warning(e.getMessage());
+        }  
+
+        getDbConnection().close();
+
+        getLogger().info("Player with name " + player.getFirstname() + " " + player.getLastname() + " and number " + player.getNumber() + " was created.");
     }
 
     public void deletePlayer(Player player)
     {
-        File deletePlayerFolder = new File(ClubManagerConstraints.APP.getClub().getAppDataPath()+"/Players/#"+
-        player.getNumber() + " - " + player.getFirstname() + " " + player.getLastname());
 
-        if (deletePlayerFolder.exists())
-        {
-            for (File file : deletePlayerFolder.listFiles())
-            {
-                file.delete();
-            }
-            deletePlayerFolder.delete();
-
-            for (int i = 0; i < getClub().getPlayers().size(); i++)
-            {
-                if (getClub().getPlayers().get(i).getId() == player.getId())
-                {
-                    getClub().getPlayers().remove(i);
-                    break;
-                }
-            }
-        }
     }
 
     public void savePlayer(Player player)
     {
-        ClubManagerConstraints.APP.getClub().updatePlayer(player);
+        getClub().updatePlayer(player);
     }
 }

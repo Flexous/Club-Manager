@@ -1,63 +1,52 @@
 package backend;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import objects.Property;
 
 public class PropertiesHandler 
 {
+    private Application app;
+
+    public PropertiesHandler(Application app)
+    {
+        this.app = app;
+    }
+
     //Property-File methods
 
-    public void setAppProperties(String filePath)
+    public void loadPropertiesFromDb()
     {
+        app.getDbConnection().establish();
+
         try 
-        {
-            BufferedReader br = new BufferedReader(new FileReader(filePath));
+        {         
+            String sql = "select * from App_Properties";  
 
-            String line = "";
-
-            while ((line=br.readLine()) != null)
-            {
-                if (line.contains("="))
-                {
-                    String [] parts = line.split("=");
-
-                    if (parts.length > 1)
-                    {
-                        ClubManagerConstraints.APP.getProperties().add(new Property(parts[0], parts[1]));
-                    }
-                }
+            Statement stmt = app.getDbConnection().get().createStatement();  
+            ResultSet rs = stmt.executeQuery(sql);  
+                  
+            while (rs.next()) 
+            {  
+                app.getProperties().add(new Property(rs.getString("propertykey"), rs.getString("propertyvalue")));
             }
-
-            br.close();
-        }
-        catch (IOException e) 
-        {
-            ClubManagerConstraints.APP.getLogger().warning(e.getMessage());
+            
+            app.getDbConnection().close();
+        } 
+        catch (SQLException e) 
+        {  
+            e.printStackTrace();
         }
     }
 
-    public String getPropertyValue(String propertyName, String propertyType)
+    public String getPropertyValue(String propertyName)
     {
-        ArrayList<Property> tmpProperties = new ArrayList<>();
-
-        if (propertyType.equals("App"))
+        for (Property property : app.getProperties())
         {
-            tmpProperties = ClubManagerConstraints.APP.getProperties();
-        }
-        else if (propertyType.equals("Club"))
-        {
-            tmpProperties = ClubManagerConstraints.APP.getClub().getProperties();
-        }
-        else
-        {
-            return null;
-        }
-
-        for (Property property : tmpProperties)
-        {
-            if (property.getName().equals(propertyName))
+            if (property.getKey().equals(propertyName))
             {
                 return property.getValue();
             }
@@ -88,7 +77,7 @@ public class PropertiesHandler
 
                     if (parts.length > 1)
                     {
-                        ClubManagerConstraints.APP.getClub().getProperties().add(new Property(parts[0], parts[1]));
+                        app.getClub().getProperties().add(new Property(parts[0], parts[1]));
                     }
                 }
             }
@@ -97,7 +86,7 @@ public class PropertiesHandler
         }
         catch (IOException e) 
         {
-            ClubManagerConstraints.APP.getLogger().warning(e.getMessage());
+            app.getLogger().warning(e.getMessage());
         }
     }
 }

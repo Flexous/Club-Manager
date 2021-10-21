@@ -1,21 +1,17 @@
 package objects;
 
 import java.awt.Color;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Club 
 {
-    private String appDataPath;
-
-    private String name;
+    private String name = "";
     private Color color1;
     private Color color2;
-    private String logo;
+    private Color color3;
+    private String logo = "";
     
+    private String lastUpdateTime;
     private ArrayList<Property> properties = new ArrayList<>();
 
     //Stuff for later
@@ -29,16 +25,6 @@ public class Club
     public Club(String name)
     {
         this.name = name;
-    }
-
-    public String getAppDataPath()
-    {
-        return appDataPath;
-    }
-
-    public void setAppDataPath(String appDataPath)
-    {
-        this.appDataPath = appDataPath;
     }
 
     public String getName()
@@ -69,7 +55,17 @@ public class Club
     public void setColor2(Color color2)
     {
         this.color2 = color2;
-    }  
+    }
+    
+    public Color getColor3()
+    {
+        return color3;
+    }
+
+    public void setColor3(Color color3)
+    {
+        this.color3 = color3;
+    } 
 
     public String getLogo()
     {
@@ -79,6 +75,16 @@ public class Club
     public void setLogo(String logo)
     {
         this.logo = logo;
+    }
+
+    public String getLastUpdateTime()
+    {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(String lastUpdateTime)
+    {
+        this.lastUpdateTime = lastUpdateTime;
     }
 
     public ArrayList<Property> getProperties()
@@ -93,56 +99,7 @@ public class Club
 
     public void findAllPlayers()
     {
-        File playerPath = new File(getAppDataPath()+"/Players");
 
-        File [] playerFolders = playerPath.listFiles();
-
-        for (File playerFolder : playerFolders)
-        {
-            String [] identifierParts = playerFolder.getName().split("- ");
-
-            File playerFile = new File(playerFolder+"/"+identifierParts[1]+".player");
-
-            try 
-            {
-                BufferedReader fileReader = new BufferedReader(new FileReader(playerFile));
-
-                String line = "";
-
-                Player player = new Player();
-
-                while ((line=fileReader.readLine()) != null)
-                {
-                    String [] parts = line.split("=");
-
-                    if (parts.length == 2)
-                    {
-                        if (parts[0].equals("Id"))
-                        {
-                            player.setId(Integer.parseInt(parts[1]));
-                        }
-                        else if (parts[0].equals("Firstname"))
-                        {
-                            player.setFirstname(parts[1]);
-                        }
-                        else if (parts[0].equals("Lastname"))
-                        {
-                            player.setLastname(parts[1]);
-                        }
-                        else if (parts[0].equals("Number"))
-                        {
-                            player.setNumber(Integer.parseInt(parts[1]));
-                        }
-                    }
-                }
-                getPlayers().add(player);
-                fileReader.close();
-            } 
-            catch (IOException e) 
-            {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void addPlayer(Player player)

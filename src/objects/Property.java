@@ -2,23 +2,23 @@ package objects;
 
 public class Property 
 {
-    private String name;
+    private String key;
     private String value;
     
-    public Property(String name, String value)
+    public Property(String key, String value)
     {
-        this.name = name;
+        this.key = key;
         this.value = value;
     }
 
-    public String getName()
+    public String getKey()
     {
-        return name;
+        return key;
     }
 
-    public void setName(String name)
+    public void setKey(String key)
     {
-        this.name = name;
+        this.key = key;
     }
 
     public String getValue()

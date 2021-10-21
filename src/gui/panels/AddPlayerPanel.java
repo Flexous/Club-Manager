@@ -12,32 +12,46 @@ import objects.Player;
 
 public class AddPlayerPanel
 { 
+    private Application app;
+
+    public AddPlayerPanel(Application app)
+    {
+        this.app = app;
+    }
+
     public void init()
     {
         Player player = new Player();
 
-        JLabel firstnameLbl = new JLabel(ClubManagerConstraints.LANGUAGE.getString("NameOfPlayer"));
-        firstnameLbl.setForeground(ClubManagerConstraints.APP.getContrastColor(ClubManagerConstraints.APP.getMainGui().getMainPanel().getBackground()));
-        ClubManagerConstraints.APP.getMainGui().getMainPanel().add(firstnameLbl, "gapleft 50, wrap");
+        JLabel firstnameLbl = new JLabel(app.getLanguage().getString("Firstname"));
+        firstnameLbl.setForeground(app.getContrastColor(app.getMainGui().getMainPanel().getBackground()));
+        app.getMainGui().getMainPanel().add(firstnameLbl, "gapleft 50, wrap");
 
         JTextField firstnameField = new JTextField(20);
-        ClubManagerConstraints.APP.getMainGui().getMainPanel().add(firstnameField, "gapleft 50, wrap");
+        app.getMainGui().getMainPanel().add(firstnameField, "gapleft 50, wrap");
 
-        JLabel lastnameLbl = new JLabel("Lastname");
-        lastnameLbl.setForeground(ClubManagerConstraints.APP.getContrastColor(ClubManagerConstraints.APP.getMainGui().getMainPanel().getBackground()));
-        ClubManagerConstraints.APP.getMainGui().getMainPanel().add(lastnameLbl, "gapleft 50, wrap");
+        JLabel lastnameLbl = new JLabel(app.getLanguage().getString("Lastname"));
+        lastnameLbl.setForeground(app.getContrastColor(app.getMainGui().getMainPanel().getBackground()));
+        app.getMainGui().getMainPanel().add(lastnameLbl, "gapleft 50, wrap");
 
         JTextField lastnameField = new JTextField(20);
-        ClubManagerConstraints.APP.getMainGui().getMainPanel().add(lastnameField, "gapleft 50, wrap");
+        app.getMainGui().getMainPanel().add(lastnameField, "gapleft 50, wrap");
 
-        JLabel nrOfPlayerLabel = new JLabel(ClubManagerConstraints.LANGUAGE.getString("NrOfPlayer"));
-        nrOfPlayerLabel.setForeground(ClubManagerConstraints.APP.getContrastColor(ClubManagerConstraints.APP.getMainGui().getMainPanel().getBackground()));
-        ClubManagerConstraints.APP.getMainGui().getMainPanel().add(nrOfPlayerLabel, "gapleft 50, wrap");
+        JLabel nrOfPlayerLabel = new JLabel(app.getLanguage().getString("NrOfPlayer"));
+        nrOfPlayerLabel.setForeground(app.getContrastColor(app.getMainGui().getMainPanel().getBackground()));
+        app.getMainGui().getMainPanel().add(nrOfPlayerLabel, "gapleft 50, wrap");
 
         JTextField nrOfPlayerField = new JTextField(5);
-        ClubManagerConstraints.APP.getMainGui().getMainPanel().add(nrOfPlayerField, "gapleft 50, wrap");
+        app.getMainGui().getMainPanel().add(nrOfPlayerField, "gapleft 50, wrap");
 
-        MenuButton addPlayerBtn = new MenuButton(ClubManagerConstraints.LANGUAGE.getString("AddPlayer"));
+        JLabel birthDateLbl = new JLabel(app.getLanguage().getString("Birthdate"));
+        birthDateLbl.setForeground(app.getContrastColor(app.getMainGui().getMainPanel().getBackground()));
+        app.getMainGui().getMainPanel().add(birthDateLbl, "gapleft 50, wrap");
+
+        JTextField birthDateField = new JTextField(5);
+        app.getMainGui().getMainPanel().add(birthDateField, "gapleft 50, wrap");
+
+        MenuButton addPlayerBtn = new MenuButton(app, app.getLanguage().getString("AddPlayer"));
         addPlayerBtn.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e) 
@@ -62,6 +76,7 @@ public class AddPlayerPanel
 
                 player.setFirstname(firstnameField.getText());
                 player.setLastname(lastnameField.getText());
+                player.setClub(app.getClub());
 
                 try
                 {
@@ -72,22 +87,24 @@ public class AddPlayerPanel
                     ex.printStackTrace();
                 }
 
+                player.setDateOfBirth(birthDateField.getText());
+
                 boolean playerUpdate = false;
 
-                for (Player existingPlayer : ClubManagerConstraints.APP.getClub().getPlayers())
+                for (Player existingPlayer : app.getClub().getPlayers())
                 {
                     if (existingPlayer.getFirstname().equals(player.getFirstname()) && existingPlayer.getLastname().equals(player.getLastname()))
                     {
-                        Object[] options = {ClubManagerConstraints.LANGUAGE.getString("Yes"), ClubManagerConstraints.LANGUAGE.getString("No")};
+                        Object[] options = {app.getLanguage().getString("Yes"), app.getLanguage().getString("No")};
         
-                        int selection = JOptionPane.showOptionDialog(null, ClubManagerConstraints.LANGUAGE.getString("PlayerAlreadyExists"), "", 
+                        int selection = JOptionPane.showOptionDialog(null, app.getLanguage().getString("PlayerAlreadyExists"), "", 
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             
                         if (selection == JOptionPane.YES_OPTION)
                         {
-                            ClubManagerConstraints.APP.getMainGui().getMainPanel().removeAll();
+                            app.getMainGui().getMainPanel().removeAll();
 
-                            new EditPlayerPanel().init(player);
+                            new EditPlayerPanel(app).init(player);
                             playerUpdate = true;
                         }
                         else
@@ -99,17 +116,19 @@ public class AddPlayerPanel
 
                 if (!playerUpdate)
                 {
-                    ClubManagerConstraints.APP.createNewPlayer(player);
+                    app.getClub().addPlayer(player);
 
-                    ClubManagerConstraints.APP.getMainGui().getMainPanel().removeAll();
+                    app.addNewPlayerToDb(player);
 
-                    new PlayersPanel().init();
+                    app.getMainGui().getMainPanel().removeAll();
+
+                    new PlayersPanel(app).init();
     
-                    ClubManagerConstraints.APP.getMainGui().revalidate();
-                    ClubManagerConstraints.APP.getMainGui().repaint();
+                    app.getMainGui().revalidate();
+                    app.getMainGui().repaint();
                 }
             }
         });
-        ClubManagerConstraints.APP.getMainGui().getMainPanel().add(addPlayerBtn, "gapleft 50, gaptop 150, wrap");
+        app.getMainGui().getMainPanel().add(addPlayerBtn, "gapleft 50, gaptop 150, wrap");
     }
 }

@@ -6,31 +6,38 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-import backend.ClubManagerConstraints;
+import backend.Application;
 import gui.MenuButton;
 import objects.*;
 
 public class EditPlayerPanel
 {    
+    private Application app;
+
+    public EditPlayerPanel(Application app)
+    {
+        this.app = app;
+    }
+
     public void init(Player player)
     {
-        JLabel nameOfPlayerLabel = new JLabel(ClubManagerConstraints.LANGUAGE.getString("NameOfPlayer"));
-        nameOfPlayerLabel.setForeground(ClubManagerConstraints.APP.getContrastColor(ClubManagerConstraints.APP.getMainGui().getMainPanel().getBackground()));
-        ClubManagerConstraints.APP.getMainGui().getMainPanel().add(nameOfPlayerLabel, "gapleft 50, wrap");
+        JLabel nameOfPlayerLabel = new JLabel(app.getLanguage().getString("NameOfPlayer"));
+        nameOfPlayerLabel.setForeground(app.getContrastColor(app.getMainGui().getMainPanel().getBackground()));
+        app.getMainGui().getMainPanel().add(nameOfPlayerLabel, "gapleft 50, wrap");
 
         JTextField nameOfPlayerField = new JTextField(20);
-        ClubManagerConstraints.APP.getMainGui().getMainPanel().add(nameOfPlayerField, "gapleft 50, wrap");
+        app.getMainGui().getMainPanel().add(nameOfPlayerField, "gapleft 50, wrap");
         nameOfPlayerField.setText(player.getFirstname());
 
-        JLabel nrOfPlayerLabel = new JLabel(ClubManagerConstraints.LANGUAGE.getString("NrOfPlayer"));
-        nrOfPlayerLabel.setForeground(ClubManagerConstraints.APP.getContrastColor(ClubManagerConstraints.APP.getMainGui().getMainPanel().getBackground()));
-        ClubManagerConstraints.APP.getMainGui().getMainPanel().add(nrOfPlayerLabel, "gapleft 50, wrap");
+        JLabel nrOfPlayerLabel = new JLabel(app.getLanguage().getString("NrOfPlayer"));
+        nrOfPlayerLabel.setForeground(app.getContrastColor(app.getMainGui().getMainPanel().getBackground()));
+        app.getMainGui().getMainPanel().add(nrOfPlayerLabel, "gapleft 50, wrap");
 
         JTextField nrOfPlayerField = new JTextField(5);
-        ClubManagerConstraints.APP.getMainGui().getMainPanel().add(nrOfPlayerField, "gapleft 50, wrap");
+        app.getMainGui().getMainPanel().add(nrOfPlayerField, "gapleft 50, wrap");
         nrOfPlayerField.setText(player.getNumber()+"");
 
-        MenuButton savePlayerBtn = new MenuButton(ClubManagerConstraints.LANGUAGE.getString("AddPlayer"));
+        MenuButton savePlayerBtn = new MenuButton(app, app.getLanguage().getString("AddPlayer"));
         savePlayerBtn.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e) 
@@ -58,7 +65,7 @@ public class EditPlayerPanel
                     ex.printStackTrace();
                 }
 
-                ClubManagerConstraints.APP.getClub().updatePlayer(player);
+                app.getClub().updatePlayer(player);
             }
         });
     }
