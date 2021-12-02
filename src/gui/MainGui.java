@@ -98,6 +98,8 @@ public class MainGui extends JFrame
                 {
                     public void actionPerformed(ActionEvent e)
                     {
+                        app.loadPlayersFromDb();
+
                         mainPanel.removeAll();
                         new PlayersPanel(app).init();
                         revalidate();

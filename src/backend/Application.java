@@ -41,7 +41,6 @@ public class Application
         getLanguage().loadLanguageFromDb(propertiesHandler.getPropertyValue("Language"));
 
         loadClubFromDb();
-        loadPlayersFromDb();
 
         initMainGui();
     }
@@ -185,6 +184,7 @@ public class Application
             if (!club.getName().isEmpty())
             {
                 setClub(club);
+                getLogger().info("Club with name " + club.getName() + " was loaded from the database.");
             }
             
             getDbConnection().close();
@@ -199,7 +199,7 @@ public class Application
     {
         getDbConnection().establish();
 
-        String sql = "insert into Clubs VALUES(?, ?, ?, ?, ?)";  
+        String sql = "insert into Clubs VALUES(null, ?, ?, ?, ?, ?)";  
    
         try
         {  
@@ -214,6 +214,7 @@ public class Application
             pstmt.setString(5, timeStamp);
 
             pstmt.executeUpdate();
+            getLogger().info("Club with name " + getClub().getName() + " was added to the database.");
         } 
         catch (SQLException e) 
         {  
@@ -242,7 +243,7 @@ public class Application
 
         try 
         {         
-            String sql = "select * from Players";  
+            String sql = "select * from Players where club = '" + getClub().getName()+"'";  
 
             Statement stmt = getDbConnection().get().createStatement();  
             ResultSet rs = stmt.executeQuery(sql);  
@@ -260,6 +261,7 @@ public class Application
                 getClub().addPlayer(player);
             }
             
+            getLogger().info(getClub().getPlayers().size() + " players were loaded from the database.");
             getDbConnection().close();
         } 
         catch (SQLException e) 
@@ -272,7 +274,7 @@ public class Application
     {
         getDbConnection().establish();
 
-        String sql = "insert into Players VALUES(?, ?, ?, ?, ?)";  
+        String sql = "insert into Players VALUES(null, ?, ?, ?, ?, ?)";  
    
         try
         {  
@@ -284,6 +286,7 @@ public class Application
             pstmt.setString(5, player.getDateOfBirth());
 
             pstmt.executeUpdate();
+            getLogger().info("Player with name " + player.getFirstname() + " " + player.getLastname() + " and number " + player.getNumber() + " was added to the database.");
         } 
         catch (SQLException e) 
         {  
@@ -291,13 +294,26 @@ public class Application
         }  
 
         getDbConnection().close();
-
-        getLogger().info("Player with name " + player.getFirstname() + " " + player.getLastname() + " and number " + player.getNumber() + " was created.");
     }
 
     public void deletePlayer(Player player)
     {
+        getDbConnection().establish();
 
+        String sql = "delete from Players where id = " + player.getId();
+
+        try
+        {  
+            PreparedStatement pstmt = getDbConnection().get().prepareStatement(sql);  
+            pstmt.executeUpdate();
+            getLogger().info("Player with name " + player.getFirstname() + " " + player.getLastname() + " was removed from the database.");
+        } 
+        catch (SQLException e) 
+        {  
+            getLogger().warning(e.getMessage());
+        }  
+
+        getDbConnection().close();
     }
 
     public void savePlayer(Player player)

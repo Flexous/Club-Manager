@@ -19,7 +19,7 @@ public class DbConnection
     {
         try 
         {  
-            String url = "jdbc:sqlite:C:/Users/felix/Documents/Datenbanken/CM.db";  
+            String url = "jdbc:sqlite:files/CM.db";  
             conn = DriverManager.getConnection(url);        
         } 
         catch (SQLException e) 
