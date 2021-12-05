@@ -70,19 +70,35 @@ public class MainGui extends JFrame
                 mainPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
                 getContentPane().setBackground(Color.WHITE);
 
+                boolean logoAvailable = true;
+
                 String logoPath = app.getClub().getLogo();
 
-                if (!logoPath.isEmpty())
+                if (logoPath != null)
                 {
-                    setIconImage(new ImageIcon(logoPath).getImage());
+                    if (!logoPath.isEmpty())
+                    {
+                        setIconImage(new ImageIcon(logoPath).getImage());
+                    }
+                    else
+                    {
+                        logoAvailable = false;
+                    }
                 }
-
+                
                 JLabel currentClubLabel = new JLabel(app.getClub().getName());
                 currentClubLabel.setForeground(app.getContrastColor(mainPanel.getBackground()));
                 currentClubLabel.setFont(new Font(ClubManagerConstraints.APPFONT, Font.BOLD, 20));
                 menuPanel.add(currentClubLabel, "top, wrap");
         
-                MenuButton editClubBtn = new MenuButton(app, app.getLanguage().getString("ShowClub"));
+                MenuButton editClubBtn = new MenuButton(app, "");
+
+                if (logoAvailable)
+                {
+                    editClubBtn.setIcon(new ImageIcon(logoPath));
+                }
+
+                editClubBtn.setToolTipText(app.getLanguage().getString("ShowClub"));
                 editClubBtn.addActionListener(new ActionListener()
                 {
                     public void actionPerformed(ActionEvent e)
@@ -93,7 +109,9 @@ public class MainGui extends JFrame
 
                 menuPanel.add(editClubBtn, "top, wrap, gaptop 50");
 
-                MenuButton showPlayersBtn = new MenuButton(app, app.getLanguage().getString("ShowPlayers"));
+                MenuButton showPlayersBtn = new MenuButton(app, "");
+                showPlayersBtn.setIcon(new ImageIcon("files/img/Players.png"));
+                showPlayersBtn.setToolTipText(app.getLanguage().getString("ShowPlayers"));
                 showPlayersBtn.addActionListener(new ActionListener()
                 {
                     public void actionPerformed(ActionEvent e)
@@ -109,7 +127,20 @@ public class MainGui extends JFrame
     
                 menuPanel.add(showPlayersBtn, "wrap, gaptop 50");
 
-                MenuButton showEmployeesBtn = new MenuButton(app, "Trainer/Betreuer");
+                MenuButton showManagerBtn = new MenuButton(app, "");
+                showManagerBtn.addActionListener(new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        mainPanel.removeAll();
+                        revalidate();
+                        repaint();
+                    }
+                });
+
+                menuPanel.add(showManagerBtn, "wrap, gaptop 50");
+
+                MenuButton showEmployeesBtn = new MenuButton(app, "");
                 showEmployeesBtn.addActionListener(new ActionListener()
                 {
                     public void actionPerformed(ActionEvent e)
@@ -159,5 +190,6 @@ public class MainGui extends JFrame
         add(mainPanel, "grow");
         repaint();
         revalidate();
+        app.getLogger().info("Gui is visible now.");
     }
 }

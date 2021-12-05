@@ -102,6 +102,7 @@ public class Application
                 if (!logFolder.exists())
                 {
                     logFolder.mkdir();
+                    getLogger().info("Log directory created...");
                 }
 
                 FileHandler fh = new FileHandler(logFolder+"/CM_" + System.currentTimeMillis() +".log");
@@ -144,6 +145,7 @@ public class Application
         if (!appFolder.exists())
         {
             appFolder.mkdir();
+            getLogger().info("App directory created...");
         }
     }
 
@@ -158,7 +160,7 @@ public class Application
 
         try 
         {         
-            String sql = "select * from Clubs order by lastupdatetime desc";  
+            String sql = "select * from Clubs order by lastupdatetime desc limit 1";  
 
             Statement stmt = getDbConnection().get().createStatement();  
             ResultSet rs = stmt.executeQuery(sql);  
@@ -172,13 +174,21 @@ public class Application
                 String [] color1Values = rs.getString("color1").split(" ");
                 club.setColor1(new Color(Integer.parseInt(color1Values[0]), Integer.parseInt(color1Values[1]), Integer.parseInt(color1Values[2])));
 
-                String [] color2Values = rs.getString("color2").split(" ");
-                club.setColor2(new Color(Integer.parseInt(color2Values[0]), Integer.parseInt(color2Values[1]), Integer.parseInt(color2Values[2])));
+                if (rs.getString("color2") != null)
+                {
+                    String [] color2Values = rs.getString("color2").split(" ");
+                    club.setColor2(new Color(Integer.parseInt(color2Values[0]), Integer.parseInt(color2Values[1]), Integer.parseInt(color2Values[2])));                    
+                }
 
-                String [] color3Values = rs.getString("color3").split(" ");
-                club.setColor3(new Color(Integer.parseInt(color3Values[0]), Integer.parseInt(color3Values[1]), Integer.parseInt(color3Values[2])));
+                if (rs.getString("color3") != null)
+                {
+                    String [] color3Values = rs.getString("color3").split(" ");
+                    club.setColor3(new Color(Integer.parseInt(color3Values[0]), Integer.parseInt(color3Values[1]), Integer.parseInt(color3Values[2])));
+                }
 
                 club.setLastUpdateTime(rs.getString("lastupdatetime"));
+
+                club.setLogo(rs.getString("logopath"));
             }
 
             if (!club.getName().isEmpty())
@@ -199,7 +209,7 @@ public class Application
     {
         getDbConnection().establish();
 
-        String sql = "insert into Clubs VALUES(null, ?, ?, ?, ?, ?)";  
+        String sql = "insert into Clubs VALUES(null, ?, ?, ?, ?, ?, ?)";  
    
         try
         {  
@@ -212,6 +222,7 @@ public class Application
 
             String timeStamp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss:ms").format(new Date());
             pstmt.setString(5, timeStamp);
+            pstmt.setString(6, getClub().getLogo());
 
             pstmt.executeUpdate();
             getLogger().info("Club with name " + getClub().getName() + " was added to the database.");

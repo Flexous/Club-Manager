@@ -21,6 +21,24 @@ public class PlayersPanel
 
     public void init()
     {
+        MenuButton addPlayerBtn = new MenuButton(app, "");
+        addPlayerBtn.setIcon(new ImageIcon("files/img/Add.png"));
+        addPlayerBtn.setToolTipText(app.getLanguage().getString("Add Player"));
+        
+        addPlayerBtn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                app.getMainGui().getMainPanel().removeAll();
+
+                AddPlayerPanel addPlayerPanel = new AddPlayerPanel(app);
+                addPlayerPanel.init();
+
+                app.getMainGui().revalidate();
+                app.getMainGui().repaint();
+            }
+        });
+
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.getViewport().setBackground(Color.WHITE);
 
@@ -44,24 +62,11 @@ public class PlayersPanel
         JTable jt = new JTable(data, column);
         panel.add(jt);
 
-        MenuButton addPlayerBtn = new MenuButton(app, app.getLanguage().getString("AddPlayer"));
-        addPlayerBtn.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                app.getMainGui().getMainPanel().removeAll();
-
-                AddPlayerPanel addPlayerPanel = new AddPlayerPanel(app);
-                addPlayerPanel.init();
-
-                app.getMainGui().revalidate();
-                app.getMainGui().repaint();
-            }
-        });
-
         scrollPane.setViewportView(jt);
         
-        app.getMainGui().getMainPanel().add(scrollPane, "grow, wrap");
-        app.getMainGui().getMainPanel().add(addPlayerBtn);
+        app.getMainGui().getMainPanel().add(addPlayerBtn, "wrap");
+        app.getMainGui().getMainPanel().add(scrollPane, "grow");
+
+        app.getLogger().info("Player view now visible.");
     } 
 }
