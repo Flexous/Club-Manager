@@ -24,6 +24,16 @@ public class MainGui extends JFrame
     {
         this.app = app;
 
+        try 
+        {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } 
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                | UnsupportedLookAndFeelException e) 
+                {
+            app.getLogger().warning(e.getMessage());
+        }
+
         setTitle("Club Manager");
         setIconImage(new ImageIcon().getImage());
         setSize(Toolkit.getDefaultToolkit().getScreenSize());
@@ -64,10 +74,12 @@ public class MainGui extends JFrame
         {
             if (app.getClub() != null)
             {
-                setLayout(new MigLayout("", "[20%][80%]", "[100%]"));
+                setLayout(new MigLayout("", "[10%][90%]", "[100%]"));
 
-                menuPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-                mainPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+                menuPanel.setBorder(BorderFactory.createLineBorder(app.getClub().getColor2()));
+                menuPanel.setBackground(app.getClub().getColor1());
+                mainPanel.setBorder(BorderFactory.createLineBorder(app.getClub().getColor2()));
+                mainPanel.setBackground(app.getClub().getColor1());
                 getContentPane().setBackground(Color.WHITE);
 
                 boolean logoAvailable = true;
@@ -95,7 +107,12 @@ public class MainGui extends JFrame
 
                 if (logoAvailable)
                 {
-                    editClubBtn.setIcon(new ImageIcon(logoPath));
+                    ImageIcon imageIcon = new ImageIcon(logoPath);
+                    Image image = imageIcon.getImage();
+                    Image newimg = image.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH);
+                    ImageIcon newImageIcon = new ImageIcon(newimg);
+
+                    editClubBtn.setIcon(newImageIcon);
                 }
 
                 editClubBtn.setToolTipText(app.getLanguage().getString("ShowClub"));
@@ -125,33 +142,43 @@ public class MainGui extends JFrame
                     }
                 });
     
-                menuPanel.add(showPlayersBtn, "wrap, gaptop 50");
+                menuPanel.add(showPlayersBtn, "wrap");
 
                 MenuButton showManagerBtn = new MenuButton(app, "");
+                showManagerBtn.setIcon(new ImageIcon("files/img/Manager.png"));
+                showManagerBtn.setToolTipText(app.getLanguage().getString("ShowManager"));
                 showManagerBtn.addActionListener(new ActionListener()
                 {
                     public void actionPerformed(ActionEvent e)
                     {
+                        app.loadManagerFromDb();
+
                         mainPanel.removeAll();
+                        new ManagerPanel(app).init();
                         revalidate();
                         repaint();
                     }
                 });
 
-                menuPanel.add(showManagerBtn, "wrap, gaptop 50");
+                menuPanel.add(showManagerBtn, "wrap");
 
                 MenuButton showEmployeesBtn = new MenuButton(app, "");
+                showEmployeesBtn.setIcon(new ImageIcon("files/img/Employees.png"));
+                showEmployeesBtn.setToolTipText(app.getLanguage().getString("ShowEmployees"));
                 showEmployeesBtn.addActionListener(new ActionListener()
                 {
                     public void actionPerformed(ActionEvent e)
                     {
+                        app.loadEmployeesFromDb();
+
                         mainPanel.removeAll();
+                        new EmployeesPanel(app).init();
                         revalidate();
                         repaint();
                     }
                 });
 
-                menuPanel.add(showEmployeesBtn, "wrap, gaptop 50");
+                menuPanel.add(showEmployeesBtn, "wrap");
 
                 add(menuPanel, "grow");
             }

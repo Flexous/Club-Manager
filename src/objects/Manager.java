@@ -1,9 +1,7 @@
 package objects;
 
-public class Employee 
+public class Manager 
 {
-    private int id;
-
     private String lastname;
     private String firstname;
     private String nationality;
@@ -11,40 +9,30 @@ public class Employee
 
     private Club club;
 
-    public Employee()
+    public Manager()
     {
         
     }
 
-    public Employee(String lastname, String firstname)
+    public Manager(String lastname, String firstname)
     {
         this.lastname = lastname;
         this.firstname = firstname;
     }
 
-    public Employee(String lastname, String firstname, String nationality)
+    public Manager(String lastname, String firstname, String nationality)
     {
         this.lastname = lastname;
         this.firstname = firstname;
         this.nationality = nationality;  
     }
 
-    public Employee(String lastname, String firstname, String nationality, int age)
+    public Manager(String lastname, String firstname, String nationality, int age)
     {
         this.lastname = lastname;
         this.firstname = firstname;
         this.nationality = nationality;  
         this.age = age;
-    }
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId(int id)
-    {
-        this.id = id;
     }
 
     public String getLastname()
@@ -67,16 +55,6 @@ public class Employee
         this.firstname = firstname;
     }
 
-    public String getNationality()
-    {
-        return nationality;
-    }
-
-    public void setNationality(String nationality)
-    {
-        this.nationality = nationality;
-    }
-
     public int getAge()
     {
         return age;
@@ -85,6 +63,16 @@ public class Employee
     public void setAge(int age)
     {
         this.age = age;
+    }   
+    
+    public String getNationality()
+    {
+        return nationality;
+    }
+
+    public void setNationality(String nationality)
+    {
+        this.nationality = nationality;
     }
 
     public Club getClub()

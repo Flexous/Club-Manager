@@ -42,7 +42,8 @@ public class PlayersPanel
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.getViewport().setBackground(Color.WHITE);
 
-        String [] column = {app.getLanguage().getString("NrOfPlayer"), app.getLanguage().getString("Firstname"), app.getLanguage().getString("Lastname")};
+        String [] column = {app.getLanguage().getString("NrOfPlayer"), 
+        app.getLanguage().getString("Firstname"), app.getLanguage().getString("Lastname")};
 
         String [][] data = new String[app.getClub().getPlayers().size()][5];
 

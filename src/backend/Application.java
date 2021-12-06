@@ -331,4 +331,68 @@ public class Application
     {
         getClub().updatePlayer(player);
     }
+
+    public void loadManagerFromDb()
+    {
+        getDbConnection().establish();
+
+        try 
+        {         
+            String sql = "select * from Managers where club = '" + getClub().getName()+"'";  
+
+            Statement stmt = getDbConnection().get().createStatement();  
+            ResultSet rs = stmt.executeQuery(sql);  
+               
+            while (rs.next())  
+            {  
+                Manager manager = new Manager();
+                
+                manager.setFirstname(rs.getString("firstname"));
+                manager.setLastname(rs.getString("lastname"));
+                manager.setClub(getClub());
+                manager.setAge(Integer.parseInt(rs.getString("age")));
+
+                getClub().setManager(manager);
+                getLogger().info("Manager loaded from the database.");
+            }
+            
+            getDbConnection().close();
+        } 
+        catch (SQLException e) 
+        {  
+            getLogger().warning(e.getMessage());
+        }
+    }
+
+    public void loadEmployeesFromDb()
+    {
+        getDbConnection().establish();
+
+        try 
+        {         
+            String sql = "select * from Employees where club = '" + getClub().getName()+"'";  
+
+            Statement stmt = getDbConnection().get().createStatement();  
+            ResultSet rs = stmt.executeQuery(sql);  
+               
+            while (rs.next())  
+            {  
+                Employee employee = new Employee();
+                
+                employee.setFirstname(rs.getString("firstname"));
+                employee.setLastname(rs.getString("lastname"));
+                employee.setClub(getClub());
+                employee.setAge(Integer.parseInt(rs.getString("age")));
+
+                getClub().addEmployee(employee);
+            }
+            
+            getLogger().info(getClub().getEmployees().size() + " employees were loaded from the database.");
+            getDbConnection().close();
+        } 
+        catch (SQLException e) 
+        {  
+            getLogger().warning(e.getMessage());
+        }
+    }
 }

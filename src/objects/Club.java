@@ -17,6 +17,10 @@ public class Club
     //Stuff for later
     private ArrayList<Player>players = new ArrayList<>();
 
+    private Manager manager;
+
+    private ArrayList<Employee>employees = new ArrayList<>();
+
     public Club()
     {
         
@@ -100,6 +104,66 @@ public class Club
     public void findAllPlayers()
     {
 
+    }
+
+    public void addEmployee(Employee employee)
+    {
+        employees.add(employee);
+    }
+
+    public ArrayList<Employee> getEmployees()
+    {
+        return employees;
+    }
+
+    public void updateEmployee(Employee updateEmployee)
+    {
+        for (int i = 0; i < players.size(); i++)
+        {
+            if (employees.get(i).getId() == updateEmployee.getId())
+            {
+                employees.set(i, updateEmployee);
+            }
+        }
+    }
+
+    public void removeEmployee(String employeeName)
+    {
+        for (Employee employee : employees)
+        {
+            if (employee.getFirstname().equals(employeeName))
+            {
+                employees.remove(employee);
+                return;
+            }
+        }
+    }
+
+    public void removeAllEmployees()
+    {
+        employees.clear();
+    }
+
+    public void removeEmployee(int employeeIndex)
+    {
+        for (int i = 0; i < employees.size(); i++)
+        {
+            if (i == employeeIndex)
+            {
+                employees.remove(employeeIndex);
+                return;
+            }
+        }
+    }
+
+    public void setManager(Manager manager)
+    {
+        this.manager = manager;
+    }
+
+    public Manager getManager()
+    {
+        return manager;
     }
 
     public void addPlayer(Player player)
